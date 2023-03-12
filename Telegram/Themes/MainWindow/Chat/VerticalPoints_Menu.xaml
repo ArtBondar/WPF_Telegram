@@ -1,0 +1,15 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style x:Key="Menu3poins" TargetType="MenuItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <StackPanel Orientation="Horizontal" Background="#2F3136">
+                        <Image Source="{TemplateBinding Icon.Image.Source}" Width="30" Height="30"/>
+                        <Label Content="{Binding Text}" Foreground="{TemplateBinding Foreground}"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </Setter.Value>
+            </Setter >
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,50 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Style TargetType="TextBox" x:Key="StandartTextBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TextBox">
+                    <Border BorderThickness="0,0,0,1" BorderBrush="#C6BDFF">
+                        <Grid>
+                            <TextBox VerticalAlignment="Stretch" VerticalContentAlignment="Center"
+                                     HorizontalAlignment="Stretch"
+                                     x:Name="EmailTextBox"
+                                     BorderThickness="0"
+                                     CaretBrush="#C6BDFF"
+                                     Foreground="#C6BDFF"
+                                     FontWeight="Thin"
+                                     FontFamily="pack://application:,,,/Themes/#Montserrat"
+                                     FontSize="16"
+                                     Background="Transparent"
+                                     Text="{TemplateBinding Text}"
+                                     Margin="8,0,0,0">
+                            </TextBox>
+                            <TextBlock IsHitTestVisible="False"
+                                       FontWeight="Thin"
+                                       Text="{TemplateBinding Tag}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Left"
+                                       FontFamily="pack://application:,,,/Themes/#Montserrat"
+                                       Margin="10,0,0,0"
+                                       Foreground="#C6BDFF"
+                                       Background="Transparent"
+                                       FontSize="16">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Text, ElementName=EmailTextBox}" Value="">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
