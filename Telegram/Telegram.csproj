@@ -37,6 +37,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SharpVectors.Converters.Wpf, Version=1.8.1.0, Culture=neutral, PublicKeyToken=b532964b8548be77, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpVectors.1.8.1\lib\net47\SharpVectors.Converters.Wpf.dll</HintPath>
     </Reference>
@@ -227,5 +230,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\JeremyAnsel.HLSL.Targets.2.0.16\build\JeremyAnsel.HLSL.Targets.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\JeremyAnsel.HLSL.Targets.2.0.16\build\JeremyAnsel.HLSL.Targets.targets'))" />
+    <Error Condition="!Exists('..\packages\Uno.SourceGenerationTasks.4.2.0\build\netstandard1.0\Uno.SourceGenerationTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Uno.SourceGenerationTasks.4.2.0\build\netstandard1.0\Uno.SourceGenerationTasks.targets'))" />
   </Target>
+  <Import Project="..\packages\Uno.SourceGenerationTasks.4.2.0\build\netstandard1.0\Uno.SourceGenerationTasks.targets" Condition="Exists('..\packages\Uno.SourceGenerationTasks.4.2.0\build\netstandard1.0\Uno.SourceGenerationTasks.targets')" />
 </Project>

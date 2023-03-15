@@ -9,7 +9,7 @@
                         <Grid>
                             <TextBox VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                                      HorizontalAlignment="Stretch"
-                                     x:Name="EmailTextBox"
+                                     x:Name="MainTextBox"
                                      BorderThickness="0"
                                      CaretBrush="#C6BDFF"
                                      Foreground="#C6BDFF"
@@ -34,7 +34,7 @@
                                     <Style TargetType="TextBlock">
                                         <Setter Property="Visibility" Value="Collapsed" />
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Text, ElementName=EmailTextBox}" Value="">
+                                            <DataTrigger Binding="{Binding Text, ElementName=MainTextBox}" Value="">
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
                                         </Style.Triggers>

@@ -324,9 +324,9 @@
             <Border Grid.Column="1" Background="Black" Opacity="0.3" PreviewMouseLeftButtonUp="Close_Left_Menu"/>
         </Grid>
         <!-- Menus -->
-
+        
         <!-- Settings Menu-->
-        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Menu_Settings_Grid" PreviewMouseLeftButtonUp="Close_Settings_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_Settings_Grid" PreviewMouseLeftButtonUp="Close_Settings_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
@@ -364,7 +364,7 @@
                         </Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="75" Height="75" StrokeThickness="1.5" Margin="20" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="Menu_Settings_Edit_Avatar">
+                        <Ellipse x:Name="Ellipse_Avatar" Width="75" Height="75" StrokeThickness="1.5" Margin="20" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="Menu_Settings_Edit_Avatar">
                             <Ellipse.Fill>
                                 <ImageBrush ImageSource="/Icons/bookmark-one.png"/>
                             </Ellipse.Fill>

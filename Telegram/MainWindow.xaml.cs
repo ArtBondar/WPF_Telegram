@@ -1,8 +1,12 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
+using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace Telegram
 {
@@ -169,7 +173,35 @@ namespace Telegram
 
         private void Menu_Settings_Edit_Avatar(object sender, MouseButtonEventArgs e)
         {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image Files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg|All files (*.*)|*.*",
+                RestoreDirectory = true
+            };
 
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string imagePath = openFileDialog.FileName;
+
+                BitmapImage bitmap = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
+
+                byte[] bytes;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    PngBitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                    encoder.Save(ms);
+                    bytes = ms.ToArray();
+                }
+
+                string base64String = Convert.ToBase64String(bytes);
+                ImageSource image = null;
+                try
+                {
+                    image = BitmapFrame.Create(new MemoryStream(Convert.FromBase64String(base64String)));
+                } catch (Exception ex) { MessageBox.Show($"Error: {ex.Message}"); }
+                Ellipse_Avatar.Fill = new ImageBrush(image);
+            }
         }
     }
 }
