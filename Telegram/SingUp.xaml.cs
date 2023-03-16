@@ -112,13 +112,14 @@ namespace Telegram
         {
             PlaceHolderTextBlockRegistration.Visibility = (sender as PasswordBox).Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
             (sender as PasswordBox).Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
+            BorderPasswordReg1.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
         }
-
 
         private void RegistrationPassword2_PasswordChanged(object sender, RoutedEventArgs e)
         {
             PlaceHolderTextBlockRegistration2.Visibility = (sender as PasswordBox).Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
             (sender as PasswordBox).Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
+            BorderPasswordReg2.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
         }
 
         private void OpenRegistrationMenuButton_Click(object sender, RoutedEventArgs e)
@@ -176,17 +177,33 @@ namespace Telegram
 
         private async void Registration_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (TextBoxPasswordRegistration2.Text != PasswordBoxRegistration2.Password.ToString())
+            if (PasswordBoxRegistration.Password != PasswordBoxRegistration2.Password.ToString())
             {
                 PasswordBoxRegistration2.Foreground = Brushes.Red;
                 PasswordBoxRegistration.Foreground = Brushes.Red;
                 TextBoxPasswordRegistration.Foreground = Brushes.Red;
                 return;
             }
+            string email = ((TextBox)RegistrationEmail_TextBox.Template.FindName("MainTextBox", RegistrationEmail_TextBox)).Text;
+            string userName = ((TextBox)RegistrationUserName_TextBox.Template.FindName("MainTextBox", RegistrationUserName_TextBox)).Text;
+            if (String.IsNullOrWhiteSpace(email))
+            {
+                ((Border)RegistrationEmail_TextBox.Template.FindName("Border", RegistrationEmail_TextBox)).BorderBrush = Brushes.Red;
+                return;
+            }
+            if (String.IsNullOrWhiteSpace(userName))
+            {
+                ((Border)RegistrationUserName_TextBox.Template.FindName("Border", RegistrationUserName_TextBox)).BorderBrush = Brushes.Red;
+                return;
+            }
             var client = new HttpClient();
-            string userName = ((TextBox)RegistrationEmail_TextBox.Template.FindName("MainTextBox", RegistrationEmail_TextBox)).Text;
-            string email = ((TextBox)RegistrationUserName_TextBox.Template.FindName("MainTextBox", RegistrationUserName_TextBox)).Text;
             string password = PasswordBoxRegistration.Password;
+            if (String.IsNullOrWhiteSpace(password))
+            {
+                BorderPasswordReg1.BorderBrush = Brushes.Red;
+                BorderPasswordReg2.BorderBrush = Brushes.Red;
+                return;
+            }
             var data = JsonConvert.SerializeObject(new { userName, email, password });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://localhost:7195/api/Users/register", content);
@@ -226,6 +243,7 @@ namespace Telegram
         private void PasswordBoxNewPassword2_PasswordChanged(object sender, RoutedEventArgs e)
         {
             PlaceHolderTextBlockNewPassword2.Visibility = (sender as PasswordBox).Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
+            PlaceHolderTextBlockNewPassword2.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
         }
 
         private void PasswordBoxNewPassword_PasswordChanged(object sender, RoutedEventArgs e)
@@ -250,17 +268,21 @@ namespace Telegram
 
         private async void ButtonEditPassword_Click(object sender, RoutedEventArgs e)
         {
-            if (TextBoxNewPassword.Text == PasswordBoxNewPassword2.Password.ToString())
+            if (PasswordBoxNewPassword.Password == PasswordBoxNewPassword2.Password.ToString())
             {
-                // Api with emailString edit password
                 var client = new HttpClient();
-                var data = JsonConvert.SerializeObject(new { email = emailString, password = TextBoxNewPassword.Text });
+                var data = JsonConvert.SerializeObject(new { email = emailString, newPassword = PasswordBoxNewPassword.Password });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.GetAsync($"https://localhost:7195/api/Users/username/id/{emailString}");
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/setpassword"), Content = content});
                 var responseString = await response.Content.ReadAsStringAsync();
-                var result = JsonConvert.DeserializeObject(responseString);
-                // Open Main Form
-
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { result = "" });
+                if(result?.result == "success")
+                {
+                    NewPasswordStackPanel.Visibility = Visibility.Hidden;
+                    PasswordBoxNewPassword.Password = "";
+                    PasswordBoxNewPassword2.Password = "";
+                    EndNewPasswordStackPanel.Visibility = Visibility.Visible;
+                }
             }
             else
             {
@@ -268,6 +290,22 @@ namespace Telegram
                 PasswordBoxNewPassword.Foreground = Brushes.Red;
                 TextBoxNewPassword.Foreground = Brushes.Red;
             }
+        }
+
+        private void SingUp_End(object sender, RoutedEventArgs e)
+        {
+            EndNewPasswordStackPanel.Visibility = Visibility.Hidden;
+            SingUpStackPanel.Visibility = Visibility.Visible;
+        }
+
+        private void RegistrationEmail_TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ((Border)RegistrationEmail_TextBox.Template.FindName("Border", RegistrationEmail_TextBox)).BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
+        }
+
+        private void RegistrationUserName_TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ((Border)RegistrationUserName_TextBox.Template.FindName("Border", RegistrationUserName_TextBox)).BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
         }
     }
 }
