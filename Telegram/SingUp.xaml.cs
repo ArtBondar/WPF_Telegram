@@ -177,26 +177,18 @@ namespace Telegram
 
         private async void Registration_Button_Click(object sender, RoutedEventArgs e)
         {
-            if (PasswordBoxRegistration.Password != PasswordBoxRegistration2.Password.ToString())
-            {
-                PasswordBoxRegistration2.Foreground = Brushes.Red;
-                PasswordBoxRegistration.Foreground = Brushes.Red;
-                TextBoxPasswordRegistration.Foreground = Brushes.Red;
-                return;
-            }
             string email = ((TextBox)RegistrationEmail_TextBox.Template.FindName("MainTextBox", RegistrationEmail_TextBox)).Text;
-            string userName = ((TextBox)RegistrationUserName_TextBox.Template.FindName("MainTextBox", RegistrationUserName_TextBox)).Text;
             if (String.IsNullOrWhiteSpace(email))
             {
                 ((Border)RegistrationEmail_TextBox.Template.FindName("Border", RegistrationEmail_TextBox)).BorderBrush = Brushes.Red;
                 return;
             }
+            string userName = ((TextBox)RegistrationUserName_TextBox.Template.FindName("MainTextBox", RegistrationUserName_TextBox)).Text;
             if (String.IsNullOrWhiteSpace(userName))
             {
                 ((Border)RegistrationUserName_TextBox.Template.FindName("Border", RegistrationUserName_TextBox)).BorderBrush = Brushes.Red;
                 return;
             }
-            var client = new HttpClient();
             string password = PasswordBoxRegistration.Password;
             if (String.IsNullOrWhiteSpace(password))
             {
@@ -204,12 +196,23 @@ namespace Telegram
                 BorderPasswordReg2.BorderBrush = Brushes.Red;
                 return;
             }
+            if (PasswordBoxRegistration.Password != PasswordBoxRegistration2.Password.ToString())
+            {
+                PasswordBoxRegistration2.Foreground = Brushes.Red;
+                PasswordBoxRegistration.Foreground = Brushes.Red;
+                TextBoxPasswordRegistration.Foreground = Brushes.Red;
+                return;
+            }
+            var client = new HttpClient();
             var data = JsonConvert.SerializeObject(new { userName, email, password });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://localhost:7195/api/Users/register", content);
             var responseString = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject(responseString);
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "" });
+            if (!String.IsNullOrWhiteSpace(result.jwtToken))
+            {
             // Open Main Form
+        }
         }
 
         private void TextBoxTextSetForeground(object sender, TextChangedEventArgs e)
