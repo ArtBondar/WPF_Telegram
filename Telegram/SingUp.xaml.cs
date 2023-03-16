@@ -1,16 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.IO;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Telegram.Models;
 
 namespace Telegram
 {
