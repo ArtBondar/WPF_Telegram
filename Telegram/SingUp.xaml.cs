@@ -171,7 +171,9 @@ namespace Telegram
             var content = new StringContent(data, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://localhost:7195/api/Users/login", content);
             var responseString = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject(responseString);
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User() });
+            if (!String.IsNullOrWhiteSpace(result.jwtToken))
+            {
             // Open Main Form
         }
 
