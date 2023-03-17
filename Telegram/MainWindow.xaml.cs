@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Telegram.Models;
 
 namespace Telegram
 {
@@ -14,6 +15,8 @@ namespace Telegram
     /// </summary>
     public partial class MainWindow : Window
     {
+        public User LoginedUser { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -100,8 +103,8 @@ namespace Telegram
 
         private void Close_Settings_Menu(object sender, MouseButtonEventArgs e)
         {
-            if(e.Source == Menu_Settings_Grid)
-            Menu_Settings_Grid.Visibility = Visibility.Hidden;
+            if (e.Source == Menu_Settings_Grid)
+                Menu_Settings_Grid.Visibility = Visibility.Hidden;
         }
 
         private void Menu_Settings_Open(object sender, MouseButtonEventArgs e)
@@ -198,7 +201,8 @@ namespace Telegram
                 try
                 {
                     image = BitmapFrame.Create(new MemoryStream(Convert.FromBase64String(base64String)));
-                } catch (Exception ex) { MessageBox.Show($"Error: {ex.Message}"); }
+                }
+                catch (Exception ex) { MessageBox.Show($"Error: {ex.Message}"); }
                 Ellipse_Avatar.Fill = new ImageBrush(image);
             }
         }

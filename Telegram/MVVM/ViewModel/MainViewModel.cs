@@ -18,7 +18,7 @@ namespace Telegram.ViewModel
         public ContactCard SelectedContact
         {
             get { return _selectedContact; }
-            set { _selectedContact = value; OnPropertyChanged();  }
+            set { _selectedContact = value; OnPropertyChanged(); }
         }
 
 

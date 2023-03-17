@@ -5,7 +5,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
-                    <Border BorderThickness="0,0,0,1" BorderBrush="#C6BDFF">
+                    <Border x:Name="Border" BorderThickness="0,0,0,1" BorderBrush="#C6BDFF">
                         <Grid>
                             <TextBox VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                                      HorizontalAlignment="Stretch"

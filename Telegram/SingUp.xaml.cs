@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace Telegram
 {
@@ -20,7 +21,7 @@ namespace Telegram
         private bool flag_newPassword = true;
         private string codeString = "";
         private string emailString = "";
-        
+
         public SingUp()
         {
             InitializeComponent();
@@ -170,7 +171,11 @@ namespace Telegram
             var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User() });
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
-            // Open Main Form
+                // Open Main Form
+                MainWindow mainForm = new MainWindow { LoginedUser = result.user };
+                mainForm.Show();
+                this.Close();
+            }
         }
 
         private async void Registration_Button_Click(object sender, RoutedEventArgs e)
@@ -206,11 +211,14 @@ namespace Telegram
             var content = new StringContent(data, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://localhost:7195/api/Users/register", content);
             var responseString = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "" });
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User() }) ;
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
-            // Open Main Form
-        }
+                // Open Main Form
+                MainWindow mainForm = new MainWindow { LoginedUser = result.user };
+                mainForm.Show();
+                this.Close();
+            }
         }
 
         private void TextBoxTextSetForeground(object sender, TextChangedEventArgs e)
@@ -221,7 +229,7 @@ namespace Telegram
         private void ExaminationCode_Click(object sender, RoutedEventArgs e)
         {
             string code = (TextBoxCode1.Text + TextBoxCode2.Text + TextBoxCode3.Text + TextBoxCode4.Text + TextBoxCode5.Text);
-            if(code.Length == 5 && code == codeString)
+            if (code.Length == 5 && code == codeString)
             {
                 NewPasswordStackPanel.Visibility = Visibility.Visible;
                 ForgotPasswordStackPanel.Visibility = Visibility.Hidden;
@@ -252,7 +260,7 @@ namespace Telegram
             PlaceHolderTextBlockNewPassword.Visibility = (sender as PasswordBox).Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
             (sender as PasswordBox).Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
         }
-        
+
         private void ButtonShowPassword_NewPassword_Click(object sender, RoutedEventArgs e)
         {
             flag_newPassword = !flag_newPassword;
@@ -274,10 +282,10 @@ namespace Telegram
                 var client = new HttpClient();
                 var data = JsonConvert.SerializeObject(new { email = emailString, newPassword = PasswordBoxNewPassword.Password });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/setpassword"), Content = content});
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/setpassword"), Content = content });
                 var responseString = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeAnonymousType(responseString, new { result = "" });
-                if(result?.result == "success")
+                if (result?.result == "success")
                 {
                     NewPasswordStackPanel.Visibility = Visibility.Hidden;
                     PasswordBoxNewPassword.Password = "";
@@ -307,6 +315,39 @@ namespace Telegram
         private void RegistrationUserName_TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             ((Border)RegistrationUserName_TextBox.Template.FindName("Border", RegistrationUserName_TextBox)).BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
+        }
+
+        private async void SendAgain_Button_Click(object sender, RoutedEventArgs e)
+        {
+            if (!String.IsNullOrWhiteSpace(emailString))
+            {
+                var client = new HttpClient();
+                var data = JsonConvert.SerializeObject(new { email = emailString });
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync("https://localhost:7195/api/Email/sendcode", content);
+                var responseString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { code = "" });
+                codeString = result?.code;
+
+                Button button = (sender as Button);
+                button.IsEnabled = false;
+                int secondsLeft = 10; 
+                button.Content = $"Wait ({secondsLeft})";
+                var timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromSeconds(1);
+                timer.Tick += (s, args) =>
+                {
+                    secondsLeft--;
+                    button.Content = $"Wait ({secondsLeft})";
+                    if (secondsLeft <= 0)
+                    {
+                        button.IsEnabled = true;
+                        button.Content = "Send Again";
+                        timer.Stop();
+                    }
+                };
+                timer.Start();
+            }
         }
     }
 }
