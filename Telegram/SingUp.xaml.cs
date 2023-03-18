@@ -161,13 +161,27 @@ namespace Telegram
 
         private async void ButtonSingUp_Click(object sender, RoutedEventArgs e)
         {
-            var client = new HttpClient();
             string login = ((TextBox)TextBoxEmailLogin.Template.FindName("MainTextBox", TextBoxEmailLogin)).Text;
             string password = PasswordBoxLogin.Password;
+            if (String.IsNullOrWhiteSpace(login))
+            {
+                ((Border)TextBoxEmailLogin.Template.FindName("Border", TextBoxEmailLogin)).BorderBrush = Brushes.Red;
+                return;
+            }
+            if (String.IsNullOrWhiteSpace(password))
+            {
+                PasswordLoginBorder.BorderBrush = Brushes.Red;
+                return;
+            }
+            var client = new HttpClient();
             var data = JsonConvert.SerializeObject(new { login, password });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://localhost:7195/api/Users/login", content);
             var responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null)
+            {
+                MessageBox.Show("Server error...");
+            }
             var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User() });
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
@@ -176,6 +190,12 @@ namespace Telegram
                 mainForm.Show();
                 this.Close();
             }
+            else
+            {
+                ((TextBox)TextBoxEmailLogin.Template.FindName("MainTextBox", TextBoxEmailLogin)).Foreground = Brushes.Red;
+                PasswordBoxLogin.Foreground = Brushes.Red;
+                TextBoxPasswordLogin.Foreground = Brushes.Red;
+        }
         }
 
         private async void Registration_Button_Click(object sender, RoutedEventArgs e)
