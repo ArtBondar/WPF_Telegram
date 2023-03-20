@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -8,6 +10,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using Telegram.Models;
+using Telegram.ViewModel;
 
 namespace Telegram
 {
@@ -25,6 +29,7 @@ namespace Telegram
         public SingUp()
         {
             InitializeComponent();
+            this.DataContext = new MainViewModel();
         }
 
         private void SingUp_Start(object sender, RoutedEventArgs e)
@@ -44,6 +49,8 @@ namespace Telegram
         private void pbPassword_PasswordChanged(object sender, RoutedEventArgs e)
         {
             PlaceHolderTextBlock.Visibility = (sender as PasswordBox).Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
+            (sender as PasswordBox).Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
+            PasswordLoginBorder.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
         }
 
         private void TextBoxPassword_TextChanged(object sender, TextChangedEventArgs e)
@@ -161,16 +168,24 @@ namespace Telegram
 
         private async void ButtonSingUp_Click(object sender, RoutedEventArgs e)
         {
+            Login_Button.IsEnabled = false;
+            Login_Button.Content = "Wait...";
             string login = ((TextBox)TextBoxEmailLogin.Template.FindName("MainTextBox", TextBoxEmailLogin)).Text;
             string password = PasswordBoxLogin.Password;
+            //
+            login = "kb674ua@gmail.com";
+            password = "123456";
+            //
             if (String.IsNullOrWhiteSpace(login))
             {
                 ((Border)TextBoxEmailLogin.Template.FindName("Border", TextBoxEmailLogin)).BorderBrush = Brushes.Red;
+                Login_Button.IsEnabled = true;
                 return;
             }
             if (String.IsNullOrWhiteSpace(password))
             {
                 PasswordLoginBorder.BorderBrush = Brushes.Red;
+                Login_Button.IsEnabled = true;
                 return;
             }
             var client = new HttpClient();
@@ -180,13 +195,22 @@ namespace Telegram
             var responseString = await response.Content.ReadAsStringAsync();
             if (responseString == null)
             {
+                Login_Button.IsEnabled = true;
                 MessageBox.Show("Server error...");
+                return;
             }
-            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User() });
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), groups = new List<Models.Group>(), channels = new List<Models.Channel>(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
                 // Open Main Form
-                MainWindow mainForm = new MainWindow ();
+                MainWindow mainForm = new MainWindow();
+                mainForm.JwtToken = result.jwtToken;
+                mainForm.LoginedUser = result.user;
+                mainForm.Groups = result.groups;
+                mainForm.Channels = result.channels;
+                mainForm.Chats = result.chats;
+                mainForm.SavedMessages = result.savedMessages;
+                mainForm.RefreshUI();
                 mainForm.Show();
                 this.Close();
             }
@@ -195,7 +219,9 @@ namespace Telegram
                 ((TextBox)TextBoxEmailLogin.Template.FindName("MainTextBox", TextBoxEmailLogin)).Foreground = Brushes.Red;
                 PasswordBoxLogin.Foreground = Brushes.Red;
                 TextBoxPasswordLogin.Foreground = Brushes.Red;
-        }
+                Login_Button.IsEnabled = true;
+            }
+            Login_Button.Content = "Login";
         }
 
         private async void Registration_Button_Click(object sender, RoutedEventArgs e)
@@ -231,11 +257,18 @@ namespace Telegram
             var content = new StringContent(data, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://localhost:7195/api/Users/register", content);
             var responseString = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User() }) ;
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), groups = new List<Models.Group>(), channels = new List<Models.Channel>(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
                 // Open Main Form
-                MainWindow mainForm = new MainWindow { LoginedUser = result.user };
+                MainWindow mainForm = new MainWindow();
+                mainForm.JwtToken = result.jwtToken;
+                mainForm.LoginedUser = result.user;
+                mainForm.Groups = result.groups;
+                mainForm.Channels = result.channels;
+                mainForm.Chats = result.chats;
+                mainForm.SavedMessages = result.savedMessages;
+                mainForm.RefreshUI();
                 mainForm.Show();
                 this.Close();
             }
@@ -368,6 +401,11 @@ namespace Telegram
                 };
                 timer.Start();
             }
+        }
+
+        private void TextBoxEmailLogin_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ((Border)TextBoxEmailLogin.Template.FindName("Border", TextBoxEmailLogin)).BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
         }
     }
 }

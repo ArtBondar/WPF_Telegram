@@ -48,12 +48,13 @@
                     Height="30"
                     Margin="8,0,8,0"/>
             </Grid>
-            <!-- Contacts List -->
+            <!-- Chats List -->
             <ListView ItemsSource="{Binding Contacts}"
                       SelectedItem="{Binding SelectedContact}"
                       Style="{DynamicResource ContactsListListView}"
                       BorderThickness="0"
                       Grid.Row="1"
+                      x:Name="Contact_ListView"
                       ScrollViewer.CanContentScroll="False"
                       SelectionChanged="ListView_SelectionChanged"
                       ItemContainerStyle="{DynamicResource ContactCard}">
@@ -280,10 +281,11 @@
                 <StackPanel Grid.Row="0">
                     <Ellipse Width="50" Height="50" HorizontalAlignment="Left" Margin="25, 10, 0, 0">
                         <Ellipse.Fill>
-                            <ImageBrush ImageSource="./Icons/bookmark-one.png"/>
+                            <ImageBrush x:Name="Photo_ImageBrush_LeftMenu"/>
                         </Ellipse.Fill>
                     </Ellipse>
-                    <Label Content="Art" Margin="25, 10, 0, 0" Foreground="White" FontSize="14"/>
+                    <Label x:Name="Username_Lable_LeftMenu" Margin="25, 10, 0, 0" Foreground="White" FontSize="14"/>
+                    <Label x:Name="Email_Lable_LeftMenu" Margin="25, 10, 0, 0" Foreground="White" FontSize="14"/>
                 </StackPanel>
                 <Border Grid.Row="1" Style="{DynamicResource MainColorBorder}"/>
                 <!-- Menu Buttons -->
@@ -366,12 +368,11 @@
                     <StackPanel Orientation="Horizontal">
                         <Ellipse x:Name="Ellipse_Avatar" Width="75" Height="75" StrokeThickness="1.5" Margin="20" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="Menu_Settings_Edit_Avatar">
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="/Icons/bookmark-one.png"/>
+                                <ImageBrush ImageSource="{Binding PhotoSource}"/>
                             </Ellipse.Fill>
                         </Ellipse>
                         <StackPanel Orientation="Vertical" Margin="0,10,0,10">
-                            <Label Content="Artem" Style="{DynamicResource MainColorLable}" FontSize="18"/>
-                            <Label Content="+380632017150" Style="{DynamicResource MainColorLable}" FontSize="14"/>
+                            <Label Content="{Binding LoginedUser.Email}" Style="{DynamicResource MainColorLable}" FontSize="18"/>
                             <Label Content="@Art_Bondar" Style="{DynamicResource SecondaryColorLable}" FontSize="14"/>
                         </StackPanel>
                         <!-- Buttons -->

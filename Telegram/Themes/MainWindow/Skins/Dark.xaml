@@ -152,7 +152,7 @@
                                 </Ellipse.Fill>
                             </Ellipse>
                             <StackPanel Margin="10,0,0,0" Orientation="Vertical" Width="80">
-                                <Label Content="{Binding UserName}"
+                                <Label Content="{Binding User.UserName}"
                                        FontSize="14"
                                        Style="{DynamicResource MainColorLable}"/>
                                 <Label Content="{Binding LastMessage}"

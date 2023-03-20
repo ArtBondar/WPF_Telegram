@@ -112,6 +112,7 @@
     <Compile Include="Model\UserGroup.cs" />
     <Compile Include="Model\UserRole.cs" />
     <Compile Include="Model\UserSetting.cs" />
+    <Compile Include="MVVM\ViewModel\BaseViewModel.cs" />
     <Compile Include="MVVM\ViewModel\MainViewModel.cs" />
     <Compile Include="SingUp.xaml.cs">
       <DependentUpon>SingUp.xaml</DependentUpon>
@@ -235,9 +236,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="MVVM\View\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Icons\bookmark-one.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
