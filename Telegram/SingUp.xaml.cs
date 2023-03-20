@@ -186,7 +186,7 @@ namespace Telegram
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
                 // Open Main Form
-                MainWindow mainForm = new MainWindow { LoginedUser = result.user };
+                MainWindow mainForm = new MainWindow ();
                 mainForm.Show();
                 this.Close();
             }

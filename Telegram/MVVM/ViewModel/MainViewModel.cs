@@ -21,7 +21,6 @@ namespace Telegram.ViewModel
             set { _selectedContact = value; OnPropertyChanged(); }
         }
 
-
         private string _message;
 
         public string Message

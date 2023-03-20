@@ -16,7 +16,7 @@ namespace Telegram
     public partial class MainWindow : Window
     {
         public User LoginedUser { get; set; }
-
+        public string JwtToken { get; set; }
         public MainWindow()
         {
             InitializeComponent();
@@ -195,8 +195,6 @@ namespace Telegram
                     encoder.Save(ms);
                     bytes = ms.ToArray();
                 }
-
-                string base64String = Convert.ToBase64String(bytes);
                 ImageSource image = null;
                 try
                 {
