@@ -98,7 +98,6 @@
     <Compile Include="Model\Chat.cs" />
     <Compile Include="Model\ChatMessage.cs" />
     <Compile Include="Model\DataMessage.cs" />
-    <Compile Include="Model\ErrorViewModel.cs" />
     <Compile Include="Model\Group.cs" />
     <Compile Include="Model\GroupMessage.cs" />
     <Compile Include="Model\Member.cs" />
@@ -106,6 +105,7 @@
     <Compile Include="Model\Role.cs" />
     <Compile Include="Model\SavedMessage.cs" />
     <Compile Include="Model\Setting.cs" />
+    <Compile Include="Model\UI\UIChat.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\UserChannel.cs" />
     <Compile Include="Model\UserContact.cs" />

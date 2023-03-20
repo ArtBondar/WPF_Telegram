@@ -328,7 +328,7 @@
         <!-- Menus -->
         
         <!-- Settings Menu-->
-        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_Settings_Grid" PreviewMouseLeftButtonUp="Close_Settings_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Menu_Settings_Grid" PreviewMouseLeftButtonUp="Close_Settings_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
@@ -365,18 +365,33 @@
                             <Path Data="M8 8L40 40 M8 40L40 8" Style="{DynamicResource IconStyle}" Margin="1" Stretch="Fill"/>
                         </Button>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Vertical">
                         <Ellipse x:Name="Ellipse_Avatar" Width="75" Height="75" StrokeThickness="1.5" Margin="20" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="Menu_Settings_Edit_Avatar">
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="{Binding PhotoSource}"/>
+                                <ImageBrush x:Name="SettingsImageBrush"/>
                             </Ellipse.Fill>
                         </Ellipse>
-                        <StackPanel Orientation="Vertical" Margin="0,10,0,10">
-                            <Label Content="{Binding LoginedUser.Email}" Style="{DynamicResource MainColorLable}" FontSize="18"/>
-                            <Label Content="@Art_Bondar" Style="{DynamicResource SecondaryColorLable}" FontSize="14"/>
+                        <StackPanel Orientation="Vertical" Margin="0,8,0,8" HorizontalAlignment="Center">
+                            <Label HorizontalAlignment="Center" x:Name="SettingsUserName_Lable" Content="UserName" Style="{DynamicResource SecondaryColorLable}" FontSize="18"/>
+                            <Label HorizontalAlignment="Center" x:Name="SettingsEmail_Lable" Content="Email" Style="{DynamicResource MainColorLable}" FontSize="18"/>
                         </StackPanel>
                         <!-- Buttons -->
 
+                    </StackPanel>
+                    <Border BorderBrush="White" BorderThickness="0,0.5,0,0.5">
+                        <StackPanel Orientation="Horizontal" Height="60" HorizontalAlignment="Center">
+                            <Label x:Name="SettingsDescription_Lable" Content="Description..." Style="{DynamicResource MainColorLable}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <StackPanel Orientation="Horizontal" Cursor="Hand" Height="45" FlowDirection="RightToLeft" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
+                        <Label x:Name="SettingsEditUserName_Lable" FontSize="14" Width="180" Margin="10,0,0,0" VerticalAlignment="Center" Content="Username" Style="{DynamicResource SecondaryColorLable}"/>
+                        <Label VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Content="Username" Width="75" Margin="90,0,0,0" Style="{DynamicResource MainColorLable}" />
+                        <Path Data="" Style="{DynamicResource IconStyle}" Height="25" Width="25" Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Cursor="Hand" Height="45" FlowDirection="RightToLeft" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
+                        <Label x:Name="SettingsEditEmail_Lable" FontSize="14" Width="180" Margin="10,0,0,0" VerticalAlignment="Center" Content="Email" Style="{DynamicResource SecondaryColorLable}"/>
+                        <Label HorizontalContentAlignment="Right" FontSize="14" VerticalAlignment="Center" Content="Email" Width="75" Margin="90,0,0,0" Style="{DynamicResource MainColorLable}" />
+                        <Path Data="" Style="{DynamicResource IconStyle}" Height="25" Width="25" Margin="8,0,0,0"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

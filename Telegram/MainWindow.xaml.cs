@@ -46,7 +46,11 @@ namespace Telegram
                 Contact_ListView.ItemsSource = Chats;
                 // Messages
 
-                // 
+                // Settings
+                SettingsImageBrush.ImageSource = PhotoSource;
+                SettingsEditEmail_Lable.Content = SettingsEmail_Lable.Content = LoginedUser.Email;
+                SettingsEditUserName_Lable.Content = SettingsUserName_Lable.Content = LoginedUser.UserName;
+                SettingsDescription_Lable.Content = LoginedUser.Email;
             }
         }
         public MainWindow()
