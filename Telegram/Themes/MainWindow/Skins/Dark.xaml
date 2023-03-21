@@ -127,7 +127,7 @@
         <Setter Property="Foreground" Value="#584CA3"/>
         <Setter Property="Visibility" Value="Collapsed"/>
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
+            <DataTrigger Binding="{Binding Text, ElementName=MainTextBox}" Value="">
                 <Setter Property="Visibility" Value="Visible"/>
             </DataTrigger>
         </Style.Triggers>
@@ -204,13 +204,13 @@
         </Style.Triggers>
     </Style>
     <Style x:Key="MainColorBorderBorderBrush" TargetType="Border">
-        <Setter Property="BorderBrush" Value="#32a898"/>
+        <Setter Property="BorderBrush" Value="#584CA3"/>
     </Style>
     <Style x:Key="Menu_Buttons" TargetType="Button">
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Foreground" Value="#32a898"/>
+        <Setter Property="Foreground" Value="#584CA3"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Template">
             <Setter.Value>

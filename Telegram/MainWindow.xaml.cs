@@ -85,8 +85,11 @@ namespace Telegram
         }
         private void ToogleButton_Notification_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            ToogleButton_Notification.IsChecked = !ToogleButton_Notification.IsChecked;
-            Notifications_Path.Data = Geometry.Parse(ToogleButton_Notification.IsChecked.Value ? "M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z M32 15L32 15C32.6232 15.5565 33.1881 16.1797 33.6841 16.8588C35.1387 18.8504 36 21.3223 36 24C36 26.6545 35.1535 29.1067 33.7218 31.0893C33.2168 31.7885 32.6391 32.4293 32 33 M34.2359 41.1857C40.0836 37.6953 44 31.305 44 24C44 16.8085 40.2043 10.5035 34.507 6.97906" : "M40.7348,20.2858 L32.2495,28.7711 M32.2496,20.2858 L40.7349,28.7711 M24,6 V42 C17,42 11.7985,32.8391 11.7985,32.8391 H6 C4.89543,32.8391 4,31.9437 4,30.8391 V17.0108 C4,15.9062 4.89543,15.0108 6,15.0108 H11.7985 C11.7985,15.0108 17,6 24,6 Z");
+            if (e.Source != ToogleButton_Notification)
+            {
+                ToogleButton_Notification.IsChecked = !ToogleButton_Notification.IsChecked;
+                Notifications_Path.Data = Geometry.Parse(ToogleButton_Notification.IsChecked.Value ? "M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z M32 15L32 15C32.6232 15.5565 33.1881 16.1797 33.6841 16.8588C35.1387 18.8504 36 21.3223 36 24C36 26.6545 35.1535 29.1067 33.7218 31.0893C33.2168 31.7885 32.6391 32.4293 32 33 M34.2359 41.1857C40.0836 37.6953 44 31.305 44 24C44 16.8085 40.2043 10.5035 34.507 6.97906" : "M40.7348,20.2858 L32.2495,28.7711 M32.2496,20.2858 L40.7349,28.7711 M24,6 V42 C17,42 11.7985,32.8391 11.7985,32.8391 H6 C4.89543,32.8391 4,31.9437 4,30.8391 V17.0108 C4,15.9062 4.89543,15.0108 6,15.0108 H11.7985 C11.7985,15.0108 17,6 24,6 Z");
+            }
         }
         private void ToogleButton_DarkWhite_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -175,11 +178,6 @@ namespace Telegram
         {
             Menu_CreateChanel_Grid.Visibility = Visibility.Hidden;
         }
-        private void Menu_CreateChanel_Grid_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Source == Menu_CreateChanel_Grid)
-                Menu_CreateChanel_Grid.Visibility = Visibility.Hidden;
-        }
         private void Menu_CreateChanel_Open(object sender, MouseButtonEventArgs e)
         {
             Menu_CreateChanel_Grid.Visibility = Visibility.Visible;
@@ -216,6 +214,37 @@ namespace Telegram
                 catch (Exception ex) { MessageBox.Show($"Error: {ex.Message}"); }
                 Ellipse_Avatar.Fill = new ImageBrush(image);
             }
+        }
+        private void Close_EditUserName_Menu_Click(object sender, RoutedEventArgs e)
+        {
+            Menu_EditUserName_Grid.Visibility = Visibility.Hidden;
+        }
+        private void Open_EditUserName_ButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Menu_EditUserName_Grid.Visibility = Visibility.Visible;
+        }
+        private void Close_EditUserName_Menu(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source == Menu_EditUserName_Grid)
+                Menu_EditUserName_Grid.Visibility = Visibility.Hidden;
+        }
+        private void Menu_CreateChanel_Grid_ButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source == Menu_CreateChanel_Grid)
+                Menu_CreateChanel_Grid.Visibility = Visibility.Hidden;
+        }
+        private void Close_EditEmail_Menu_Click(object sender, RoutedEventArgs e)
+        {
+            Menu_EditEmail_Grid.Visibility = Visibility.Hidden;
+        }
+        private void Close_EditEmail_Menu(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source == Menu_EditEmail_Grid)
+                Menu_EditEmail_Grid.Visibility = Visibility.Hidden;
+        }
+        private void Open_EditEmail_ButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Menu_EditEmail_Grid.Visibility = Visibility.Visible;
         }
     }
 }

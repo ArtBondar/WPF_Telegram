@@ -259,7 +259,7 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Path x:Name="Notifications_Path" Width="25" Height="25" Data="M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z M32 15L32 15C32.6232 15.5565 33.1881 16.1797 33.6841 16.8588C35.1387 18.8504 36 21.3223 36 24C36 26.6545 35.1535 29.1067 33.7218 31.0893C33.2168 31.7885 32.6391 32.4293 32 33 M34.2359 41.1857C40.0836 37.6953 44 31.305 44 24C44 16.8085 40.2043 10.5035 34.507 6.97906" Style="{DynamicResource IconStyle}" Margin="25,0,0,0"/>
                     <Label Content="Notifications" Style="{DynamicResource MainColorLable}" FontSize="14" Margin="25,0,0,0"/>
-                    <ToggleButton x:Name="ToogleButton_Notification" Style="{StaticResource AnimatedSwitch}" Height="20" IsChecked="True" Margin="25, 0, 0, 0" VerticalAlignment="Center" />
+                    <ToggleButton x:Name="ToogleButton_Notification" Style="{StaticResource AnimatedSwitch}" Height="20" IsChecked="True" Margin="25, 0, 0, 0" VerticalAlignment="Center" Click="ToogleButton_DarkWhite_Click" />
                 </StackPanel>
             </Border>
             <Border Grid.Row="5" Style="{DynamicResource MainColorBorder}"/>
@@ -328,7 +328,7 @@
         <!-- Menus -->
         
         <!-- Settings Menu-->
-        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Menu_Settings_Grid" PreviewMouseLeftButtonUp="Close_Settings_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_Settings_Grid" PreviewMouseLeftButtonUp="Close_Settings_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
@@ -383,22 +383,21 @@
                             <Label x:Name="SettingsDescription_Lable" Content="Description..." Style="{DynamicResource MainColorLable}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
-                    <StackPanel Orientation="Horizontal" Cursor="Hand" Height="45" FlowDirection="RightToLeft" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
+                    <StackPanel Orientation="Horizontal" Cursor="Hand" Height="45" FlowDirection="RightToLeft" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}" PreviewMouseLeftButtonUp="Open_EditUserName_ButtonUp">
                         <Label x:Name="SettingsEditUserName_Lable" FontSize="14" Width="180" Margin="10,0,0,0" VerticalAlignment="Center" Content="Username" Style="{DynamicResource SecondaryColorLable}"/>
                         <Label VerticalAlignment="Center" FontSize="14" HorizontalAlignment="Right" Content="Username" Width="75" Margin="90,0,0,0" Style="{DynamicResource MainColorLable}" />
                         <Path Data="" Style="{DynamicResource IconStyle}" Height="25" Width="25" Margin="8,0,0,0"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Cursor="Hand" Height="45" FlowDirection="RightToLeft" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
+                    <StackPanel Orientation="Horizontal" Cursor="Hand" Height="45" FlowDirection="RightToLeft" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}" PreviewMouseLeftButtonUp="Open_EditEmail_ButtonUp">
                         <Label x:Name="SettingsEditEmail_Lable" FontSize="14" Width="180" Margin="10,0,0,0" VerticalAlignment="Center" Content="Email" Style="{DynamicResource SecondaryColorLable}"/>
                         <Label HorizontalContentAlignment="Right" FontSize="14" VerticalAlignment="Center" Content="Email" Width="75" Margin="90,0,0,0" Style="{DynamicResource MainColorLable}" />
                         <Path Data="" Style="{DynamicResource IconStyle}" Height="25" Width="25" Margin="8,0,0,0"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
-
         </Grid>
         <!-- Create group -->
-        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_CreateGroup_Grid" PreviewMouseDown="Close_CreateGroup_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_CreateGroup_Grid" PreviewMouseLeftButtonUp="Close_CreateGroup_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
@@ -411,7 +410,7 @@
                             </Ellipse.Fill>
                         </Ellipse>
                         <TextBox Margin="25" Width="180" FontSize="14"
-                                 Style="{DynamicResource CreateGroupTextBox}"/>
+                                 Style="{DynamicResource TextBoxWithPlaceHolderMenu}" Tag="Group name"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-20, 0, 0">
                         <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_CreateGroup_Menu_Click"/>
@@ -421,7 +420,7 @@
             </Border>
         </Grid>
         <!-- Create Chanel -->
-        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_CreateChanel_Grid" PreviewMouseDown="Menu_CreateChanel_Grid_MouseDown">
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_CreateChanel_Grid" PreviewMouseLeftButtonUp="Menu_CreateChanel_Grid_ButtonUp">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
@@ -434,13 +433,47 @@
                             </Ellipse.Fill>
                         </Ellipse>
                         <TextBox Margin="50, 50, 0, 0" Width="250" FontSize="14"
-                                 Style="{DynamicResource CreateChanelTextBox}"/>
+                                 Style="{DynamicResource TextBoxWithPlaceHolderMenu}" Tag="Channel name"/>
                     </StackPanel>
-                    <TextBox Margin="25" Width="350" FontSize="14"
-                                 Style="{DynamicResource DescriptionCreateChanelTextBox}"/>
+                    <TextBox Margin="25" Width="350" FontSize="14" Tag="Description..."
+                                 Style="{DynamicResource TextBoxWithPlaceHolderMenu}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_CreateChanel_Menu_Click"/>
                         <Button Content="Create" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <!-- Edit username -->
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_EditUserName_Grid" PreviewMouseLeftButtonUp="Close_EditUserName_Menu">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity="0.3"/>
+            </Grid.Background>
+            <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="350" Width="Auto" Height="150">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="25">
+                        <TextBox Margin="25" Width="180" FontSize="14" Tag="New name" Style="{DynamicResource TextBoxWithPlaceHolderMenu}"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-20, 0, 0">
+                        <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_EditUserName_Menu_Click"/>
+                        <Button Content="Edit" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <!-- Edit email -->
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_EditEmail_Grid" PreviewMouseLeftButtonUp="Close_EditEmail_Menu">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity="0.3"/>
+            </Grid.Background>
+            <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="350" Width="Auto" Height="150">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="25">
+                        <TextBox Margin="25" Width="180" FontSize="14" Tag="New email" Style="{DynamicResource TextBoxWithPlaceHolderMenu}"  />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-20, 0, 0">
+                        <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_EditEmail_Menu_Click"/>
+                        <Button Content="Edit" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Style TargetType="TextBox" x:Key="DescriptionCreateChanelTextBox">
+    <Style TargetType="TextBox" x:Key="TextBoxWithPlaceHolderMenu">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="TextBox">
@@ -8,7 +8,7 @@
                         <Grid>
                             <TextBox VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                                      HorizontalAlignment="Stretch"
-                                     x:Name="SearchBox"
+                                     x:Name="MainTextBox"
                                      TextWrapping="Wrap"
                                      BorderThickness="0"
                                      Style="{DynamicResource TextBoxWithPlaceHolderTextBox}"
@@ -16,7 +16,7 @@
                                      Text="{Binding Text}">
                             </TextBox>
                             <TextBlock IsHitTestVisible="False"
-                                       Text="Description..."
+                                       Text="{TemplateBinding Tag}"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Left"
                                        Margin="10,0,0,0"

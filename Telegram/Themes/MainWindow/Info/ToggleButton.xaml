@@ -17,7 +17,7 @@
                                     <TranslateTransform X="0" Y="0" />
                                 </Ellipse.RenderTransform>
                                 <Ellipse.BitmapEffect>
-                                    <DropShadowBitmapEffect Softness="0.1" ShadowDepth="0" Direction="270" Color="#000"/>
+                                    <DropShadowBitmapEffect Softness="0.1" ShadowDepth="0" Direction="270" Color="Black"/>
                                 </Ellipse.BitmapEffect>
                             </Ellipse>
                         </Canvas>
@@ -27,12 +27,12 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        
-                                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="#1BA1E2" Duration="0:0:0.2" />
+
+                                        <ColorAnimation Storyboard.TargetProperty="Background.Color" To="#8e7cc3" Duration="0:0:0.2" />
 
                                         <!--new #1BA1E2, old #52D468 light green-->
-                                        
-                                        <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="#B2E0F4" Duration="0:0:0.2" />
+
+                                        <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="#6a329f" Duration="0:0:0.2" />
 
                                         <!--new #B2E0F4, old #41C955 green-->
 
@@ -48,7 +48,7 @@
                                     <Storyboard>
                                         <ColorAnimation Storyboard.TargetProperty="Background.Color" To="#ffffff" Duration="0:0:0.2" />
                                         <!--light gray-->
-                                        <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="#bcbcbc" Duration="0:0:0.2" />
+                                        <ColorAnimation Storyboard.TargetProperty="BorderBrush.Color" To="#6a329f" Duration="0:0:0.2" />
                                         <!--gray-->
                                         <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Ellipse.RenderTransform).(TranslateTransform.X)" Storyboard.TargetName="ellipse">
                                             <SplineDoubleKeyFrame KeyTime="0" Value="15"/>

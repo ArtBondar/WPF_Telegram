@@ -8,7 +8,7 @@
                         <Grid>
                             <TextBox VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                                      HorizontalAlignment="Stretch"
-                                     x:Name="SearchBox"
+                                     x:Name="MainTextBox"
                                      TextWrapping="Wrap"
                                      BorderThickness="0"
                                      Style="{DynamicResource TextBoxWithPlaceHolderTextBox}"

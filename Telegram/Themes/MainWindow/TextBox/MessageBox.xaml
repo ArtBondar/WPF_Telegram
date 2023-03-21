@@ -8,7 +8,7 @@
                         <Grid>
                             <TextBox VerticalAlignment="Stretch" VerticalContentAlignment="Center"
                                      HorizontalAlignment="Stretch"
-                                     x:Name="SearchBox"
+                                     x:Name="MainTextBox"
                                      TextWrapping="Wrap"
                                      BorderThickness="0"
                                      Style="{DynamicResource TextBoxWithPlaceHolderTextBox}"
@@ -18,7 +18,6 @@
                                     <KeyBinding Command="{Binding SendCommand}" Key="Return"/>
                                 </TextBox.InputBindings>
                             </TextBox>
-
                             <TextBlock IsHitTestVisible="False"
                                        Text="Write your message..."
                                        VerticalAlignment="Center"

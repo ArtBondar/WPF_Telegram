@@ -12,9 +12,7 @@
                 <ResourceDictionary Source=".\themes\MainWindow\StylishScrollbar.xaml"/>
                 <ResourceDictionary Source=".\themes\MainWindow\Info\ToggleButton.xaml"/>
                 <ResourceDictionary Source=".\themes\MainWindow\Chat\MenuItemThreePoints.xaml"/>
-                <ResourceDictionary Source=".\themes\MainWindow\TextBox\CreateGroupTextBox.xaml"/>
-                <ResourceDictionary Source=".\themes\MainWindow\TextBox\CreateChanelTextBox.xaml"/>
-                <ResourceDictionary Source=".\themes\MainWindow\TextBox\DescriptionCreateChanelTextBox.xaml"/>
+                <ResourceDictionary Source=".\themes\MainWindow\TextBox\TextBoxWithPlaceHolderMenu.xaml"/>
                 <!-- Skins -->
                 <ResourceDictionary Source=".\themes\MainWindow\skins\white.xaml"/>
                 <ResourceDictionary Source=".\themes\MainWindow\skins\dark.xaml"/>
