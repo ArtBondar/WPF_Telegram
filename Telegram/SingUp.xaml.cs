@@ -29,7 +29,6 @@ namespace Telegram
         public SingUp()
         {
             InitializeComponent();
-            this.DataContext = new MainViewModel();
         }
 
         private void SingUp_Start(object sender, RoutedEventArgs e)
@@ -173,8 +172,8 @@ namespace Telegram
             string login = ((TextBox)TextBoxEmailLogin.Template.FindName("MainTextBox", TextBoxEmailLogin)).Text;
             string password = PasswordBoxLogin.Password;
             //
-            login = "kb674ua@gmail.com";
-            password = "123456";
+            login = "vlad1or@i.ua";
+            password = "qwrg25";
             //
             if (String.IsNullOrWhiteSpace(login))
             {
@@ -206,8 +205,6 @@ namespace Telegram
                 MainWindow mainForm = new MainWindow();
                 mainForm.JwtToken = result.jwtToken;
                 mainForm.LoginedUser = result.user;
-                mainForm.Groups = result.groups;
-                mainForm.Channels = result.channels;
                 mainForm.Chats = result.chats;
                 mainForm.SavedMessages = result.savedMessages;
                 mainForm.RefreshUI();
@@ -264,8 +261,6 @@ namespace Telegram
                 MainWindow mainForm = new MainWindow();
                 mainForm.JwtToken = result.jwtToken;
                 mainForm.LoginedUser = result.user;
-                mainForm.Groups = result.groups;
-                mainForm.Channels = result.channels;
                 mainForm.Chats = result.chats;
                 mainForm.SavedMessages = result.savedMessages;
                 mainForm.RefreshUI();

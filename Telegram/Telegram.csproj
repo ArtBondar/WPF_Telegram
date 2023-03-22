@@ -105,7 +105,6 @@
     <Compile Include="Model\Role.cs" />
     <Compile Include="Model\SavedMessage.cs" />
     <Compile Include="Model\Setting.cs" />
-    <Compile Include="Model\UI\UIChat.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\UserChannel.cs" />
     <Compile Include="Model\UserChat.cs" />

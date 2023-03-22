@@ -31,8 +31,6 @@ namespace Telegram
                 return null;
             }
         }
-        public List<Group> Groups { get; set; }
-        public List<Channel> Channels { get; set; }
         public List<Chat> Chats { get; set; }
         public List<SavedMessage> SavedMessages { get; set; }
         public void RefreshUI()
@@ -50,7 +48,7 @@ namespace Telegram
                 SettingsImageBrush.ImageSource = PhotoSource;
                 SettingsEditEmail_Lable.Content = SettingsEmail_Lable.Content = LoginedUser.Email;
                 SettingsEditUserName_Lable.Content = SettingsUserName_Lable.Content = LoginedUser.UserName;
-                SettingsDescription_Lable.Content = LoginedUser.Email;
+                SettingsDescription_Lable.Content = LoginedUser.AboutUser;
             }
         }
         public MainWindow()
@@ -151,13 +149,9 @@ namespace Telegram
         private void Chat_ListView_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             if (e.VerticalOffset == 0)
-            {
                 Button_To_Down.Visibility = Visibility.Visible;
-            }
             else
-            {
                 Button_To_Down.Visibility = Visibility.Hidden;
-            }
         }
         private void Close_CreateGroup_Menu(object sender, MouseButtonEventArgs e)
         {
@@ -222,7 +216,7 @@ namespace Telegram
         private void Open_EditUserName_ButtonUp(object sender, MouseButtonEventArgs e)
         {
             Menu_EditUserName_Grid.Visibility = Visibility.Visible;
-            ((TextBox)NewEmailEdit_TextBox.Template.FindName("MainTextBox", NewEmailEdit_TextBox)).Text = LoginedUser.UserName;
+            ((TextBox)NewUsernameEdit_TextBox.Template.FindName("MainTextBox", NewUsernameEdit_TextBox)).Text = LoginedUser.UserName;
         }
         private void Close_EditUserName_Menu(object sender, MouseButtonEventArgs e)
         {

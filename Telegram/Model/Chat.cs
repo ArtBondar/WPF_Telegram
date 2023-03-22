@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 using Telegram.Model;
 
 namespace Telegram.Models
@@ -8,6 +11,15 @@ namespace Telegram.Models
     {
         public int Id { get; set; }
         public byte[] ChatImage { get; set; }
+        public ImageSource PhotoSource
+        {
+            get
+            {
+                if (ChatImage != null)
+                    return BitmapFrame.Create(new MemoryStream(ChatImage));
+                return null;
+            }
+        }
         public string ChatName { get; set; }
         public string ShortMessage { get; set; }
         public DateTime PublishTime { get; set; }
