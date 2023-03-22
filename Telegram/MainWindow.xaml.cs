@@ -222,6 +222,7 @@ namespace Telegram
         private void Open_EditUserName_ButtonUp(object sender, MouseButtonEventArgs e)
         {
             Menu_EditUserName_Grid.Visibility = Visibility.Visible;
+            ((TextBox)NewEmailEdit_TextBox.Template.FindName("MainTextBox", NewEmailEdit_TextBox)).Text = LoginedUser.UserName;
         }
         private void Close_EditUserName_Menu(object sender, MouseButtonEventArgs e)
         {
@@ -245,6 +246,7 @@ namespace Telegram
         private void Open_EditEmail_ButtonUp(object sender, MouseButtonEventArgs e)
         {
             Menu_EditEmail_Grid.Visibility = Visibility.Visible;
+            ((TextBox)NewEmailEdit_TextBox.Template.FindName("MainTextBox", NewEmailEdit_TextBox)).Text = LoginedUser.Email;
         }
     }
 }

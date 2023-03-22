@@ -23,22 +23,22 @@ namespace Telegram.Model.UI
         }
         public UIChat(Chat chat)
         {
-            Name = chat.User.UserName;
-            LastMessage = Encoding.Default.GetString(chat.ChatMessages.Last().Message.DataMessage.Data);
+            //Name = chat.UserChats.UserName;
+            //LastMessage = Encoding.Default.GetString(chat.ChatMessages.Last().Message.DataMessage.Data);
             Time = DateTime.Now;
-            ImageSource = BitmapFrame.Create(new MemoryStream(chat.User.Photo));
+            //ImageSource = BitmapFrame.Create(new MemoryStream(chat.User.Photo));
         }
         public UIChat(Channel channel)
         {
             Name = channel.ChannelName;
-            LastMessage = Encoding.Default.GetString(channel.ChannelMessages.Last().Message.DataMessage.Data);
+            //LastMessage = Encoding.Default.GetString(channel.ChannelMessages.Last().Message.DataMessage.Data);
             Time = DateTime.Now;
             ImageSource = BitmapFrame.Create(new MemoryStream(channel.ChannelImage));
         }
         public UIChat(Group group)
         {
             Name = group.GroupName;
-            LastMessage = Encoding.Default.GetString(group.GroupMessages.Last().Message.DataMessage.Data);
+            //LastMessage = Encoding.Default.GetString(group.GroupMessages.Last().Message.DataMessage.Data);
             Time = DateTime.Now;
             ImageSource = BitmapFrame.Create(new MemoryStream(group.GroupImage));
         }

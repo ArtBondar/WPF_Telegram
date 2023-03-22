@@ -452,7 +452,7 @@
             <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="350" Width="Auto" Height="150">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="25">
-                        <TextBox Margin="25" Width="180" FontSize="14" Tag="New name" Style="{DynamicResource TextBoxWithPlaceHolderMenu}"  />
+                        <TextBox x:Name="NewUsernameEdit_TextBox" Margin="25" Width="180" FontSize="14" Tag="New name" Style="{DynamicResource TextBoxWithPlaceHolderMenu}"  />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-20, 0, 0">
                         <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_EditUserName_Menu_Click"/>
@@ -469,7 +469,7 @@
             <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="350" Width="Auto" Height="150">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="25">
-                        <TextBox Margin="25" Width="180" FontSize="14" Tag="New email" Style="{DynamicResource TextBoxWithPlaceHolderMenu}"  />
+                        <TextBox x:Name="NewEmailEdit_TextBox" Margin="25" Width="180" FontSize="14" Tag="New email" Style="{DynamicResource TextBoxWithPlaceHolderMenu}"  />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-20, 0, 0">
                         <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_EditEmail_Menu_Click"/>

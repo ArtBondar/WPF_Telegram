@@ -108,6 +108,7 @@
     <Compile Include="Model\UI\UIChat.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Model\UserChannel.cs" />
+    <Compile Include="Model\UserChat.cs" />
     <Compile Include="Model\UserContact.cs" />
     <Compile Include="Model\UserGroup.cs" />
     <Compile Include="Model\UserRole.cs" />
