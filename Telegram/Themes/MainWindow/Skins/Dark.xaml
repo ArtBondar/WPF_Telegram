@@ -148,23 +148,23 @@
                         <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                             <Ellipse Width="46" Height="46">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding ImageSource}"/>
+                                    <ImageBrush ImageSource="{Binding PhotoSource}"/>
                                 </Ellipse.Fill>
                             </Ellipse>
-                            <StackPanel Margin="10,0,0,0" Orientation="Vertical" Width="80">
-                                <Label Content="{Binding UserName}"
-                                       FontSize="14"
+                            <StackPanel Margin="10,0,0,0" Orientation="Vertical" Width="110">
+                                <Label Content="{Binding ChatName}"
+                                       FontSize="12"
                                        Style="{DynamicResource MainColorLable}"/>
-                                <Label Content="{Binding LastMessage}"
+                                <Label Content="{Binding ShortMessage}"
                                        FontSize="12"
                                        Style="{DynamicResource SecondaryColorLable}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="45,0,0,0">
-                                <Label Content="{Binding LastMessageTime}"
-                                       FontSize="12"
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="10,0,0,0">
+                                <Label Content="{Binding ViewTime}"
+                                       FontSize="10"
                                        Style="{DynamicResource SecondaryColorLable}"/>
                                 <Border Style="{DynamicResource SecondaryColorBorder}" CornerRadius="50" Width="25">
-                                    <Label Content="{Binding NewMessageCount}" FontSize="12" Style="{DynamicResource MainColorLable}" />
+                                    <Label Content="10" FontSize="12" Style="{DynamicResource MainColorLable}" />
                                 </Border>
                             </StackPanel>
                         </StackPanel>

@@ -9,7 +9,6 @@ namespace Telegram.Models
         public int Id { get; set; }
         public bool Viewed { get; set; }
         public byte[] Data { get; set; }
-        [DefaultValue(false)]
         public bool DeliveryStatus { get; set; }
         public DateTime SendTime { get; set; }
         public string Text { get; set; }

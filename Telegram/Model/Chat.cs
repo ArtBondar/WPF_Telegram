@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using Telegram.Model;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Telegram.Models
 {
@@ -18,6 +19,16 @@ namespace Telegram.Models
                 if (ChatImage != null)
                     return BitmapFrame.Create(new MemoryStream(ChatImage));
                 return null;
+            }
+        }
+        public string ViewTime
+        {
+            get
+            {
+                if ((DateTime.Now - PublishTime).TotalDays > 1)
+                    return PublishTime.ToString("d");
+                else
+                    return PublishTime.ToString("t");
             }
         }
         public string ChatName { get; set; }

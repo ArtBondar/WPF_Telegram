@@ -23,7 +23,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition />
-            <ColumnDefinition x:Name="RigthInfoMenu" Width="0"/>
+            <ColumnDefinition x:Name="RigthInfoMenu" Width="250"/>
         </Grid.ColumnDefinitions>
         <!-- Left Chats-->
         <Grid Style="{DynamicResource MainColorGrid}" Grid.Row="1">
@@ -49,9 +49,7 @@
                     Margin="8,0,8,0"/>
             </Grid>
             <!-- Chats List -->
-            <ListView ItemsSource="{Binding Contacts}"
-                      SelectedItem="{Binding SelectedContact}"
-                      Style="{DynamicResource ContactsListListView}"
+            <ListView Style="{DynamicResource ContactsListListView}"
                       BorderThickness="0"
                       Grid.Row="1"
                       x:Name="Contact_ListView"
@@ -89,7 +87,7 @@
             </ListView>
         </Grid>
         <!-- Chat -->
-        <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Hidden">
+        <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Visible">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
                 <RowDefinition />
@@ -101,16 +99,15 @@
                     <StackPanel Orientation="Horizontal">
                         <Ellipse Width="40" Height="40">
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="{Binding SelectedContact.ImageSource}"
-                                            RenderOptions.BitmapScalingMode="Fant"/>
+                                <ImageBrush x:Name="ChatPanel_Image" RenderOptions.BitmapScalingMode="Fant"/>
                             </Ellipse.Fill>
                         </Ellipse>
                         <StackPanel Orientation="Vertical" Margin="10,0,0,0">
-                            <Label Content="{Binding SelectedContact.UserName}"
+                            <Label x:Name="ChatPanel_Name"
                            Style="{DynamicResource MainColorLable}"
                            FontWeight="Bold"
                            Margin="5,0,0,0"/>
-                            <Label Content="@LastTime"
+                            <Label x:Name="ChatPanel_SecondInfo"
                            Style="{DynamicResource SecondaryColorLable}"
                            FontSize="10"
                            FontWeight="Bold"
@@ -165,7 +162,7 @@
                 </Grid>
             </Border>
             <!-- Messages -->
-            <ListView x:Name="Chat_ListView" ItemsSource="{Binding SelectedContact.Messages}"
+            <ListView x:Name="Chat_ListView"
                 Style="{DynamicResource ChatListListView}"
                 BorderThickness="0"
                 ItemContainerStyle="{StaticResource ChatItem}"
@@ -216,7 +213,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="120"/>
                 <RowDefinition Height="3"/>
-                <RowDefinition Height="200"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="3"/>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="3"/>
@@ -226,13 +223,12 @@
             <StackPanel Orientation="Horizontal" Margin="10, 25, 0, 0" Grid.Row="0" VerticalAlignment="Top">
                 <Ellipse Width="75" Height="75">
                     <Ellipse.Fill>
-                        <ImageBrush ImageSource="{Binding SelectedContact.ImageSource}"
-                                            RenderOptions.BitmapScalingMode="Fant"/>
+                        <ImageBrush x:Name="RigthInfoImage" RenderOptions.BitmapScalingMode="Fant"/>
                     </Ellipse.Fill>
                 </Ellipse>
-                <StackPanel Orientation="Vertical" Margin="10, 0, 0, 0">
-                    <Label Content="Bunny" Style="{DynamicResource MainColorLable}" FontSize="14"/>
-                    <Label Content="Was online today at 17:28" Style="{DynamicResource SecondaryColorLable}"/>
+                <StackPanel Orientation="Vertical" Margin="10, 0, 0, 0" VerticalAlignment="Center">
+                    <Label x:Name="RigthInfo_Name" Content="Bunny" Style="{DynamicResource MainColorLable}" FontSize="14"/>
+                    <Label x:Name="RigthInfo_Second" Content="Was online today at 17:28" Style="{DynamicResource SecondaryColorLable}"/>
                 </StackPanel>
             </StackPanel>
             <Border Grid.Row="1" Style="{DynamicResource MainColorBorder}"/>
@@ -244,14 +240,14 @@
                 </Grid.ColumnDefinitions>
                 <Path Width="25" Height="25" Data="M24,44C29.5228,44,34.5228,41.7614,38.1421,38.1421C41.7614,34.5228,44,29.5228,44,24C44,18.4772,41.7614,13.4772,38.1421,9.85786C34.5228,6.23858,29.5228,4,24,4C18.4772,4,13.4772,6.23858,9.85786,9.85786C6.23858,13.4772,4,18.4772,4,24C4,29.5228,6.23858,34.5228,9.85786,38.1421C13.4772,41.7614,18.4772,44,24,44Z M24,44C29.5228,44,34.5228,41.7614,38.1421,38.1421C41.7614,34.5228,44,29.5228,44,24C44,18.4772,41.7614,13.4772,38.1421,9.85786C34.5228,6.23858,29.5228,4,24,4C18.4772,4,13.4772,6.23858,9.85786,9.85786C6.23858,13.4772,4,18.4772,4,24C4,29.5228,6.23858,34.5228,9.85786,38.1421C13.4772,41.7614,18.4772,44,24,44Z M24,11C25.3807,11,26.5,12.1193,26.5,13.5C26.5,14.8807,25.3807,16,24,16C22.6193,16,21.5,14.8807,21.5,13.5C21.5,12.1193,22.6193,11,24,11Z M24.5,34V20H23.5H22.5 M21,34H28" Style="{DynamicResource IconStyle}" Margin="5,10,0,0" VerticalAlignment="Top" Stretch="Fill"/>
                 <StackPanel Grid.Column="1" Orientation="Vertical">
-                    <Label Content="+380632017150" Style="{DynamicResource MainColorLable}" FontSize="14"/>
-                    <Label Content="Tel. number" Style="{DynamicResource SecondaryColorLable}" Margin="0, -5, 0, 0"/>
+                    <Label x:Name="Info1_Lable" Content="+380632017150" Style="{DynamicResource MainColorLable}" FontSize="14"/>
+                    <Label x:Name="Info1_NameLable" Content="Tel. number" Style="{DynamicResource SecondaryColorLable}" Margin="0, -5, 0, 0"/>
                     <Border Height="5" Background="Transparent"/>
-                    <Label Content="Hello, my name..." Style="{DynamicResource MainColorLable}" FontSize="14"/>
-                    <Label Content="About" Style="{DynamicResource SecondaryColorLable}" Margin="0, -5, 0, 0"/>
+                    <Label x:Name="Info2_Lable" Content="Hello, my name..." Style="{DynamicResource MainColorLable}" FontSize="14"/>
+                    <Label x:Name="Info2_NameLable" Content="About" Style="{DynamicResource SecondaryColorLable}" Margin="0, -5, 0, 0"/>
                     <Border Height="5" Background="Transparent"/>
-                    <Label Content="@Art" Style="{DynamicResource MainColorLable}" FontSize="14"/>
-                    <Label Content="Nickname" Style="{DynamicResource SecondaryColorLable}" Margin="0, -5, 0, 0"/>
+                    <Label x:Name="Info3_Lable" Content="@Art" Style="{DynamicResource MainColorLable}" FontSize="14"/>
+                    <Label x:Name="Info3_NameLable" Content="Nickname" Style="{DynamicResource SecondaryColorLable}" Margin="0, -5, 0, 0"/>
                 </StackPanel>
             </Grid>
             <Border Grid.Row="3" Style="{DynamicResource MainColorBorder}"/>
