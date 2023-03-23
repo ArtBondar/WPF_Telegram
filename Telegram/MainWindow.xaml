@@ -23,7 +23,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition />
-            <ColumnDefinition x:Name="RigthInfoMenu" Width="250"/>
+            <ColumnDefinition x:Name="RigthInfoMenu" Width="0"/>
         </Grid.ColumnDefinitions>
         <!-- Left Chats-->
         <Grid Style="{DynamicResource MainColorGrid}" Grid.Row="1">
@@ -87,7 +87,7 @@
             </ListView>
         </Grid>
         <!-- Chat -->
-        <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Visible">
+        <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
                 <RowDefinition />

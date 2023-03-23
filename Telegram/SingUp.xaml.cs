@@ -172,8 +172,8 @@ namespace Telegram
             string login = ((TextBox)TextBoxEmailLogin.Template.FindName("MainTextBox", TextBoxEmailLogin)).Text;
             string password = PasswordBoxLogin.Password;
             //
-            login = "vlad1or@i.ua";
-            password = "qwrg25";
+            login = "oleg1665@i.ua";
+            password = "612ss4t2";
             //
             if (String.IsNullOrWhiteSpace(login))
             {

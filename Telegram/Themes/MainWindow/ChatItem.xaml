@@ -8,12 +8,12 @@
                     <StackPanel Orientation="Horizontal">
                         <Ellipse Width="40" Height="40">
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="{Binding ImageSource}" RenderOptions.BitmapScalingMode="Fant"/>
+                                <ImageBrush ImageSource="{Binding Message.User.PhotoSource}" RenderOptions.BitmapScalingMode="Fant"/>
                             </Ellipse.Fill>
                         </Ellipse>
                         <Border CornerRadius="10 10 10 0" Style="{DynamicResource MessageColorBorder}" Margin="10,0,0,0" MinWidth="150">
                             <StackPanel Orientation="Vertical">
-                                <Label Content="{Binding UserName}"
+                                <Label Content="{Binding Message.User.UserName}"
                                     Style="{DynamicResource MainColorLable}"
                                     FontWeight="SemiBold"
                                     VerticalAlignment="Center"
@@ -23,11 +23,11 @@
                                         <ColumnDefinition />
                                         <ColumnDefinition Width="100"/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Content="{Binding Message}"
+                                    <Label Content="{Binding Message.Text}"
                                         Style="{DynamicResource MainColorLable}"
                                         FontSize="14"
                                         VerticalAlignment="Center" Grid.Column="0"/>
-                                    <Label Content="{Binding Time}"
+                                    <Label Content="{Binding Message.SendTime}"
                                         Style="{DynamicResource SecondaryColorLable}"
                                         FontSize="8"
                                         FontWeight="SemiBold"

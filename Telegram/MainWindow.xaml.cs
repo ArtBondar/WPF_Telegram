@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows;
@@ -22,15 +23,6 @@ namespace Telegram
     {
         public string JwtToken { get; set; }
         public User LoginedUser { get; set; }
-        public ImageSource PhotoSource
-        {
-            get
-            {
-                if (LoginedUser.Photo != null)
-                    return BitmapFrame.Create(new MemoryStream(LoginedUser.Photo));
-                return null;
-            }
-        }
         public List<Chat> Chats { get; set; }
         public List<SavedMessage> SavedMessages { get; set; }
         public void RefreshUI()
@@ -39,13 +31,12 @@ namespace Telegram
             {
                 Username_Lable_LeftMenu.Content = LoginedUser.UserName;
                 Email_Lable_LeftMenu.Content = LoginedUser.Email;
-                Photo_ImageBrush_LeftMenu.ImageSource = PhotoSource;
+                Photo_ImageBrush_LeftMenu.ImageSource = LoginedUser.PhotoSource;
                 // Chats
-                Contact_ListView.ItemsSource = Chats;
-                // Messages
+                Contact_ListView.ItemsSource = Chats.OrderByDescending(chat => chat.MuteStatus);
 
                 // Settings
-                SettingsImageBrush.ImageSource = PhotoSource;
+                SettingsImageBrush.ImageSource = LoginedUser.PhotoSource;
                 SettingsEditEmail_Lable.Content = SettingsEmail_Lable.Content = LoginedUser.Email;
                 SettingsEditUserName_Lable.Content = SettingsUserName_Lable.Content = LoginedUser.UserName;
                 SettingsDescription_Lable.Content = LoginedUser.AboutUser;
