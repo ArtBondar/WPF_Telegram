@@ -34,7 +34,6 @@ namespace Telegram
                 Photo_ImageBrush_LeftMenu.ImageSource = LoginedUser.PhotoSource;
                 // Chats
                 Contact_ListView.ItemsSource = Chats.OrderByDescending(chat => chat.MuteStatus);
-
                 // Settings
                 SettingsImageBrush.ImageSource = LoginedUser.PhotoSource;
                 SettingsEditEmail_Lable.Content = SettingsEmail_Lable.Content = LoginedUser.Email;
@@ -136,6 +135,7 @@ namespace Telegram
                 Info2_Lable.Content = Select.ChatName;
                 Info3_NameLable.Content = "";
                 Info3_Lable.Content = "";
+                RigthInfo_Second.Content = $"{Select.MembersCount} members";
             }
             if (Select.Type == "Channel")
             {
@@ -154,9 +154,11 @@ namespace Telegram
                 Info2_Lable.Content = "";
                 Info3_NameLable.Content = "";
                 Info3_Lable.Content = "";
+                RigthInfo_Second.Content = $"{Select.MembersCount} members";
             }
             if (Select.Type == "Private")
             {
+                RigthInfo_Second.Content = "d";
                 ChatPanel_SecondInfo.Content = Select.PublishTime;
                 Info1_NameLable.Content = "About";
                 Info1_Lable.Content = Select.ChatInfo;
@@ -180,7 +182,6 @@ namespace Telegram
             // RigthInfo
             RigthInfoImage.ImageSource = Select.PhotoSource;
             RigthInfo_Name.Content = Select.ChatName;
-            RigthInfo_Second.Content = $"{Select.MembersCount} members";
             ToogleButton_Notification.IsChecked = !Select.MuteStatus;
         }
         private void Close_Settings_Menu(object sender, MouseButtonEventArgs e)

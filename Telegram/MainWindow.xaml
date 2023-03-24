@@ -23,7 +23,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="250"/>
             <ColumnDefinition />
-            <ColumnDefinition x:Name="RigthInfoMenu" Width="0"/>
+            <ColumnDefinition x:Name="RigthInfoMenu" Width="250"/>
         </Grid.ColumnDefinitions>
         <!-- Left Chats-->
         <Grid Style="{DynamicResource MainColorGrid}" Grid.Row="1">

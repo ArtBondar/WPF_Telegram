@@ -20,8 +20,6 @@ namespace Telegram.ViewModel
     public class MainViewModel : BaseViewModel
     {
         // public User LoginedUser { get; set; }
-        public ObservableCollection<Group> Groups { get; set; }
-        public ObservableCollection<Channel> Channels { get; set; }
         public ObservableCollection<Chat> Chats { get; set; }
         public ObservableCollection<SavedMessage> SavedMessages { get; set; }
         //

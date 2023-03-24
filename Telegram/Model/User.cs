@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -14,6 +15,7 @@ namespace Telegram.Models
         public string Password { get; set; }
         public string UserName { get; set; }
         public string AboutUser { get; set; }
+        public DateTime? LastOnline { get; set; }
         public byte[] Photo { get; set; }
         public ImageSource PhotoSource
         {
