@@ -92,7 +92,6 @@
     </ApplicationDefinition>
     <Compile Include="Core\ObservableObject.cs" />
     <Compile Include="Core\ReplayCommand.cs" />
-    <Compile Include="Model\BugReport.cs" />
     <Compile Include="Model\Chat.cs" />
     <Compile Include="Model\ChatMessage.cs" />
     <Compile Include="Model\Member.cs" />
@@ -105,8 +104,6 @@
     <Compile Include="Model\UserContact.cs" />
     <Compile Include="Model\UserRole.cs" />
     <Compile Include="Model\UserSetting.cs" />
-    <Compile Include="MVVM\ViewModel\BaseViewModel.cs" />
-    <Compile Include="MVVM\ViewModel\MainViewModel.cs" />
     <Compile Include="SingUp.xaml.cs">
       <DependentUpon>SingUp.xaml</DependentUpon>
     </Compile>
@@ -192,8 +189,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MVVM\Models\ContactCard.cs" />
-    <Compile Include="MVVM\Models\MessageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -11,7 +11,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
 using Telegram.Models;
-using Telegram.ViewModel;
 
 namespace Telegram
 {
@@ -198,7 +197,7 @@ namespace Telegram
                 MessageBox.Show("Server error...");
                 return;
             }
-            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), groups = new List<Models.Group>(), channels = new List<Models.Channel>(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
                 // Open Main Form
@@ -254,7 +253,7 @@ namespace Telegram
             var content = new StringContent(data, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://localhost:7195/api/Users/register", content);
             var responseString = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), groups = new List<Models.Group>(), channels = new List<Models.Channel>(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
                 // Open Main Form

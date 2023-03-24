@@ -2,7 +2,6 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -12,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 using Telegram.Models;
 
 namespace Telegram
@@ -27,23 +27,58 @@ namespace Telegram
         public List<SavedMessage> SavedMessages { get; set; }
         public void RefreshUI()
         {
-            if (LoginedUser != null)
+            Dispatcher.Invoke(() =>
             {
-                Username_Lable_LeftMenu.Content = LoginedUser.UserName;
-                Email_Lable_LeftMenu.Content = LoginedUser.Email;
-                Photo_ImageBrush_LeftMenu.ImageSource = LoginedUser.PhotoSource;
-                // Chats
-                Contact_ListView.ItemsSource = Chats.OrderByDescending(chat => chat.MuteStatus);
-                // Settings
-                SettingsImageBrush.ImageSource = LoginedUser.PhotoSource;
-                SettingsEditEmail_Lable.Content = SettingsEmail_Lable.Content = LoginedUser.Email;
-                SettingsEditUserName_Lable.Content = SettingsUserName_Lable.Content = LoginedUser.UserName;
-                SettingsDescription_Lable.Content = LoginedUser.AboutUser;
+                if (LoginedUser != null)
+                {
+                    Username_Lable_LeftMenu.Content = LoginedUser.UserName.ToString();
+                    Email_Lable_LeftMenu.Content = LoginedUser.Email;
+                    Photo_ImageBrush_LeftMenu.ImageSource = LoginedUser.PhotoSource;
+                    // Chats
+                    Contact_ListView.ItemsSource = Chats.OrderByDescending(chat => chat.MuteStatus);
+                    // Settings
+                    SettingsImageBrush.ImageSource = LoginedUser.PhotoSource;
+                    SettingsEditEmail_Lable.Content = SettingsEmail_Lable.Content = LoginedUser.Email;
+                    SettingsEditUserName_Lable.Content = SettingsUserName_Lable.Content = LoginedUser.UserName;
+                    SettingsDescription_Lable.Content = LoginedUser.AboutUser;
+                }
+            });
+        }
+        public async void RefreshDate()
+        {
+            if (JwtToken != null && LoginedUser.UserName != null)
+            {
+                var client = new HttpClient();
+                var data = JsonConvert.SerializeObject(new { token = JwtToken, login = LoginedUser.UserName });
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync("https://localhost:7195/api/Users/updateinfo", content);
+                var responseString = await response.Content.ReadAsStringAsync();
+                if (responseString == null)
+                {
+                    MessageBox.Show("Server error...");
+                    return;
+                }
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { user = new Models.User(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
+                if(result.user != null)
+                {
+                    LoginedUser = result.user;
+                    Chats = result.chats;
+                    SavedMessages = result.savedMessages;
+                }
             }
         }
         public MainWindow()
         {
             InitializeComponent();
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(3);
+            timer.Tick += OnTimerElapsed;
+            timer.Start();
+        }
+        private void OnTimerElapsed(object sender, EventArgs e)
+        {
+            RefreshDate();
+            RefreshUI();
         }
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -116,6 +151,7 @@ namespace Telegram
         {
             ChatGrid.Visibility = Visibility.Visible;
             Chat Select = (sender as ListView).SelectedItem as Chat;
+            if (Select == null) return;
             ChatPanel_Image.ImageSource = Select.PhotoSource;
             ChatPanel_Name.Content = Select.ChatName;
             if (Select.Type == "Group")
