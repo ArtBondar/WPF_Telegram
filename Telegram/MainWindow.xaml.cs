@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -71,7 +72,7 @@ namespace Telegram
         {
             InitializeComponent();
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(3);
+            timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += OnTimerElapsed;
             timer.Start();
         }
@@ -236,6 +237,11 @@ namespace Telegram
         }
         private void Button_To_Down_Messages(object sender, RoutedEventArgs e)
         {
+            if (Chat_ListView.Items.Count == 0)
+            {
+                Button_To_Down.Visibility = Visibility.Hidden;
+                return;
+            }
             var lastItem = Chat_ListView.Items[Chat_ListView.Items.Count - 1];
             Chat_ListView.ScrollIntoView(lastItem);
             Button_To_Down.Visibility = Visibility.Hidden;
@@ -335,6 +341,133 @@ namespace Telegram
         {
             Menu_EditEmail_Grid.Visibility = Visibility.Visible;
             ((TextBox)NewEmailEdit_TextBox.Template.FindName("MainTextBox", NewEmailEdit_TextBox)).Text = LoginedUser.Email;
+        }
+        private async void Edit_NewUsername_Click(object sender, RoutedEventArgs e)
+        {
+            string newLogin = ((TextBox)NewUsernameEdit_TextBox.Template.FindName("MainTextBox", NewUsernameEdit_TextBox)).Text;
+            if (!String.IsNullOrWhiteSpace(newLogin))
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var data = JsonConvert.SerializeObject(new { email = LoginedUser.Email, newLogin });
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/setlogin"), Content = content });
+                var responseString = await response.Content.ReadAsStringAsync();
+                if (responseString == null)
+                {
+                    MessageBox.Show("Server error...");
+                    return;
+                }
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", result = "", user = new User() });
+                if (result.error == "Username is already used!")
+                {
+                    MessageBox.Show("Username is used");
+                    return;
+                }
+                if(result.result == "success")
+                {
+                    LoginedUser = result.user;
+                    Menu_EditUserName_Grid.Visibility = Visibility.Hidden;
+                }
+            }
+        }
+        private async void Edit_NewEmail_Click(object sender, RoutedEventArgs e)
+        {
+            string newEmail = ((TextBox)NewEmailEdit_TextBox.Template.FindName("MainTextBox", NewEmailEdit_TextBox)).Text;
+            if (!String.IsNullOrWhiteSpace(newEmail))
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var data = JsonConvert.SerializeObject(new { email = LoginedUser.Email, newEmail });
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/setemail"), Content = content });
+                var responseString = await response.Content.ReadAsStringAsync();
+                if (responseString == null)
+                {
+                    MessageBox.Show("Server error...");
+                    return;
+                }
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", result = "", user = new User() });
+                if (result.error == "Email is already used!")
+                {
+                    MessageBox.Show("Email is used");
+                    return;
+                }
+                if (result.result == "success")
+                {
+                    LoginedUser = result.user;
+                    Menu_EditEmail_Grid.Visibility = Visibility.Hidden;
+                }
+            }
+        }
+        private void OpenPointMenuSettings_Click(object sender, RoutedEventArgs e)
+        {
+            ThreePointsSettings.IsSubmenuOpen = true;
+        }
+        private void Logout_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            JwtToken = null;
+            LoginedUser = null;
+            Chats = null;
+            SavedMessages = null;
+            SingUp mainForm = new SingUp();
+            mainForm.Show();
+            this.Close();
+        }
+        private void SettingsPassword1_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            PlaceHolderPasswordSettings1.Visibility = (sender as PasswordBox).Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
+        }
+        private void SettingsPassword2_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            PlaceHolderPasswordSettings2.Visibility = (sender as PasswordBox).Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
+        }
+        private void Close_EditPassword_Menu(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source == Menu_EditPassword_Grid)
+                Menu_EditPassword_Grid.Visibility = Visibility.Hidden;
+        }
+        private void Close_EditPassword_Click(object sender, RoutedEventArgs e)
+        {
+            PasswordBoxSettings1.Password = "";
+            PasswordBoxSettings2.Password = "";
+            Menu_EditPassword_Grid.Visibility = Visibility.Hidden;
+        }
+        private async void Edit_EditPassword_Click(object sender, RoutedEventArgs e)
+        {
+            if (PasswordBoxSettings1.Password == PasswordBoxSettings2.Password && PasswordBoxSettings1.Password.Length > 6)
+            {
+                string newPassword = PasswordBoxSettings1.Password;
+                if (!String.IsNullOrWhiteSpace(newPassword))
+                {
+                    var client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                    var data = JsonConvert.SerializeObject(new { email = LoginedUser.Email, newPassword });
+                    var content = new StringContent(data, Encoding.UTF8, "application/json");
+                    var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/setpassword"), Content = content });
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    if (responseString == null)
+                    {
+                        MessageBox.Show("Server error...");
+                        return;
+                    }
+                    var result = JsonConvert.DeserializeAnonymousType(responseString, new { result = "", user = new User() });
+                    if (result.result == "success")
+                    {
+                        LoginedUser = result.user;
+                        Menu_EditEmail_Grid.Visibility = Visibility.Hidden;
+                    }
+                }
+            }
+            else
+            {
+                PasswordBorder1.BorderBrush = Brushes.Red;
+                PasswordBorder2.BorderBrush = Brushes.Red;
+            }
+        }
+        private void Open_EditPassword_ButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Menu_EditPassword_Grid.Visibility = Visibility.Visible;
         }
     }
 }

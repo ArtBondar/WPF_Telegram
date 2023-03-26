@@ -170,20 +170,18 @@ namespace Telegram
             Login_Button.Content = "Wait...";
             string login = ((TextBox)TextBoxEmailLogin.Template.FindName("MainTextBox", TextBoxEmailLogin)).Text;
             string password = PasswordBoxLogin.Password;
-            //
-            login = "oleg1665@i.ua";
-            password = "612ss4t2";
-            //
             if (String.IsNullOrWhiteSpace(login))
             {
                 ((Border)TextBoxEmailLogin.Template.FindName("Border", TextBoxEmailLogin)).BorderBrush = Brushes.Red;
                 Login_Button.IsEnabled = true;
+                Login_Button.Content = "Login";
                 return;
             }
             if (String.IsNullOrWhiteSpace(password))
             {
                 PasswordLoginBorder.BorderBrush = Brushes.Red;
                 Login_Button.IsEnabled = true;
+                Login_Button.Content = "Login";
                 return;
             }
             var client = new HttpClient();
@@ -215,9 +213,9 @@ namespace Telegram
                 ((TextBox)TextBoxEmailLogin.Template.FindName("MainTextBox", TextBoxEmailLogin)).Foreground = Brushes.Red;
                 PasswordBoxLogin.Foreground = Brushes.Red;
                 TextBoxPasswordLogin.Foreground = Brushes.Red;
+                Login_Button.Content = "Login";
                 Login_Button.IsEnabled = true;
             }
-            Login_Button.Content = "Login";
         }
 
         private async void Registration_Button_Click(object sender, RoutedEventArgs e)

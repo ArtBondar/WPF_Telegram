@@ -17,9 +17,9 @@
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="265"/>
             <ColumnDefinition />
-            <ColumnDefinition x:Name="RigthInfoMenu" Width="250"/>
+            <ColumnDefinition x:Name="RigthInfoMenu" Width="0"/>
         </Grid.ColumnDefinitions>
         <!-- Left Chats-->
         <Grid Style="{DynamicResource MainColorGrid}" Grid.Row="1">
@@ -42,7 +42,7 @@
                     VerticalAlignment="Center"
                     FontWeight="Normal"
                     Height="30"
-                    Margin="8,0,8,0"/>
+                    Margin="8,0,10,0"/>
             </Grid>
             <!-- Chats List -->
             <ListView Style="{DynamicResource ContactsListListView}"
@@ -133,7 +133,7 @@
                             <MenuItem x:Name="ThreePointMenu" Style="{StaticResource MenuItemThreePoints}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Width="30">
                                 <MenuItem.Header>
                                     <Button VerticalAlignment="Center" HorizontalAlignment="Center" Click="ThreePointMenuOpen_Click" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconStyle}">
-                                        <Path Margin="7,0,7,0" Data="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" Style="{DynamicResource IconStyleFill}"/>
+                                        <Path Margin="7.5,0,7.5,0" Data="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" Style="{DynamicResource IconStyleFill}"/>
                                     </Button>
                                 </MenuItem.Header>
                                 <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Margin="-5, 0, -5, 0" Cursor="Hand">
@@ -329,25 +329,17 @@
                     <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                         <Label Content="Settings" Style="{DynamicResource MainColorLable}" FontSize="24" Margin="25,0,0,0"/>
                         <Menu Background="Transparent" Height="20" Width="20" Margin="200,0,0,0">
-                            <MenuItem Style="{StaticResource MenuItemThreePoints}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Width="30">
+                            <MenuItem x:Name="ThreePointsSettings" Style="{StaticResource MenuItemThreePoints}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Width="30">
                                 <MenuItem.Header>
-                                    <Button VerticalAlignment="Center" HorizontalAlignment="Center" Click="ThreePointMenuOpen_Click" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconStyle}">
-                                        <Path Margin="7,0,7,0" Data="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" Style="{DynamicResource IconStyleFill}"/>
+                                    <Button Click="OpenPointMenuSettings_Click" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconStyle}">
+                                        <Path Margin="7.5,0,7.5,0" Data="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" Style="{DynamicResource IconStyleFill}"/>
                                     </Button>
                                 </MenuItem.Header>
-                                <MenuItem Width="230" Style="{StaticResource MenuItemThreePoints}" Margin="-5, 0, -5, 0" Cursor="Hand">
+                                <MenuItem Width="150" Style="{StaticResource MenuItemThreePoints}" Margin="-5, 0, -5, 0" Cursor="Hand" PreviewMouseLeftButtonUp="Logout_MouseLeftButtonUp">
                                     <MenuItem.Header>
-                                        <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}">
-                                            <Path Width="25" Height="25" Data="M24,44C29.5228,44,34.5228,41.7614,38.1421,38.1421C41.7614,34.5228,44,29.5228,44,24C44,18.4772,41.7614,13.4772,38.1421,9.85786C34.5228,6.23858,29.5228,4,24,4C18.4772,4,13.4772,6.23858,9.85786,9.85786C6.23858,13.4772,4,18.4772,4,24C4,29.5228,6.23858,34.5228,9.85786,38.1421C13.4772,41.7614,18.4772,44,24,44Z M24,44C29.5228,44,34.5228,41.7614,38.1421,38.1421C41.7614,34.5228,44,29.5228,44,24C44,18.4772,41.7614,13.4772,38.1421,9.85786C34.5228,6.23858,29.5228,4,24,4C18.4772,4,13.4772,6.23858,9.85786,9.85786C6.23858,13.4772,4,18.4772,4,24C4,29.5228,6.23858,34.5228,9.85786,38.1421C13.4772,41.7614,18.4772,44,24,44Z M24,11C25.3807,11,26.5,12.1193,26.5,13.5C26.5,14.8807,25.3807,16,24,16C22.6193,16,21.5,14.8807,21.5,13.5C21.5,12.1193,22.6193,11,24,11Z M24.5,34V20H23.5H22.5 M21,34H28" Style="{DynamicResource IconStyle}"/>
-                                            <Label Content="Info" FontSize="14" Style="{DynamicResource MainColorLable}" Margin="3"/>
-                                        </StackPanel>
-                                    </MenuItem.Header>
-                                </MenuItem>
-                                <MenuItem Width="230" Style="{StaticResource MenuItemThreePoints}" Margin="-5, 0, -5, 0" Cursor="Hand">
-                                    <MenuItem.Header>
-                                        <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}">
+                                        <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}" >
                                             <Path Data="M8 11L40 11 M18 5L30 5 M12 17H36V40C36 41.6569 34.6569 43 33 43H15C13.3431 43 12 41.6569 12 40V17Z" Style="{DynamicResource IconStyleFillRed}" Width="20" Height="25"/>
-                                            <Label Content="Exit" FontSize="14" Style="{DynamicResource LableStyleRed}" Margin="3"/>
+                                            <Label Content="Logout" FontSize="14" Style="{DynamicResource LableStyleRed}" Margin="3"/>
                                         </StackPanel>
                                     </MenuItem.Header>
                                 </MenuItem>
@@ -371,7 +363,7 @@
 
                     </StackPanel>
                     <Border BorderBrush="White" BorderThickness="0,0.5,0,0.5">
-                        <StackPanel Orientation="Horizontal" Height="60" HorizontalAlignment="Center">
+                        <StackPanel Orientation="Horizontal" Height="60" HorizontalAlignment="Center" Cursor="Hand">
                             <Label x:Name="SettingsDescription_Lable" Content="Description..." Style="{DynamicResource MainColorLable}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
@@ -384,6 +376,9 @@
                         <Label x:Name="SettingsEditEmail_Lable" FontSize="14" Width="180" Margin="10,0,0,0" VerticalAlignment="Center" Content="Email" Style="{DynamicResource SecondaryColorLable}"/>
                         <Label HorizontalContentAlignment="Right" FontSize="14" VerticalAlignment="Center" Content="Email" Width="75" Margin="90,0,0,0" Style="{DynamicResource MainColorLable}" />
                         <Path Data="" Style="{DynamicResource IconStyle}" Height="25" Width="25" Margin="8,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Cursor="Hand" Height="45" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{DynamicResource StackPanelWithHover}" PreviewMouseLeftButtonUp="Open_EditPassword_ButtonUp">
+                        <Label FontSize="14" VerticalAlignment="Center" Content="Edit password" Style="{DynamicResource SecondaryColorLable}"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -448,7 +443,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-20, 0, 0">
                         <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_EditUserName_Menu_Click"/>
-                        <Button Content="Edit" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}"/>
+                        <Button Content="Edit" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Edit_NewUsername_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -461,11 +456,51 @@
             <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="350" Width="Auto" Height="150">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="25">
-                        <TextBox x:Name="NewEmailEdit_TextBox" Margin="25" Width="180" FontSize="14" Tag="New email" Style="{DynamicResource TextBoxWithPlaceHolderMenu}"  />
+                        <TextBox x:Name="NewEmailEdit_TextBox" Margin="25" Width="180" FontSize="14" Tag="New email" Style="{DynamicResource TextBoxWithPlaceHolderMenu}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-20, 0, 0">
                         <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_EditEmail_Menu_Click"/>
-                        <Button Content="Edit" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}"/>
+                        <Button Content="Edit" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Edit_NewEmail_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <!-- Edit password -->
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_EditPassword_Grid" PreviewMouseLeftButtonUp="Close_EditPassword_Menu">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity="0.3"/>
+            </Grid.Background>
+            <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="350" Width="Auto" Height="200">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Vertical" Margin="25">
+                        <Border x:Name="PasswordBorder1" BorderThickness="0,0,0,1" Style="{DynamicResource BorederForPasswordBoxSettings}" Margin="20" Width="180">
+                            <Grid>
+                                <PasswordBox VerticalAlignment="Stretch" VerticalContentAlignment="Center"
+                                HorizontalAlignment="Stretch"
+                                x:Name="PasswordBoxSettings1"
+                                Style="{DynamicResource PasswordBoxSettings}"
+                                PasswordChanged="SettingsPassword1_PasswordChanged"/>
+                                <TextBlock x:Name="PlaceHolderPasswordSettings1"
+                                Text="New password"
+                                Style="{DynamicResource TextBoxSettings}"/>
+                            </Grid>
+                        </Border>
+                        <Border x:Name="PasswordBorder2" BorderThickness="0,0,0,1" Style="{DynamicResource BorederForPasswordBoxSettings}" Margin="20" Width="180">
+                            <Grid>
+                                <PasswordBox VerticalAlignment="Stretch" VerticalContentAlignment="Center"
+                                HorizontalAlignment="Stretch"
+                                x:Name="PasswordBoxSettings2"
+                                Style="{DynamicResource PasswordBoxSettings}"
+                                PasswordChanged="SettingsPassword2_PasswordChanged"/>
+                                <TextBlock x:Name="PlaceHolderPasswordSettings2"
+                                Text="Again password"
+                                Style="{DynamicResource TextBoxSettings}"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-20, 0, 0">
+                        <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_EditPassword_Click"/>
+                        <Button Content="Edit" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Edit_EditPassword_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
