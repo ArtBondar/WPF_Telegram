@@ -195,7 +195,7 @@ namespace Telegram
                 MessageBox.Show("Server error...");
                 return;
             }
-            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), chats = new List<Models.Chat>(), contacts = new List<UserContact>() });
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
                 // Open Main Form
@@ -203,7 +203,7 @@ namespace Telegram
                 mainForm.JwtToken = result.jwtToken;
                 mainForm.LoginedUser = result.user;
                 mainForm.Chats = result.chats;
-                mainForm.SavedMessages = result.savedMessages;
+                mainForm.UserContacts = result.contacts;
                 mainForm.RefreshUI();
                 mainForm.Show();
                 this.Close();
@@ -251,7 +251,7 @@ namespace Telegram
             var content = new StringContent(data, Encoding.UTF8, "application/json");
             var response = await client.PostAsync("https://localhost:7195/api/Users/register", content);
             var responseString = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), chats = new List<Models.Chat>(), contacts = new List<UserContact>() });
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
                 // Open Main Form
@@ -259,7 +259,7 @@ namespace Telegram
                 mainForm.JwtToken = result.jwtToken;
                 mainForm.LoginedUser = result.user;
                 mainForm.Chats = result.chats;
-                mainForm.SavedMessages = result.savedMessages;
+                mainForm.UserContacts = result.contacts;
                 mainForm.RefreshUI();
                 mainForm.Show();
                 this.Close();

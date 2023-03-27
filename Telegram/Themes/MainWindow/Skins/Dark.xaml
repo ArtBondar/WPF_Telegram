@@ -271,6 +271,10 @@
     <Style x:Key="BorederForPasswordBoxSettings" TargetType="Border">
         <Setter Property="BorderBrush" Value="#584CA3"/>
     </Style>
+    <!-- Contacts in Settings -->
+    <Style x:Key="ListBoxContacts" TargetType="ListBox">
+        <Setter Property="Background" Value="#584CA3" />
+    </Style>
     <!--ScrollBars-->
     <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />

@@ -24,6 +24,7 @@ namespace Telegram
     {
         public string JwtToken { get; set; }
         public User LoginedUser { get; set; }
+        public List<UserContact> UserContacts { get; set; }
         public List<Chat> Chats { get; set; }
         public List<SavedMessage> SavedMessages { get; set; }
         public void RefreshUI()
@@ -42,6 +43,8 @@ namespace Telegram
                     SettingsEditEmail_Lable.Content = SettingsEmail_Lable.Content = LoginedUser.Email;
                     SettingsEditUserName_Lable.Content = SettingsUserName_Lable.Content = LoginedUser.UserName;
                     SettingsDescription_Lable.Content = LoginedUser.AboutUser;
+                    // Create Group and Channel
+                    ContactsList.ItemsSource = UserContacts;
                 }
             });
         }
@@ -432,7 +435,7 @@ namespace Telegram
         }
         private async void Edit_EditPassword_Click(object sender, RoutedEventArgs e)
         {
-            if (PasswordBoxSettings1.Password == PasswordBoxSettings2.Password && PasswordBoxSettings1.Password.Length > 6)
+            if (PasswordBoxSettings1.Password == PasswordBoxSettings2.Password)
             {
                 string newPassword = PasswordBoxSettings1.Password;
                 if (!String.IsNullOrWhiteSpace(newPassword))
@@ -452,7 +455,7 @@ namespace Telegram
                     if (result.result == "success")
                     {
                         LoginedUser = result.user;
-                        Menu_EditEmail_Grid.Visibility = Visibility.Hidden;
+                        Menu_EditPassword_Grid.Visibility = Visibility.Hidden;
                     }
                 }
             }
@@ -465,6 +468,81 @@ namespace Telegram
         private void Open_EditPassword_ButtonUp(object sender, MouseButtonEventArgs e)
         {
             Menu_EditPassword_Grid.Visibility = Visibility.Visible;
+        }
+        private void EditImageCreateGroup(object sender, MouseButtonEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image Files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg|All files (*.*)|*.*",
+                RestoreDirectory = true
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string imagePath = openFileDialog.FileName;
+
+                BitmapImage bitmap = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
+
+                byte[] bytes;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    PngBitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                    encoder.Save(ms);
+                    bytes = ms.ToArray();
+                }
+                ImageSource image = null;
+                try
+                {
+                    image = BitmapFrame.Create(new MemoryStream(bytes));
+                }
+                catch (Exception ex) { MessageBox.Show($"Error: {ex.Message}"); }
+                Ellipse_CreateGroup.Fill = new ImageBrush(image);
+            }
+        }
+        private void EditImageCreateChannel(object sender, MouseButtonEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image Files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg|All files (*.*)|*.*",
+                RestoreDirectory = true
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string imagePath = openFileDialog.FileName;
+
+                BitmapImage bitmap = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
+
+                byte[] bytes;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    PngBitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                    encoder.Save(ms);
+                    bytes = ms.ToArray();
+                }
+                ImageSource image = null;
+                try
+                {
+                    image = BitmapFrame.Create(new MemoryStream(bytes));
+                }
+                catch (Exception ex) { MessageBox.Show($"Error: {ex.Message}"); }
+                Ellipse_CreateChannel.Fill = new ImageBrush(image);
+            }
+        }
+        private void Close_Contacts_Menu(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source == Contacts_Create_Grid)
+            {
+                Contacts_Create_Grid.Visibility = Visibility.Hidden;
+                ContactsList.SelectedItems.Clear();
+            }
+        }
+        private void Close_ContactsCreate_Click(object sender, RoutedEventArgs e)
+        {
+            Contacts_Create_Grid.Visibility = Visibility.Hidden;
+            ContactsList.SelectedItems.Clear();
         }
     }
 }

@@ -19,7 +19,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="265"/>
             <ColumnDefinition />
-            <ColumnDefinition x:Name="RigthInfoMenu" Width="250"/>
+            <ColumnDefinition x:Name="RigthInfoMenu" Width="0"/>
         </Grid.ColumnDefinitions>
         <!-- Left Chats-->
         <Grid Style="{DynamicResource MainColorGrid}" Grid.Row="1">
@@ -384,17 +384,14 @@
             </Border>
         </Grid>
         <!-- Create group -->
-        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_CreateGroup_Grid" PreviewMouseLeftButtonUp="Close_CreateGroup_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_CreateGroup_Grid" PreviewMouseLeftButtonUp="Close_Contacts_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
             <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="350" Width="Auto" Height="150">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="25">
-                        <Ellipse Width="75" Height="75">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="/Icons/bookmark-one.png"/>
-                            </Ellipse.Fill>
+                        <Ellipse x:Name="Ellipse_CreateGroup" Width="75" Height="75" StrokeThickness="1.5" Margin="5" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="EditImageCreateGroup" Fill="Black">
                         </Ellipse>
                         <TextBox Margin="25" Width="180" FontSize="14"
                                  Style="{DynamicResource TextBoxWithPlaceHolderMenu}" Tag="Group name"/>
@@ -414,15 +411,12 @@
             <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="450" Width="Auto" Height="250">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="25">
-                        <Ellipse Width="75" Height="75">
-                            <Ellipse.Fill>
-                                <ImageBrush ImageSource="/Icons/bookmark-one.png"/>
-                            </Ellipse.Fill>
+                        <Ellipse x:Name="Ellipse_CreateChannel" Width="75" Height="75" StrokeThickness="1.5" Margin="5" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="EditImageCreateChannel" Fill="Black">
                         </Ellipse>
-                        <TextBox Margin="50, 50, 0, 0" Width="250" FontSize="14"
-                                 Style="{DynamicResource TextBoxWithPlaceHolderMenu}" Tag="Channel name"/>
+                        <TextBox Margin="35, 0, 0, 0" Width="250" FontSize="16"
+                                 Style="{DynamicResource TextBoxWithPlaceHolderMenu}" Tag="Channel name" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <TextBox Margin="25" Width="350" FontSize="14" Tag="Description..."
+                    <TextBox Margin="20" Width="350" FontSize="16" Tag="Description..."
                                  Style="{DynamicResource TextBoxWithPlaceHolderMenu}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_CreateChanel_Menu_Click"/>
@@ -501,6 +495,28 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-20, 0, 0">
                         <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_EditPassword_Click"/>
                         <Button Content="Edit" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Edit_EditPassword_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <!-- Add contacts for create group -->
+        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Contacts_Create_Grid" PreviewMouseLeftButtonUp="Close_Contacts_Menu">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity="0.3"/>
+            </Grid.Background>
+            <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="350" Width="Auto" Height="515">
+                <StackPanel Orientation="Vertical">
+                    <Label Content="Add new members" Style="{DynamicResource MainLableText}" Margin="8,10,0,0"/>
+                    <TextBox Tag="Search" Width="Auto" Style="{DynamicResource SearchContactsBox}" Margin="0,10,0,0" Height="30"/>
+                    <ListBox SelectionMode="Multiple" Height="350"
+                             x:Name="ContactsList"
+                             Style="{DynamicResource ListBoxContacts}"
+                             Margin="0,10,0,0" 
+                             ItemContainerStyle="{DynamicResource ContactItemsStyle}">
+                    </ListBox>
+                    <StackPanel Orientation="Horizontal" Margin="0,25,0,0" HorizontalAlignment="Right">
+                        <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_ContactsCreate_Click"/>
+                        <Button Content="Next" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
