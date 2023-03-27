@@ -155,6 +155,16 @@ namespace Telegram
             if (Select == null) return;
             ChatPanel_Image.ImageSource = Select.PhotoSource;
             ChatPanel_Name.Content = Select.ChatName;
+            //
+            RigthInfo_Second.Content = "";
+            ChatPanel_SecondInfo.Content = "";
+            Info1_NameLable.Content = "";
+            Info1_Lable.Content = "";
+            Info2_NameLable.Content = "";
+            Info2_Lable.Content = "";
+            Info3_NameLable.Content = "";
+            Info3_Lable.Content = "";
+            //
             if (Select.Type == "Group")
             {
                 ChatPanel_SecondInfo.Content = $"{Select.MembersCount} members";
@@ -170,8 +180,6 @@ namespace Telegram
                 }
                 Info2_NameLable.Content = "Username";
                 Info2_Lable.Content = Select.ChatName;
-                Info3_NameLable.Content = "";
-                Info3_Lable.Content = "";
                 RigthInfo_Second.Content = $"{Select.MembersCount} members";
             }
             if (Select.Type == "Channel")
@@ -187,32 +195,21 @@ namespace Telegram
                     Info1_NameLable.Content = "";
                     Info1_Lable.Content = "";
                 }
-                Info2_NameLable.Content = "";
-                Info2_Lable.Content = "";
-                Info3_NameLable.Content = "";
-                Info3_Lable.Content = "";
                 RigthInfo_Second.Content = $"{Select.MembersCount} members";
             }
             if (Select.Type == "Private")
             {
-                RigthInfo_Second.Content = "d";
+                RigthInfo_Name.Content = Select.ChatName;
+                RigthInfo_Second.Content = "?";
                 ChatPanel_SecondInfo.Content = Select.PublishTime;
                 Info1_NameLable.Content = "About";
                 Info1_Lable.Content = Select.ChatInfo;
                 Info2_NameLable.Content = "Username";
                 Info2_Lable.Content = Select.ChatName;
-                Info3_NameLable.Content = "";
-                Info3_Lable.Content = "";
             }
             if (Select.Type == "Favorite")
             {
-                Info1_NameLable.Content = "";
-                Info1_Lable.Content = "";
-                ChatPanel_SecondInfo.Content = "";
-                Info2_NameLable.Content = "";
-                Info2_Lable.Content = "";
-                Info3_NameLable.Content = "";
-                Info3_Lable.Content = "";
+                // Favorite
             }
             // Messages
             Chat_ListView.ItemsSource = Select.ChatMessages;
