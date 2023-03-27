@@ -21,6 +21,24 @@ namespace Telegram.Models
                 return null;
             }
         }
+        public bool Tag
+        {
+            get
+            {
+                if (ChatImage != null)
+                    return true;
+                return false;
+            }
+        }
+        public string PhotoText
+        {
+            get
+            {
+                if(ChatName.Length > 2)
+                    return ChatName.Substring(0, 2).ToUpper();
+                return null;
+            }
+        }
         public string ViewTime
         {
             get

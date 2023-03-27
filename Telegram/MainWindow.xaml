@@ -19,7 +19,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="265"/>
             <ColumnDefinition />
-            <ColumnDefinition x:Name="RigthInfoMenu" Width="0"/>
+            <ColumnDefinition x:Name="RigthInfoMenu" Width="250"/>
         </Grid.ColumnDefinitions>
         <!-- Left Chats-->
         <Grid Style="{DynamicResource MainColorGrid}" Grid.Row="1">
@@ -93,11 +93,10 @@
             <Border Style="{DynamicResource MainColorBorder}" BorderThickness="0,0,0,2">
                 <Grid HorizontalAlignment="Stretch" Margin="8">
                     <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="40" Height="40">
-                            <Ellipse.Fill>
-                                <ImageBrush x:Name="ChatPanel_Image" RenderOptions.BitmapScalingMode="Fant"/>
-                            </Ellipse.Fill>
-                        </Ellipse>
+                        <Grid>
+                            <Ellipse x:Name="SelectedEllipse" Width="40" Height="40"/>
+                            <TextBlock x:Name="SelectedEllipseText" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
                         <StackPanel Orientation="Vertical" Margin="10,0,0,0">
                             <Label x:Name="ChatPanel_Name"
                            Style="{DynamicResource MainColorLable}"
@@ -217,11 +216,10 @@
             </Grid.RowDefinitions>
             <!-- Avatar and name -->
             <StackPanel Orientation="Horizontal" Margin="10, 25, 0, 0" Grid.Row="0" VerticalAlignment="Top">
-                <Ellipse Width="75" Height="75">
-                    <Ellipse.Fill>
-                        <ImageBrush x:Name="RigthInfoImage" RenderOptions.BitmapScalingMode="Fant"/>
-                    </Ellipse.Fill>
-                </Ellipse>
+                <Grid>
+                    <Ellipse x:Name="RigthInfoEllipse" Width="75" Height="75"/>
+                    <TextBlock x:Name="RigthInfoEllipseText" FontSize="25" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Grid>
                 <StackPanel Orientation="Vertical" Margin="10, 0, 0, 0" VerticalAlignment="Center">
                     <Label x:Name="RigthInfo_Name" Content="Bunny" Style="{DynamicResource MainColorLable}" FontSize="14"/>
                     <Label x:Name="RigthInfo_Second" Content="Was online today at 17:28" Style="{DynamicResource SecondaryColorLable}"/>
@@ -393,12 +391,11 @@
                     <StackPanel Orientation="Horizontal" Margin="25">
                         <Ellipse x:Name="Ellipse_CreateGroup" Width="75" Height="75" StrokeThickness="1.5" Margin="5" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="EditImageCreateGroup" Fill="Black">
                         </Ellipse>
-                        <TextBox Margin="25" Width="180" FontSize="14"
-                                 Style="{DynamicResource TextBoxWithPlaceHolderMenu}" Tag="Group name"/>
+                        <TextBox x:Name="GroupCreateTextBox"  Margin="25" Width="180" FontSize="14" Style="{DynamicResource TextBoxWithPlaceHolderMenu}" Tag="Group name"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-20, 0, 0">
                         <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_CreateGroup_Menu_Click"/>
-                        <Button Content="Next" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}"/>
+                        <Button Content="Next" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="CreateGroup_Menu_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -413,14 +410,14 @@
                     <StackPanel Orientation="Horizontal" Margin="25">
                         <Ellipse x:Name="Ellipse_CreateChannel" Width="75" Height="75" StrokeThickness="1.5" Margin="5" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="EditImageCreateChannel" Fill="Black">
                         </Ellipse>
-                        <TextBox Margin="35, 0, 0, 0" Width="250" FontSize="16"
+                        <TextBox Margin="35, 0, 0, 0" Width="250" FontSize="16" x:Name="ChannelName"
                                  Style="{DynamicResource TextBoxWithPlaceHolderMenu}" Tag="Channel name" VerticalAlignment="Center"/>
                     </StackPanel>
-                    <TextBox Margin="20" Width="350" FontSize="16" Tag="Description..."
+                    <TextBox x:Name="ChannelDescription" Margin="20" Width="350" FontSize="16" Tag="Description..."
                                  Style="{DynamicResource TextBoxWithPlaceHolderMenu}"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                         <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_CreateChanel_Menu_Click"/>
-                        <Button Content="Create" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}"/>
+                        <Button Content="Create" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="CreateChanel_Click"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -500,7 +497,7 @@
             </Border>
         </Grid>
         <!-- Add contacts for create group -->
-        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Contacts_Create_Grid" PreviewMouseLeftButtonUp="Close_Contacts_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Contacts_Create_Grid" PreviewMouseLeftButtonUp="Close_Contacts_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
@@ -516,7 +513,7 @@
                     </ListBox>
                     <StackPanel Orientation="Horizontal" Margin="0,25,0,0" HorizontalAlignment="Right">
                         <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_ContactsCreate_Click"/>
-                        <Button Content="Next" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}"/>
+                        <Button Content="Create" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="AddMembersClick"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

@@ -27,6 +27,13 @@ namespace Telegram
         public List<UserContact> UserContacts { get; set; }
         public List<Chat> Chats { get; set; }
         public List<SavedMessage> SavedMessages { get; set; }
+        // Temp date
+        public enum CreateFrag { Null, Group, Channel }
+        public CreateFrag CreateGroupOrChannel { get; set; }
+        public string GroupOrChannelName { get; set; }
+        public string DescriptionChannel { get; set; }
+        public byte[] PhotoGroupOrChannel { get; set; }
+        //
         public void RefreshUI()
         {
             Dispatcher.Invoke(() =>
@@ -37,7 +44,7 @@ namespace Telegram
                     Email_Lable_LeftMenu.Content = LoginedUser.Email;
                     Photo_ImageBrush_LeftMenu.ImageSource = LoginedUser.PhotoSource;
                     // Chats
-                    Contact_ListView.ItemsSource = Chats.OrderByDescending(chat => chat.MuteStatus);
+                    Contact_ListView.ItemsSource = Chats.OrderByDescending(chat => chat.PublishTime);
                     // Settings
                     SettingsImageBrush.ImageSource = LoginedUser.PhotoSource;
                     SettingsEditEmail_Lable.Content = SettingsEmail_Lable.Content = LoginedUser.Email;
@@ -156,7 +163,13 @@ namespace Telegram
             ChatGrid.Visibility = Visibility.Visible;
             Chat Select = (sender as ListView).SelectedItem as Chat;
             if (Select == null) return;
-            ChatPanel_Image.ImageSource = Select.PhotoSource;
+            if (Select.PhotoSource == null)
+            {
+                SelectedEllipse.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B8ACFF"));
+                SelectedEllipseText.Text = Select.PhotoText;
+            }
+            else
+                SelectedEllipse.Fill = new ImageBrush(Select.PhotoSource);
             ChatPanel_Name.Content = Select.ChatName;
             //
             RigthInfo_Second.Content = "";
@@ -181,7 +194,7 @@ namespace Telegram
                     Info1_NameLable.Content = "";
                     Info1_Lable.Content = "";
                 }
-                Info2_NameLable.Content = "Username";
+                Info2_NameLable.Content = "Group name";
                 Info2_Lable.Content = Select.ChatName;
                 RigthInfo_Second.Content = $"{Select.MembersCount} members";
             }
@@ -217,7 +230,13 @@ namespace Telegram
             // Messages
             Chat_ListView.ItemsSource = Select.ChatMessages;
             // RigthInfo
-            RigthInfoImage.ImageSource = Select.PhotoSource;
+            if (Select.PhotoSource == null)
+            {
+                RigthInfoEllipse.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B8ACFF"));
+                RigthInfoEllipseText.Text = Select.PhotoText;
+            }
+            else
+                RigthInfoEllipse.Fill = new ImageBrush(Select.PhotoSource);
             RigthInfo_Name.Content = Select.ChatName;
             ToogleButton_Notification.IsChecked = !Select.MuteStatus;
         }
@@ -349,9 +368,9 @@ namespace Telegram
             {
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                var data = JsonConvert.SerializeObject(new { email = LoginedUser.Email, newLogin });
+                var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, newLogin });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/setlogin"), Content = content });
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
@@ -378,9 +397,9 @@ namespace Telegram
             {
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                var data = JsonConvert.SerializeObject(new { email = LoginedUser.Email, newEmail });
+                var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, newEmail });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/setemail"), Content = content });
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
@@ -442,9 +461,9 @@ namespace Telegram
                 {
                     var client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                    var data = JsonConvert.SerializeObject(new { email = LoginedUser.Email, newPassword });
+                    var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, newPassword });
                     var content = new StringContent(data, Encoding.UTF8, "application/json");
-                    var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/setpassword"), Content = content });
+                    var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
                     var responseString = await response.Content.ReadAsStringAsync();
                     if (responseString == null)
                     {
@@ -480,9 +499,7 @@ namespace Telegram
             if (openFileDialog.ShowDialog() == true)
             {
                 string imagePath = openFileDialog.FileName;
-
                 BitmapImage bitmap = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
-
                 byte[] bytes;
                 using (MemoryStream ms = new MemoryStream())
                 {
@@ -491,6 +508,7 @@ namespace Telegram
                     encoder.Save(ms);
                     bytes = ms.ToArray();
                 }
+                PhotoGroupOrChannel = bytes;
                 ImageSource image = null;
                 try
                 {
@@ -511,9 +529,7 @@ namespace Telegram
             if (openFileDialog.ShowDialog() == true)
             {
                 string imagePath = openFileDialog.FileName;
-
                 BitmapImage bitmap = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
-
                 byte[] bytes;
                 using (MemoryStream ms = new MemoryStream())
                 {
@@ -522,6 +538,7 @@ namespace Telegram
                     encoder.Save(ms);
                     bytes = ms.ToArray();
                 }
+                PhotoGroupOrChannel = bytes;
                 ImageSource image = null;
                 try
                 {
@@ -543,6 +560,56 @@ namespace Telegram
         {
             Contacts_Create_Grid.Visibility = Visibility.Hidden;
             ContactsList.SelectedItems.Clear();
+        }
+        private void CreateGroup_Menu_Click(object sender, RoutedEventArgs e)
+        {
+            if (PhotoGroupOrChannel == null)
+            {
+                MessageBox.Show("Enter the image");
+                return;
+            }
+            CreateGroupOrChannel = CreateFrag.Group;
+            GroupOrChannelName = ((TextBox)GroupCreateTextBox.Template.FindName("MainTextBox", GroupCreateTextBox)).Text;
+            //
+            Menu_CreateGroup_Grid.Visibility = Visibility.Hidden;
+            Contacts_Create_Grid.Visibility = Visibility.Visible;
+        }
+
+        private void CreateChanel_Click(object sender, RoutedEventArgs e)
+        {
+            if (PhotoGroupOrChannel == null)
+            {
+                MessageBox.Show("Enter the image");
+                return;
+            }
+            CreateGroupOrChannel = CreateFrag.Channel;
+            GroupOrChannelName = ((TextBox)ChannelName.Template.FindName("MainTextBox", ChannelName)).Text;
+            DescriptionChannel = ((TextBox)ChannelDescription.Template.FindName("MainTextBox", ChannelDescription)).Text;
+            //
+            Menu_CreateChanel_Grid.Visibility = Visibility.Hidden;
+            Contacts_Create_Grid.Visibility = Visibility.Visible;
+        }
+
+        private void AddMembersClick(object sender, RoutedEventArgs e)
+        {
+            if (CreateGroupOrChannel == CreateFrag.Null)
+            {
+                return;
+            }
+            if (ContactsList.Items.Count != 0)
+            {
+                List<User> users = ContactsList.Items.Cast<User>().ToList();
+                //...
+            }
+            if(CreateGroupOrChannel == CreateFrag.Group)
+            {
+                // Create group
+            }
+            if(CreateGroupOrChannel == CreateFrag.Channel)
+            {
+                // Create channel
+            }
+            Contacts_Create_Grid.Visibility = Visibility.Hidden;
         }
     }
 }
