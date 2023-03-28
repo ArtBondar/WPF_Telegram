@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -9,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -40,13 +42,25 @@ namespace Telegram
             {
                 if (LoginedUser != null)
                 {
-                    Username_Lable_LeftMenu.Content = LoginedUser.UserName.ToString();
+                    Username_Lable_LeftMenu.Content = LoginedUser.UserName;
                     Email_Lable_LeftMenu.Content = LoginedUser.Email;
-                    Photo_ImageBrush_LeftMenu.ImageSource = LoginedUser.PhotoSource;
+                    if (LoginedUser.PhotoSource == null)
+                    {
+                        LeftMenuEllipse.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B8ACFF"));
+                        LeftMenuEllipseText.Text = LoginedUser.UserName.Substring(0,2).ToUpper();
+                    }
+                    else
+                        LeftMenuEllipse.Fill = new ImageBrush(LoginedUser.PhotoSource);
                     // Chats
                     Contact_ListView.ItemsSource = Chats.OrderByDescending(chat => chat.PublishTime);
                     // Settings
-                    SettingsImageBrush.ImageSource = LoginedUser.PhotoSource;
+                    if (LoginedUser.PhotoSource == null)
+                    {
+                        Ellipse_Avatar.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B8ACFF"));
+                        SettingsEllipseText.Text = LoginedUser.UserName.Substring(0, 2).ToUpper();
+                    }
+                    else
+                        Ellipse_Avatar.Fill = new ImageBrush(LoginedUser.PhotoSource);
                     SettingsEditEmail_Lable.Content = SettingsEmail_Lable.Content = LoginedUser.Email;
                     SettingsEditUserName_Lable.Content = SettingsUserName_Lable.Content = LoginedUser.UserName;
                     if (!String.IsNullOrWhiteSpace(LoginedUser.AboutUser))
@@ -276,7 +290,7 @@ namespace Telegram
         }
         private void Chat_ListView_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (e.VerticalOffset == 0)
+            if (e.VerticalOffset > 0)
                 Button_To_Down.Visibility = Visibility.Visible;
             else
                 Button_To_Down.Visibility = Visibility.Hidden;
@@ -664,6 +678,13 @@ namespace Telegram
                     Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
                 }
             }
+        }
+
+        private void Menu_Favorites_LeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            List<Chat> myList = Contact_ListView.Items.Cast<Chat>().ToList();
+            Contact_ListView.SelectedIndex = myList.IndexOf(myList.FirstOrDefault(chat => chat.Type == "Favorite"));
+            Left_Menu_Grid.Width = 0;
         }
     }
 }

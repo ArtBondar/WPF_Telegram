@@ -165,7 +165,7 @@
                 ScrollViewer.ScrollChanged="Chat_ListView_ScrollChanged"
                 Grid.Row="1"/>
             <!-- To Down Button -->
-            <Button x:Name="Button_To_Down" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" Width="30" Height="30" Margin="0,0,15,10" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconBorderedStyle}" Click="Button_To_Down_Messages" Visibility="Hidden">
+            <Button x:Name="Button_To_Down" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" Width="35" Height="35" Margin="0,0,15,10" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconBorderedStyle}" Click="Button_To_Down_Messages" Visibility="Hidden">
                 <Path Data="M282.082,76.511l-14.274-14.273c-1.902-1.906-4.093-2.856-6.57-2.856c-2.471,0-4.661,0.95-6.563,2.856L142.466,174.441
 		L30.262,62.241c-1.903-1.906-4.093-2.856-6.567-2.856c-2.475,0-4.665,0.95-6.567,2.856L2.856,76.515C0.95,78.417,0,80.607,0,83.082
 		c0,2.473,0.953,4.663,2.856,6.565l133.043,133.046c1.902,1.903,4.093,2.854,6.567,2.854s4.661-0.951,6.562-2.854L282.082,89.647
@@ -257,23 +257,22 @@
         <!-- Left Menu-->
         <Grid x:Name="Left_Menu_Grid" Grid.Row="1" Grid.ColumnSpan="3" Width="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="265"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <!-- Left Menu-->
             <Grid Style="{DynamicResource MainColorGrid}" Grid.Row="0" Grid.RowSpan="4">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
+                    <RowDefinition Height="120"/>
                     <RowDefinition Height="2"/>
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <!-- Avatar and name -->
                 <StackPanel Grid.Row="0">
-                    <Ellipse Width="50" Height="50" HorizontalAlignment="Left" Margin="25, 10, 0, 0">
-                        <Ellipse.Fill>
-                            <ImageBrush x:Name="Photo_ImageBrush_LeftMenu"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
+                    <Grid HorizontalAlignment="Left" Margin="25, 15, 0, 0">
+                        <Ellipse x:Name="LeftMenuEllipse" Width="50" Height="50"/>
+                        <TextBlock x:Name="LeftMenuEllipseText" FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Grid>
                     <Label x:Name="Username_Lable_LeftMenu" Margin="25, 10, 0, 0" Foreground="White" FontSize="14"/>
                     <Label x:Name="Email_Lable_LeftMenu" Margin="25, 10, 0, 0" Foreground="White" FontSize="14"/>
                 </StackPanel>
@@ -296,7 +295,7 @@
                         <Path Width="25" Height="25" Data="M16.9961 7.68583C17.7227 7.68583 18.3921 8.07985 18.7448 8.71509L21.1912 13.1219C21.5115 13.6989 21.5266 14.3968 21.2314 14.9871L18.8746 19.7008C18.8746 19.7008 19.5576 23.2122 22.416 26.0706C25.2744 28.929 28.7741 29.6002 28.7741 29.6002L33.487 27.2438C34.0777 26.9484 34.7761 26.9637 35.3533 27.2846L39.7726 29.7416C40.4072 30.0945 40.8008 30.7635 40.8008 31.4896L40.8008 36.5631C40.8008 39.1468 38.4009 41.0129 35.9528 40.1868C30.9249 38.4903 23.1202 35.2601 18.1734 30.3132C13.2265 25.3664 9.99631 17.5617 8.29977 12.5338C7.47375 10.0857 9.33984 7.68583 11.9235 7.68583L16.9961 7.68583Z" Style="{DynamicResource IconStyle}" Margin="20,0,0,0"/>
                         <Label Content="Calls" Style="{DynamicResource MainColorLable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}" Height="35" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}" Height="35" Cursor="Hand" PreviewMouseLeftButtonUp="Menu_Favorites_LeftButtonUp">
                         <Border Background="Transparent" Margin="20,0,0,0" Width="25" Height="25">
                             <Path Margin="2,-2, 2,-2" Data="M34 10V4H8V38L14 35 M14 44V10H40V44L27 37.7273L14 44Z" Style="{DynamicResource IconStyle}"/>
                         </Border>
@@ -348,11 +347,10 @@
                         </Button>
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
-                        <Ellipse x:Name="Ellipse_Avatar" Width="75" Height="75" StrokeThickness="1.5" Margin="20" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="Menu_Settings_Edit_Avatar">
-                            <Ellipse.Fill>
-                                <ImageBrush x:Name="SettingsImageBrush"/>
-                            </Ellipse.Fill>
-                        </Ellipse>
+                        <Grid>
+                            <Ellipse x:Name="Ellipse_Avatar" Width="75" Height="75" StrokeThickness="1.5" Margin="20" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="Menu_Settings_Edit_Avatar"/>
+                            <TextBlock x:Name="SettingsEllipseText" IsHitTestVisible="False" FontSize="25" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Grid>
                         <StackPanel Orientation="Vertical" Margin="0,8,0,8" HorizontalAlignment="Center">
                             <Label HorizontalAlignment="Center" x:Name="SettingsUserName_Lable" Content="UserName" Style="{DynamicResource SecondaryColorLable}" FontSize="18"/>
                             <Label HorizontalAlignment="Center" x:Name="SettingsEmail_Lable" Content="Email" Style="{DynamicResource MainColorLable}" FontSize="18"/>
