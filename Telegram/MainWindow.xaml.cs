@@ -680,11 +680,12 @@ namespace Telegram
         private async void MessageBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (Contact_ListView.SelectedItem == null) return;
-            var thistextBox = ((TextBox)(sender as TextBox).Template.FindName("MainTextBox", (sender as TextBox)));
+            var thistextBox = (TextBox)(sender as TextBox).Template.FindName("MainTextBox", sender as TextBox);
             if (e.Key == Key.Enter && !string.IsNullOrEmpty(thistextBox.Text))
             {
                 var client = new HttpClient();
-                var data = JsonConvert.SerializeObject(new { userId = LoginedUser.Id, chatId = LoginedUser.UserName, text = thistextBox.Text }); // Add data
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var data = JsonConvert.SerializeObject(new { userId = LoginedUser.Id, chatId = (Contact_ListView.SelectedItem as Chat).Id, text = thistextBox.Text, data = String.Empty }); // Add data
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync("https://localhost:7195/api/Messages/sendmessage", content);
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -693,12 +694,10 @@ namespace Telegram
                     MessageBox.Show("Server error...");
                     return;
                 }
-                var result = JsonConvert.DeserializeAnonymousType(responseString, new { user = new Models.User(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
-                if (result.user != null)
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { result = "" });
+                if (result.result == "Message sent.")
                 {
-                    LoginedUser = result.user;
-                    Chats = result.chats;
-                    SavedMessages = result.savedMessages;
+                    thistextBox.Text = "";
                 }
             }
         }
