@@ -5,6 +5,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media;
 using Telegram.Model;
 using System.Runtime.InteropServices.ComTypes;
+using System.Linq;
 
 namespace Telegram.Models
 {
@@ -16,7 +17,7 @@ namespace Telegram.Models
         {
             get
             {
-                if (ChatImage != null)
+                if (ChatImage.Length > 0)
                     return BitmapFrame.Create(new MemoryStream(ChatImage));
                 return null;
             }
@@ -43,10 +44,17 @@ namespace Telegram.Models
         {
             get
             {
-                if ((DateTime.Now - PublishTime).TotalDays > 1)
-                    return PublishTime.ToString("d");
+                if ((DateTime.Now - PublishTime).TotalDays >= 1)
+                    return PublishTime.ToString("dd.MM.yyyy");
                 else
-                    return PublishTime.ToString("t");
+                    return PublishTime.ToString("HH:mm");
+            }
+        }
+        public int CountNotViwedMessages
+        {
+            get
+            {
+                return 1;
             }
         }
         public string ChatName { get; set; }

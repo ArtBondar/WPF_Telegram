@@ -21,7 +21,7 @@ namespace Telegram.Models
         {
             get
             {
-                if (Photo != null)
+                if (Photo.Length > 0)
                     return BitmapFrame.Create(new MemoryStream(Photo));
                 return null;
             }

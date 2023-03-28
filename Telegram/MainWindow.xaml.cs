@@ -172,6 +172,7 @@ namespace Telegram
                 SelectedEllipse.Fill = new ImageBrush(Select.PhotoSource);
             ChatPanel_Name.Content = Select.ChatName;
             //
+
             RigthInfo_Second.Content = "";
             ChatPanel_SecondInfo.Content = "";
             Info1_NameLable.Content = "";
@@ -363,12 +364,12 @@ namespace Telegram
         }
         private async void Edit_NewUsername_Click(object sender, RoutedEventArgs e)
         {
-            string newLogin = ((TextBox)NewUsernameEdit_TextBox.Template.FindName("MainTextBox", NewUsernameEdit_TextBox)).Text;
-            if (!String.IsNullOrWhiteSpace(newLogin))
+            string userName = ((TextBox)NewUsernameEdit_TextBox.Template.FindName("MainTextBox", NewUsernameEdit_TextBox)).Text;
+            if (!String.IsNullOrWhiteSpace(userName))
             {
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, newLogin });
+                var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, userName });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
                 var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -377,13 +378,13 @@ namespace Telegram
                     MessageBox.Show("Server error...");
                     return;
                 }
-                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", result = "", user = new User() });
-                if (result.error == "Username is already used!")
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
+                if (result.error != null)
                 {
-                    MessageBox.Show("Username is used");
+                    MessageBox.Show($"{result.error}");
                     return;
                 }
-                if(result.result == "success")
+                if(result.user != null)
                 {
                     LoginedUser = result.user;
                     Menu_EditUserName_Grid.Visibility = Visibility.Hidden;
@@ -392,12 +393,12 @@ namespace Telegram
         }
         private async void Edit_NewEmail_Click(object sender, RoutedEventArgs e)
         {
-            string newEmail = ((TextBox)NewEmailEdit_TextBox.Template.FindName("MainTextBox", NewEmailEdit_TextBox)).Text;
-            if (!String.IsNullOrWhiteSpace(newEmail))
+            string email = ((TextBox)NewEmailEdit_TextBox.Template.FindName("MainTextBox", NewEmailEdit_TextBox)).Text;
+            if (!String.IsNullOrWhiteSpace(email))
             {
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, newEmail });
+                var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, email });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
                 var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
                 var responseString = await response.Content.ReadAsStringAsync();
@@ -406,13 +407,13 @@ namespace Telegram
                     MessageBox.Show("Server error...");
                     return;
                 }
-                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", result = "", user = new User() });
-                if (result.error == "Email is already used!")
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
+                if (result.error != null)
                 {
-                    MessageBox.Show("Email is used");
+                    MessageBox.Show($"{result.error}");
                     return;
                 }
-                if (result.result == "success")
+                if (result.user != null)
                 {
                     LoginedUser = result.user;
                     Menu_EditEmail_Grid.Visibility = Visibility.Hidden;
@@ -461,9 +462,9 @@ namespace Telegram
                 {
                     var client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                    var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, newPassword });
+                    var data = JsonConvert.SerializeObject(new { email = LoginedUser.Email, newPassword });
                     var content = new StringContent(data, Encoding.UTF8, "application/json");
-                    var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
+                    var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/setpassword"), Content = content });
                     var responseString = await response.Content.ReadAsStringAsync();
                     if (responseString == null)
                     {
@@ -574,7 +575,6 @@ namespace Telegram
             Menu_CreateGroup_Grid.Visibility = Visibility.Hidden;
             Contacts_Create_Grid.Visibility = Visibility.Visible;
         }
-
         private void CreateChanel_Click(object sender, RoutedEventArgs e)
         {
             if (PhotoGroupOrChannel == null)
@@ -589,7 +589,6 @@ namespace Telegram
             Menu_CreateChanel_Grid.Visibility = Visibility.Hidden;
             Contacts_Create_Grid.Visibility = Visibility.Visible;
         }
-
         private void AddMembersClick(object sender, RoutedEventArgs e)
         {
             if (CreateGroupOrChannel == CreateFrag.Null)

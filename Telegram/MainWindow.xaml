@@ -19,7 +19,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="265"/>
             <ColumnDefinition />
-            <ColumnDefinition x:Name="RigthInfoMenu" Width="250"/>
+            <ColumnDefinition x:Name="RigthInfoMenu" Width="0"/>
         </Grid.ColumnDefinitions>
         <!-- Left Chats-->
         <Grid Style="{DynamicResource MainColorGrid}" Grid.Row="1">
@@ -457,7 +457,7 @@
             </Border>
         </Grid>
         <!-- Edit password -->
-        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_EditPassword_Grid" PreviewMouseLeftButtonUp="Close_EditPassword_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Menu_EditPassword_Grid" PreviewMouseLeftButtonUp="Close_EditPassword_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
