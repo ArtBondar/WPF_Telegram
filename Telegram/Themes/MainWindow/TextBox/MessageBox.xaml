@@ -12,12 +12,7 @@
                                      TextWrapping="Wrap"
                                      BorderThickness="0"
                                      Style="{DynamicResource TextBoxWithPlaceHolderTextBox}"
-                                     Margin="8,0,0,0"
-                                     Text="{Binding Message, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <TextBox.InputBindings>
-                                    <KeyBinding Command="{Binding SendCommand}" Key="Return"/>
-                                </TextBox.InputBindings>
-                            </TextBox>
+                                     Margin="8,0,0,0"/>
                             <TextBlock IsHitTestVisible="False"
                                        Text="Write your message..."
                                        VerticalAlignment="Center"

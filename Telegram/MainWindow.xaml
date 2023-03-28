@@ -187,6 +187,7 @@
                          Height="50"
                          FontSize="14"
                          Style="{StaticResource MessageBox}"
+                         PreviewKeyDown="MessageBox_PreviewKeyDown"
                          Grid.ColumnSpan="1"
                          Margin="0,0,10,0"/>
                 <Border Style="{DynamicResource TextBoxWithPlaceHolderBorder}" CornerRadius="0,8,8,0" Grid.Column="2" Margin="-10,10,10,10">

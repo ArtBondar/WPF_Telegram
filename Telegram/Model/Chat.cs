@@ -6,6 +6,7 @@ using System.Windows.Media;
 using Telegram.Model;
 using System.Runtime.InteropServices.ComTypes;
 using System.Linq;
+using System.ComponentModel;
 
 namespace Telegram.Models
 {

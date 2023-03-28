@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -11,6 +12,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -27,7 +29,8 @@ namespace Telegram
         public string JwtToken { get; set; }
         public User LoginedUser { get; set; }
         public List<UserContact> UserContacts { get; set; }
-        public List<Chat> Chats { get; set; }
+        public List<Chat> Chats { get; set; } = new List<Chat>();
+        public Chat SelectedChat { get; set; } 
         public List<SavedMessage> SavedMessages { get; set; }
         // Temp date
         public enum CreateFrag { Null, Group, Channel }
@@ -53,6 +56,12 @@ namespace Telegram
                         LeftMenuEllipse.Fill = new ImageBrush(LoginedUser.PhotoSource);
                     // Chats
                     Contact_ListView.ItemsSource = Chats.OrderByDescending(chat => chat.PublishTime);
+                    if (SelectedChat != null)
+                    {
+                        List<Chat> list = Contact_ListView.Items.Cast<Chat>().ToList();
+                        Contact_ListView.SelectedIndex = list.IndexOf(list.FirstOrDefault(chat => chat.Id == SelectedChat.Id));
+                    }
+                        
                     // Settings
                     if (LoginedUser.PhotoSource == null)
                     {
@@ -96,6 +105,7 @@ namespace Telegram
                 {
                     LoginedUser = result.user;
                     Chats = result.chats;
+                    CollectionViewSource.GetDefaultView(Chats).Refresh();
                     SavedMessages = result.savedMessages;
                 }
             }
@@ -113,28 +123,7 @@ namespace Telegram
             RefreshDate();
             RefreshUI();
         }
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (WindowState == WindowState.Maximized)
-                WindowState = WindowState.Normal;
-            if (e.LeftButton == MouseButtonState.Pressed)
-                DragMove();
-        }
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState.Minimized;
-        }
-        private void WindowsStateButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (WindowState != WindowState.Maximized)
-                WindowState = WindowState.Maximized;
-            else
-                WindowState = WindowState.Normal;
-        }
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
+        
         private void Close_Left_Menu(object sender, MouseButtonEventArgs e)
         {
             Left_Menu_Grid.Width = 0;
@@ -182,9 +171,11 @@ namespace Telegram
         }
         private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ChatGrid.Visibility = Visibility.Visible;
+            
             Chat Select = (sender as ListView).SelectedItem as Chat;
             if (Select == null) return;
+            ChatGrid.Visibility = Visibility.Visible;
+            SelectedChat = Select;
             if (Select.PhotoSource == null)
             {
                 SelectedEllipse.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B8ACFF"));
@@ -194,7 +185,6 @@ namespace Telegram
                 SelectedEllipse.Fill = new ImageBrush(Select.PhotoSource);
             ChatPanel_Name.Content = Select.ChatName;
             //
-
             RigthInfo_Second.Content = "";
             ChatPanel_SecondInfo.Content = "";
             Info1_NameLable.Content = "";
@@ -685,6 +675,32 @@ namespace Telegram
             List<Chat> myList = Contact_ListView.Items.Cast<Chat>().ToList();
             Contact_ListView.SelectedIndex = myList.IndexOf(myList.FirstOrDefault(chat => chat.Type == "Favorite"));
             Left_Menu_Grid.Width = 0;
+        }
+
+        private async void MessageBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (Contact_ListView.SelectedItem == null) return;
+            var thistextBox = ((TextBox)(sender as TextBox).Template.FindName("MainTextBox", (sender as TextBox)));
+            if (e.Key == Key.Enter && !string.IsNullOrEmpty(thistextBox.Text))
+            {
+                var client = new HttpClient();
+                var data = JsonConvert.SerializeObject(new { userId = LoginedUser.Id, chatId = LoginedUser.UserName, text = thistextBox.Text }); // Add data
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync("https://localhost:7195/api/Messages/sendmessage", content);
+                var responseString = await response.Content.ReadAsStringAsync();
+                if (responseString == null)
+                {
+                    MessageBox.Show("Server error...");
+                    return;
+                }
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { user = new Models.User(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
+                if (result.user != null)
+                {
+                    LoginedUser = result.user;
+                    Chats = result.chats;
+                    SavedMessages = result.savedMessages;
+                }
+            }
         }
     }
 }
