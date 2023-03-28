@@ -49,7 +49,15 @@ namespace Telegram
                     SettingsImageBrush.ImageSource = LoginedUser.PhotoSource;
                     SettingsEditEmail_Lable.Content = SettingsEmail_Lable.Content = LoginedUser.Email;
                     SettingsEditUserName_Lable.Content = SettingsUserName_Lable.Content = LoginedUser.UserName;
-                    SettingsDescription_Lable.Content = LoginedUser.AboutUser;
+                    if (!String.IsNullOrWhiteSpace(LoginedUser.AboutUser))
+                    {
+                        SettingsDescription_Lable.Text = LoginedUser.AboutUser;
+                        SettingsDescription_Lable.Foreground = Brushes.White;
+                    }
+                    else {
+                        SettingsDescription_Lable.Foreground = Brushes.Gray;
+                        SettingsDescription_Lable.Text = "Description...";
+                    }
                     // Create Group and Channel
                     ContactsList.ItemsSource = UserContacts;
                 }
@@ -609,6 +617,53 @@ namespace Telegram
                 // Create channel
             }
             Contacts_Create_Grid.Visibility = Visibility.Hidden;
+        }
+
+        private void Menu_Settings_Edit_Description(object sender, MouseButtonEventArgs e)
+        {
+            ((TextBox)NewEditDescription_TextBox.Template.FindName("MainTextBox", NewEditDescription_TextBox)).Text = LoginedUser.AboutUser;
+            Menu_EditDescription_Grid.Visibility = Visibility.Visible;
+        }
+
+        private void Close_EditDescription_Menu_Click(object sender, RoutedEventArgs e)
+        {
+            Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
+        }
+
+        private void Close_EditDescription_Menu(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source == Menu_EditDescription_Grid)
+                Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
+        }
+
+        private async void Edit_Description_Click(object sender, RoutedEventArgs e)
+        {
+            string about = ((TextBox)NewEditDescription_TextBox.Template.FindName("MainTextBox", NewEditDescription_TextBox)).Text;
+            if (!String.IsNullOrWhiteSpace(about))
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, about });
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
+                var responseString = await response.Content.ReadAsStringAsync();
+                if (responseString == null)
+                {
+                    MessageBox.Show("Server error...");
+                    return;
+                }
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
+                if (result.error != null)
+                {
+                    MessageBox.Show($"{result.error}");
+                    return;
+                }
+                if (result.user != null)
+                {
+                    LoginedUser = result.user;
+                    Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
+                }
+            }
         }
     }
 }

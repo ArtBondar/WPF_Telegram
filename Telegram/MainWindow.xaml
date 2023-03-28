@@ -360,10 +360,8 @@
                         <!-- Buttons -->
 
                     </StackPanel>
-                    <Border BorderBrush="White" BorderThickness="0,0.5,0,0.5">
-                        <StackPanel Orientation="Horizontal" Height="60" HorizontalAlignment="Center" Cursor="Hand">
-                            <Label x:Name="SettingsDescription_Lable" Content="Description..." Style="{DynamicResource MainColorLable}" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </StackPanel>
+                    <Border Style="{DynamicResource BorderDescription}" Cursor="Hand" Width="400" PreviewMouseLeftButtonUp="Menu_Settings_Edit_Description">
+                        <TextBlock x:Name="SettingsDescription_Lable" Text="Description..." Style="{DynamicResource ColorDescription}" />
                     </Border>
                     <StackPanel Orientation="Horizontal" Cursor="Hand" Height="45" FlowDirection="RightToLeft" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}" PreviewMouseLeftButtonUp="Open_EditUserName_ButtonUp">
                         <Label x:Name="SettingsEditUserName_Lable" FontSize="14" Width="180" Margin="10,0,0,0" VerticalAlignment="Center" Content="Username" Style="{DynamicResource SecondaryColorLable}"/>
@@ -456,8 +454,25 @@
                 </StackPanel>
             </Border>
         </Grid>
+        <!-- Edit email -->
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_EditDescription_Grid" PreviewMouseLeftButtonUp="Close_EditDescription_Menu">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity="0.3"/>
+            </Grid.Background>
+            <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="350" Width="Auto" Height="150">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="25">
+                        <TextBox x:Name="NewEditDescription_TextBox" TextWrapping="Wrap" Margin="25" Width="260" FontSize="16" Tag="New description" Style="{DynamicResource TextBoxWithPlaceHolderMenu}" Height="30"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-20, 0, 0">
+                        <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_EditDescription_Menu_Click"/>
+                        <Button Content="Edit" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Edit_Description_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
         <!-- Edit password -->
-        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Menu_EditPassword_Grid" PreviewMouseLeftButtonUp="Close_EditPassword_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_EditPassword_Grid" PreviewMouseLeftButtonUp="Close_EditPassword_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
