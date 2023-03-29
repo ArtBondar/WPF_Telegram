@@ -22,7 +22,7 @@ namespace Telegram.Models
         {
             get
             {
-                if (Photo.Length > 0)
+                if (!String.IsNullOrEmpty(Photo))
                 {
                     string x = Photo.Substring(Photo.IndexOf("base64,") + 7);
                     byte[] bytes;

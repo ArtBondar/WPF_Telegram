@@ -18,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+using Telegram.Model;
 using Telegram.Models;
 
 namespace Telegram
@@ -170,13 +171,32 @@ namespace Telegram
         {
             ThreePointMenu.IsSubmenuOpen = true;
         }
-        private void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ListView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
             Chat Select = (sender as ListView).SelectedItem as Chat;
             if (Select == null) return;
             ChatGrid.Visibility = Visibility.Visible;
-            SelectedChat = Select;
+            //
+            var client = new HttpClient();
+            string additionalChatName = null;
+            if(Select.Type == "Private")
+                additionalChatName = Select.ChatName;
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+            var data = JsonConvert.SerializeObject(new { chatName = Select.ChatName, authorId = Select.AuthorId, additionalChatName });
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:7195/api/Chats/openchat", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null)
+            {
+                MessageBox.Show("Server error...");
+                this.Close();
+                return;
+            }
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", chat = new Chat(), messages = new List<Message>(), members = new List<User>() });
+            //
+            if (result.chat == null) return;
+
+            SelectedChat = result.chat;
             if (Select.PhotoSource == null)
             {
                 SelectedEllipse.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B8ACFF"));
@@ -242,7 +262,22 @@ namespace Telegram
                 // Favorite
             }
             // Messages
-            Chat_ListView.ItemsSource = Select.ChatMessages;
+            foreach (Message message in result.messages)
+            {
+                User user = null;
+                try
+                {
+                    user = result.members.FirstOrDefault(member => member.Id == message.UserId);
+                    message.User = user;
+                }
+                catch
+                {
+
+                }
+            }
+
+            Chat_ListView.ItemsSource = result.messages;
+            
             // RigthInfo
             if (Select.PhotoSource == null)
             {
@@ -452,6 +487,8 @@ namespace Telegram
             LoginedUser = null;
             Chats = null;
             SavedMessages = null;
+            if (File.Exists("login.txt"))
+                File.Delete("login.txt");
             SingUp mainForm = new SingUp();
             mainForm.Show();
             this.Close();

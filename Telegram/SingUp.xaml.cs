@@ -58,12 +58,10 @@ namespace Telegram
                     byte[] decryptedPassword = ProtectedData.Unprotect(encryptedPassword, entropy, DataProtectionScope.CurrentUser);
                     password = Encoding.Unicode.GetString(decryptedPassword);
                 }
-
                 return true;
             }
-            catch (Exception ex)
+            catch
             {
-                Console.WriteLine($"Ошибка загрузки логина и пароля: {ex.Message}");
                 login = null;
                 password = null;
                 return false;

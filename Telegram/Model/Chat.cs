@@ -19,7 +19,7 @@ namespace Telegram.Models
         {
             get
             {
-                if (ChatImage.Length > 0)
+                if (!String.IsNullOrEmpty(ChatImage))
                 {
                     string x = ChatImage.Substring(ChatImage.IndexOf("base64,") + 7);
                     byte[] bytes;
@@ -40,7 +40,7 @@ namespace Telegram.Models
         {
             get
             {
-                if (ChatImage.Length > 0)
+                if (!String.IsNullOrEmpty(ChatImage))
                     return true;
                 return false;
             }
