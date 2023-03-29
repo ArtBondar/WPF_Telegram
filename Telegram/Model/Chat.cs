@@ -7,19 +7,32 @@ using Telegram.Model;
 using System.Runtime.InteropServices.ComTypes;
 using System.Linq;
 using System.ComponentModel;
+using System.Windows.Markup;
 
 namespace Telegram.Models
 {
     public partial class Chat
     {
         public int Id { get; set; }
-        public byte[] ChatImage { get; set; }
+        public string ChatImage { get; set; }
         public ImageSource PhotoSource
         {
             get
             {
                 if (ChatImage.Length > 0)
-                    return BitmapFrame.Create(new MemoryStream(ChatImage));
+                {
+                    string x = ChatImage.Substring(ChatImage.IndexOf("base64,") + 7);
+                    byte[] bytes;
+                    try
+                    {
+                        bytes = System.Convert.FromBase64String(x);
+                        MemoryStream ms = new MemoryStream(bytes);
+                        return BitmapFrame.Create(ms);
+                    } catch
+                    {
+                        return null;
+                    }
+                }
                 return null;
             }
         }
@@ -27,7 +40,7 @@ namespace Telegram.Models
         {
             get
             {
-                if (ChatImage != null)
+                if (ChatImage.Length > 0)
                     return true;
                 return false;
             }

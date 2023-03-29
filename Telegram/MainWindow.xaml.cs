@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -123,7 +124,6 @@ namespace Telegram
             RefreshDate();
             RefreshUI();
         }
-        
         private void Close_Left_Menu(object sender, MouseButtonEventArgs e)
         {
             Left_Menu_Grid.Width = 0;
@@ -310,7 +310,7 @@ namespace Telegram
             Left_Menu_Grid.Width = 0;
             Menu_CreateChanel_Grid.Focus();
         }
-        private void Menu_Settings_Edit_Avatar(object sender, MouseButtonEventArgs e)
+        private async void Menu_Settings_Edit_Avatar(object sender, MouseButtonEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -320,25 +320,35 @@ namespace Telegram
 
             if (openFileDialog.ShowDialog() == true)
             {
-                string imagePath = openFileDialog.FileName;
-
-                BitmapImage bitmap = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
-
-                byte[] bytes;
-                using (MemoryStream ms = new MemoryStream())
+                byte[] bytes = File.ReadAllBytes(openFileDialog.FileName);
+                string extension = Path.GetExtension(openFileDialog.SafeFileName);
+                string photo = $"data:image/{extension.Substring(1)};base64," + Convert.ToBase64String(bytes);
+                if (!String.IsNullOrWhiteSpace(photo))
                 {
-                    PngBitmapEncoder encoder = new PngBitmapEncoder();
-                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
-                    encoder.Save(ms);
-                    bytes = ms.ToArray();
+                    var client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                    var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, photo });
+                    var content = new StringContent(data, Encoding.UTF8, "application/json");
+                    var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    if (responseString == null)
+                    {
+                        MessageBox.Show("Server error...");
+                        return;
+                    }
+                    var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
+                    if (result.error != null)
+                    {
+                        MessageBox.Show($"{result.error}");
+                        return;
+                    }
+                    if (result.user != null)
+                    {
+                        LoginedUser = result.user;
+                        Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
+                    }
                 }
-                ImageSource image = null;
-                try
-                {
-                    image = BitmapFrame.Create(new MemoryStream(bytes));
-                }
-                catch (Exception ex) { MessageBox.Show($"Error: {ex.Message}"); }
-                Ellipse_Avatar.Fill = new ImageBrush(image);
+
             }
         }
         private void Close_EditUserName_Menu_Click(object sender, RoutedEventArgs e)
@@ -622,61 +632,52 @@ namespace Telegram
             }
             Contacts_Create_Grid.Visibility = Visibility.Hidden;
         }
-
         private void Menu_Settings_Edit_Description(object sender, MouseButtonEventArgs e)
         {
             ((TextBox)NewEditDescription_TextBox.Template.FindName("MainTextBox", NewEditDescription_TextBox)).Text = LoginedUser.AboutUser;
             Menu_EditDescription_Grid.Visibility = Visibility.Visible;
         }
-
         private void Close_EditDescription_Menu_Click(object sender, RoutedEventArgs e)
         {
             Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
         }
-
         private void Close_EditDescription_Menu(object sender, MouseButtonEventArgs e)
         {
             if (e.Source == Menu_EditDescription_Grid)
                 Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
         }
-
         private async void Edit_Description_Click(object sender, RoutedEventArgs e)
         {
             string about = ((TextBox)NewEditDescription_TextBox.Template.FindName("MainTextBox", NewEditDescription_TextBox)).Text;
-            if (!String.IsNullOrWhiteSpace(about))
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+            var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, about });
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
+            var responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null)
             {
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, about });
-                var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
-                var responseString = await response.Content.ReadAsStringAsync();
-                if (responseString == null)
-                {
-                    MessageBox.Show("Server error...");
-                    return;
-                }
-                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
-                if (result.error != null)
-                {
-                    MessageBox.Show($"{result.error}");
-                    return;
-                }
-                if (result.user != null)
-                {
-                    LoginedUser = result.user;
-                    Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
-                }
+                MessageBox.Show("Server error...");
+                return;
+            }
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
+            if (result.error != null)
+            {
+                MessageBox.Show($"{result.error}");
+                return;
+            }
+            if (result.user != null)
+            {
+                LoginedUser = result.user;
+                Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
             }
         }
-
         private void Menu_Favorites_LeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             List<Chat> myList = Contact_ListView.Items.Cast<Chat>().ToList();
             Contact_ListView.SelectedIndex = myList.IndexOf(myList.FirstOrDefault(chat => chat.Type == "Favorite"));
             Left_Menu_Grid.Width = 0;
         }
-
         private async void MessageBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (Contact_ListView.SelectedItem == null) return;

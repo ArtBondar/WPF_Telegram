@@ -453,7 +453,7 @@
                 </StackPanel>
             </Border>
         </Grid>
-        <!-- Edit email -->
+        <!-- Edit description -->
         <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_EditDescription_Grid" PreviewMouseLeftButtonUp="Close_EditDescription_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>

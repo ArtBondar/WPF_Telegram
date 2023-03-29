@@ -152,7 +152,7 @@
                                         <Style TargetType="Ellipse">
                                             <Setter Property="Fill" Value="#B8ACFF"/>
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Tag}" Value="False">
+                                                <DataTrigger Binding="{Binding Tag}" Value="True">
                                                     <Setter Property="Fill">
                                                         <Setter.Value>
                                                             <ImageBrush ImageSource="{Binding PhotoSource}" />
@@ -167,7 +167,7 @@
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Tag}" Value="True">
+                                                <DataTrigger Binding="{Binding Tag}" Value="False">
                                                     <Setter Property="Text" Value="{Binding PhotoText}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
