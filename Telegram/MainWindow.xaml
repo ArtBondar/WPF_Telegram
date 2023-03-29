@@ -379,7 +379,7 @@
             </Border>
         </Grid>
         <!-- Create group -->
-        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_CreateGroup_Grid" PreviewMouseLeftButtonUp="Close_Contacts_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Menu_CreateGroup_Grid" PreviewMouseLeftButtonUp="Close_Contacts_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>

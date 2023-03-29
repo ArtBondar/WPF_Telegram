@@ -38,7 +38,7 @@ namespace Telegram
         public CreateFrag CreateGroupOrChannel { get; set; }
         public string GroupOrChannelName { get; set; }
         public string DescriptionChannel { get; set; }
-        public byte[] PhotoGroupOrChannel { get; set; }
+        public string SelectedPhoto { get; set; }
         //
         public void RefreshUI()
         {
@@ -99,6 +99,7 @@ namespace Telegram
                 if (responseString == null)
                 {
                     MessageBox.Show("Server error...");
+                    this.Close();
                     return;
                 }
                 var result = JsonConvert.DeserializeAnonymousType(responseString, new { user = new Models.User(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
@@ -317,7 +318,6 @@ namespace Telegram
                 Filter = "Image Files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg|All files (*.*)|*.*",
                 RestoreDirectory = true
             };
-
             if (openFileDialog.ShowDialog() == true)
             {
                 byte[] bytes = File.ReadAllBytes(openFileDialog.FileName);
@@ -521,6 +521,10 @@ namespace Telegram
 
             if (openFileDialog.ShowDialog() == true)
             {
+                byte[] tbytes = File.ReadAllBytes(openFileDialog.FileName);
+                string extension = Path.GetExtension(openFileDialog.SafeFileName);
+                SelectedPhoto = $"data:image/{extension.Substring(1)};base64," + Convert.ToBase64String(tbytes);
+                //
                 string imagePath = openFileDialog.FileName;
                 BitmapImage bitmap = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
                 byte[] bytes;
@@ -531,7 +535,6 @@ namespace Telegram
                     encoder.Save(ms);
                     bytes = ms.ToArray();
                 }
-                PhotoGroupOrChannel = bytes;
                 ImageSource image = null;
                 try
                 {
@@ -551,6 +554,10 @@ namespace Telegram
 
             if (openFileDialog.ShowDialog() == true)
             {
+                byte[] tbytes = File.ReadAllBytes(openFileDialog.FileName);
+                string extension = Path.GetExtension(openFileDialog.SafeFileName);
+                SelectedPhoto = $"data:image/{extension.Substring(1)};base64," + Convert.ToBase64String(tbytes);
+                //
                 string imagePath = openFileDialog.FileName;
                 BitmapImage bitmap = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
                 byte[] bytes;
@@ -561,7 +568,6 @@ namespace Telegram
                     encoder.Save(ms);
                     bytes = ms.ToArray();
                 }
-                PhotoGroupOrChannel = bytes;
                 ImageSource image = null;
                 try
                 {
@@ -584,30 +590,70 @@ namespace Telegram
             Contacts_Create_Grid.Visibility = Visibility.Hidden;
             ContactsList.SelectedItems.Clear();
         }
-        private void CreateGroup_Menu_Click(object sender, RoutedEventArgs e)
+        private async void CreateGroup_Menu_Click(object sender, RoutedEventArgs e)
         {
-            if (PhotoGroupOrChannel == null)
-            {
-                MessageBox.Show("Enter the image");
-                return;
-            }
             CreateGroupOrChannel = CreateFrag.Group;
             GroupOrChannelName = ((TextBox)GroupCreateTextBox.Template.FindName("MainTextBox", GroupCreateTextBox)).Text;
-            //
+            // SelectedChat
+            if (!String.IsNullOrWhiteSpace(GroupOrChannelName))
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var data = JsonConvert.SerializeObject(new { authorId = LoginedUser.Id, chatImage = SelectedPhoto, chatName = GroupOrChannelName, shortMessage = "Group created...", publishTime = DateTime.Now, type = "Group" });
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
+                var responseString = await response.Content.ReadAsStringAsync();
+                if (responseString == null)
+                {
+                    MessageBox.Show("Server error...");
+                    return;
+                }
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
+                if (result.error != null)
+                {
+                    MessageBox.Show($"{result.error}");
+                    return;
+                }
+                if (result.user != null)
+                {
+                    LoginedUser = result.user;
+                    Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
+                }
+            }
             Menu_CreateGroup_Grid.Visibility = Visibility.Hidden;
             Contacts_Create_Grid.Visibility = Visibility.Visible;
         }
-        private void CreateChanel_Click(object sender, RoutedEventArgs e)
+        private async void CreateChanel_Click(object sender, RoutedEventArgs e)
         {
-            if (PhotoGroupOrChannel == null)
-            {
-                MessageBox.Show("Enter the image");
-                return;
-            }
             CreateGroupOrChannel = CreateFrag.Channel;
             GroupOrChannelName = ((TextBox)ChannelName.Template.FindName("MainTextBox", ChannelName)).Text;
             DescriptionChannel = ((TextBox)ChannelDescription.Template.FindName("MainTextBox", ChannelDescription)).Text;
             //
+            if (!String.IsNullOrWhiteSpace(GroupOrChannelName))
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var data = JsonConvert.SerializeObject(new { authorId = LoginedUser.Id, chatImage = SelectedPhoto, chatName = GroupOrChannelName, shortMessage = "Channel created...", publishTime = DateTime.Now, type = "Channel", chatInfo = ChannelDescription });
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
+                var responseString = await response.Content.ReadAsStringAsync();
+                if (responseString == null)
+                {
+                    MessageBox.Show("Server error...");
+                    return;
+                }
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
+                if (result.error != null)
+                {
+                    MessageBox.Show($"{result.error}");
+                    return;
+                }
+                if (result.user != null)
+                {
+                    LoginedUser = result.user;
+                    Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
+                }
+            }
             Menu_CreateChanel_Grid.Visibility = Visibility.Hidden;
             Contacts_Create_Grid.Visibility = Visibility.Visible;
         }

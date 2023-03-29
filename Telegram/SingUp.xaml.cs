@@ -2,8 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Net.Http;
-using System.Runtime.Remoting.Channels;
+using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -25,6 +26,49 @@ namespace Telegram
         private bool flag_newPassword = true;
         private string codeString = "";
         private string emailString = "";
+        // Защита пароля
+        private static readonly byte[] entropy = Encoding.Unicode.GetBytes("My Salt Value");
+
+        // Сохранение логина и пароля в файл
+        public static void SaveCredentialsToFile(string login, string password, string fileName)
+        {
+            // Защита пароля
+            byte[] encryptedPassword = ProtectedData.Protect(Encoding.Unicode.GetBytes(password), entropy, DataProtectionScope.CurrentUser);
+
+            // Запись логина и пароля в файл
+            using (StreamWriter writer = new StreamWriter(fileName))
+            {
+                writer.WriteLine(login);
+                writer.WriteLine(Convert.ToBase64String(encryptedPassword));
+            }
+        }
+
+        // Загрузка логина и пароля из файла
+        public static bool LoadCredentialsFromFile(string fileName, out string login, out string password)
+        {
+            try
+            {
+                // Чтение логина и пароля из файла
+                using (StreamReader reader = new StreamReader(fileName))
+                {
+                    login = reader.ReadLine();
+                    byte[] encryptedPassword = Convert.FromBase64String(reader.ReadLine());
+
+                    // Расшифровка пароля
+                    byte[] decryptedPassword = ProtectedData.Unprotect(encryptedPassword, entropy, DataProtectionScope.CurrentUser);
+                    password = Encoding.Unicode.GetString(decryptedPassword);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка загрузки логина и пароля: {ex.Message}");
+                login = null;
+                password = null;
+                return false;
+            }
+        }
 
         public SingUp()
         {
@@ -200,6 +244,7 @@ namespace Telegram
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
                 // Open Main Form
+                SaveCredentialsToFile(login, password, "login.txt");
                 MainWindow mainForm = new MainWindow();
                 mainForm.JwtToken = result.jwtToken;
                 mainForm.LoginedUser = result.user;
@@ -256,6 +301,7 @@ namespace Telegram
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
                 // Open Main Form
+                SaveCredentialsToFile(userName, password, "login.txt");
                 MainWindow mainForm = new MainWindow();
                 mainForm.JwtToken = result.jwtToken;
                 mainForm.LoginedUser = result.user;
@@ -399,6 +445,43 @@ namespace Telegram
         private void TextBoxEmailLogin_TextChanged(object sender, TextChangedEventArgs e)
         {
             ((Border)TextBoxEmailLogin.Template.FindName("Border", TextBoxEmailLogin)).BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
+        }
+
+        private async void FormLoaded(object sender, RoutedEventArgs e)
+        {
+            string loadedLogin, loadedPassword;
+            if (LoadCredentialsFromFile("login.txt", out loadedLogin, out loadedPassword))
+            {
+                Console.WriteLine($"Логин: {loadedLogin}");
+                Console.WriteLine($"Пароль: {loadedPassword}");
+            }
+            else
+            {
+                Console.WriteLine("Не удалось загрузить логин и пароль");
+            }
+            var client = new HttpClient();
+            var data = JsonConvert.SerializeObject(new { login = loadedLogin, password = loadedPassword });
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:7195/api/Users/login", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null)
+            {
+                MessageBox.Show("Server error...");
+                return;
+            }
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), chats = new List<Models.Chat>(), contacts = new List<UserContact>() });
+            if (!String.IsNullOrWhiteSpace(result.jwtToken))
+            {
+                // Open Main Form
+                MainWindow mainForm = new MainWindow();
+                mainForm.JwtToken = result.jwtToken;
+                mainForm.LoginedUser = result.user;
+                mainForm.Chats = result.chats;
+                mainForm.UserContacts = result.contacts;
+                mainForm.RefreshUI();
+                mainForm.Show();
+                this.Close();
+            }
         }
     }
 }
