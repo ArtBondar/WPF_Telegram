@@ -228,6 +228,14 @@
     <Style x:Key="MessageColorBorder" TargetType="Border">
         <Setter Property="Background" Value="#11032F"/>
     </Style>
+    <Style x:Key="ColorTextMessageBlock" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Margin" Value="8,4,0,4"/>
+    </Style>
+    <Style x:Key="ColorTextTimeBlock" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#B8ACFF"/>
+        <Setter Property="Margin" Value="0,0,5,0"/>
+    </Style>
     <!-- Menus -->
     <Style x:Key="StackPanelWithHover" TargetType="StackPanel">
         <Style.Triggers>

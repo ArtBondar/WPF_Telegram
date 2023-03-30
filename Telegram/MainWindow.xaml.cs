@@ -265,14 +265,33 @@ namespace Telegram
             foreach (Message message in result.messages)
             {
                 User user = null;
-                try
+                user = result.members.FirstOrDefault(member => member.Id == message.UserId);
+                message.User = user;
+                if (user == null)
                 {
-                    user = result.members.FirstOrDefault(member => member.Id == message.UserId);
-                    message.User = user;
-                }
-                catch
-                {
-
+                    client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                    response = await client.GetAsync($"https://localhost:7195/api/Users/{message.UserId}");
+                    responseString = await response.Content.ReadAsStringAsync();
+                    if (responseString == null)
+                    {
+                        MessageBox.Show("Server error...");
+                        this.Close();
+                        return;
+                    }
+                    var resulttmp = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", id=0, email="", userName="", aboutUser="", lastOnline=new DateTime(), photo="" });
+                    if (resulttmp?.id != null)
+                    {
+                        message.User = new User()
+                        {
+                            Id = resulttmp.id,
+                            Email = resulttmp.email,
+                            UserName = resulttmp.userName,
+                            AboutUser = resulttmp.aboutUser,
+                            Photo = resulttmp.photo,
+                            LastOnline = resulttmp.lastOnline
+                        };
+                    }
                 }
             }
 
