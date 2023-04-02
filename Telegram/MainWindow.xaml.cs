@@ -210,30 +210,31 @@ namespace Telegram
                 SelectedEllipse.Fill = new ImageBrush(Select.PhotoSource);
             ChatPanel_Name.Content = Select.ChatName;
             //
+            InfoPath.Visibility = Visibility.Visible;
             RigthInfo_Second.Content = "";
             ChatPanel_SecondInfo.Content = "";
-            Info1_NameLable.Content = "";
-            Info1_Lable.Content = "";
-            Info2_NameLable.Content = "";
-            Info2_Lable.Content = "";
-            Info3_NameLable.Content = "";
-            Info3_Lable.Content = "";
+            Info1_NameLable.Content = ""; Info1_NameLable.Visibility = Visibility.Collapsed;
+            Info1_Lable.Content = ""; Info1_Lable.Visibility = Visibility.Collapsed;
+            Info2_NameLable.Content = ""; Info2_NameLable.Visibility = Visibility.Collapsed;
+            Info2_Lable.Content = ""; Info2_Lable.Visibility = Visibility.Collapsed;
+            Info3_NameLable.Content = ""; Info3_NameLable.Visibility = Visibility.Collapsed;
+            Info3_Lable.Content = ""; Info3_Lable.Visibility = Visibility.Collapsed;
             //
             if (Select.Type == "Group")
             {
                 ChatPanel_SecondInfo.Content = $"{Select.MembersCount} members";
                 if (!String.IsNullOrWhiteSpace(Select.ChatInfo))
                 {
-                    Info1_NameLable.Content = "About";
-                    Info1_Lable.Content = Select.ChatInfo;
+                    Info1_NameLable.Content = "About"; Info1_NameLable.Visibility = Visibility.Visible;
+                    Info1_Lable.Content = Select.ChatInfo; Info1_Lable.Visibility = Visibility.Visible;
                 }
                 else
                 {
                     Info1_NameLable.Content = "";
                     Info1_Lable.Content = "";
                 }
-                Info2_NameLable.Content = "Group name";
-                Info2_Lable.Content = Select.ChatName;
+                Info2_NameLable.Content = "Group name"; Info2_NameLable.Visibility = Visibility.Visible;
+                Info2_Lable.Content = Select.ChatName; Info2_Lable.Visibility = Visibility.Visible;
                 RigthInfo_Second.Content = $"{Select.MembersCount} members";
             }
             if (Select.Type == "Channel")
@@ -241,8 +242,8 @@ namespace Telegram
                 ChatPanel_SecondInfo.Content = $"{Select.MembersCount} members";
                 if (!String.IsNullOrWhiteSpace(Select.ChatInfo))
                 {
-                    Info1_NameLable.Content = "About";
-                    Info1_Lable.Content = Select.ChatInfo;
+                    Info1_NameLable.Content = "About"; Info1_NameLable.Visibility = Visibility.Visible;
+                    Info1_Lable.Content = Select.ChatInfo; Info1_Lable.Visibility = Visibility.Visible;
                 }
                 else
                 {
@@ -256,13 +257,14 @@ namespace Telegram
                 RigthInfo_Name.Content = Select.ChatName;
                 RigthInfo_Second.Content = "?";
                 ChatPanel_SecondInfo.Content = Select.PublishTime;
-                Info1_NameLable.Content = "About";
-                Info1_Lable.Content = Select.ChatInfo;
-                Info2_NameLable.Content = "Username";
-                Info2_Lable.Content = Select.ChatName;
+                Info1_NameLable.Content = "About"; Info1_NameLable.Visibility = Visibility.Visible;
+                Info1_Lable.Content = Select.ChatInfo; Info1_Lable.Visibility = Visibility.Visible;
+                Info2_NameLable.Content = "Username"; Info2_NameLable.Visibility = Visibility.Visible;
+                Info2_Lable.Content = Select.ChatName; Info2_Lable.Visibility = Visibility.Visible;
             }
             if (Select.Type == "Favorite")
             {
+                InfoPath.Visibility = Visibility.Collapsed;
                 // Favorite
             }
             // Messages

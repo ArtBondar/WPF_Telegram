@@ -28,7 +28,7 @@
                                         TextWrapping="Wrap"
                                         Style="{DynamicResource ColorTextMessageBlock}"
                                         FontSize="14"
-                                        MaxWidth="550"
+                                        MaxWidth="450"
                                         VerticalAlignment="Center" Grid.Column="0"/>
                                     <Label Content="{Binding SendTime}"
                                         Style="{DynamicResource SecondaryColorLable}"
