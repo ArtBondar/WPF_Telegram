@@ -21,7 +21,7 @@
             <ColumnDefinition />
             <ColumnDefinition x:Name="RigthInfoMenu" Width="0"/>
         </Grid.ColumnDefinitions>
-        <!-- Left Chats-->
+        <!-- Left Chats -->
         <Grid Style="{DynamicResource MainColorGrid}" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
@@ -187,6 +187,7 @@
                 <TextBox Grid.Column="1"
                          Height="50"
                          FontSize="14"
+                         MaxLength="500"
                          Style="{StaticResource MessageBox}"
                          PreviewKeyDown="MessageBox_PreviewKeyDown"
                          Grid.ColumnSpan="1"

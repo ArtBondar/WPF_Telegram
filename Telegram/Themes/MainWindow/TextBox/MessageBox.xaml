@@ -11,6 +11,7 @@
                                      x:Name="MainTextBox"
                                      TextWrapping="Wrap"
                                      BorderThickness="0"
+                                     MaxLength="{TemplateBinding MaxLength}"
                                      Style="{DynamicResource TextBoxWithPlaceHolderTextBox}"
                                      Margin="8,0,0,0"/>
                             <TextBlock IsHitTestVisible="False"
