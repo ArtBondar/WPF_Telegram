@@ -8,17 +8,18 @@
                     <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                         <Ellipse Width="40" Height="40" VerticalAlignment="Bottom">
                             <Ellipse.Fill>
-                                <ImageBrush ImageSource="{Binding User.PhotoSource}" RenderOptions.BitmapScalingMode="Fant"/>
+                                <ImageBrush ImageSource="{Binding Author.PhotoSource}" RenderOptions.BitmapScalingMode="Fant"/>
                             </Ellipse.Fill>
                         </Ellipse>
                         <Border CornerRadius="10 10 10 0" Style="{DynamicResource MessageColorBorder}" Margin="10,0,0,0" MinWidth="150" Height="Auto">
                             <StackPanel Orientation="Vertical">
-                                <Label Content="{Binding User.UserName}"
+                                <Label Content="{Binding Author.UserName}"
                                     Style="{DynamicResource MainColorLable}"
                                     FontWeight="SemiBold"
                                     VerticalAlignment="Center"
                                     FontSize="14"/>
-                                <Grid Margin="0,-5,0,0" >
+                                <Image Source="{Binding PhotoSource}" Height="Auto" MaxHeight="200" />
+                                <Grid Margin="0,-5,0,5" >
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
                                         <ColumnDefinition Width="100"/>

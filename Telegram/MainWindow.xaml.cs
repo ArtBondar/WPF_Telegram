@@ -1,10 +1,7 @@
 ﻿using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -12,14 +9,12 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Telegram.Model;
 using Telegram.Models;
+using Telegram.ViewModels;
 
 namespace Telegram
 {
@@ -30,7 +25,7 @@ namespace Telegram
     {
         public string JwtToken { get; set; }
         public User LoginedUser { get; set; }
-        public List<UserContact> UserContacts { get; set; }
+        public List<User> UserContacts { get; set; }
         public List<Chat> Chats { get; set; } = new List<Chat>();
         public Chat SelectedChat { get; set; } 
         public List<SavedMessage> SavedMessages { get; set; }
@@ -40,6 +35,7 @@ namespace Telegram
         public string GroupOrChannelName { get; set; }
         public string DescriptionChannel { get; set; }
         public string SelectedPhoto { get; set; }
+        public List<User> SelectedContacts { get; set; } = new List<User>();
         //
         public void RefreshUI()
         {
@@ -85,6 +81,15 @@ namespace Telegram
                     }
                     // Create Group and Channel
                     ContactsList.ItemsSource = UserContacts;
+                    if(SelectedContacts.Count > 0)
+                    {
+                        List<User> list = ContactsList.Items.Cast<User>().ToList();
+                        var copyCollection = new List<User>(SelectedContacts);
+                        foreach (User contact in copyCollection)
+                        {
+                            ContactsList.SelectedItems.Add(list.FirstOrDefault(user => user.Id == contact.Id));
+                        }
+                    }
                 }
             });
         }
@@ -103,13 +108,13 @@ namespace Telegram
                     this.Close();
                     return;
                 }
-                var result = JsonConvert.DeserializeAnonymousType(responseString, new { user = new Models.User(), chats = new List<Models.Chat>(), savedMessages = new List<SavedMessage>() });
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { user = new User(), chats = new List<Chat>(), savedMessages = new List<SavedMessage>(), contacts = new List<User>() });
                 if(result.user != null)
                 {
                     LoginedUser = result.user;
                     Chats = result.chats;
-                    CollectionViewSource.GetDefaultView(Chats).Refresh();
                     SavedMessages = result.savedMessages;
+                    UserContacts = result.contacts;
                 }
             }
         }
@@ -192,10 +197,9 @@ namespace Telegram
                 this.Close();
                 return;
             }
-            var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", chat = new Chat(), messages = new List<Message>(), members = new List<User>() });
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", chat = new Chat(), messages = new List<UserMessageViewModel>(), members = new List<User>() });
             //
             if (result.chat == null) return;
-
             SelectedChat = result.chat;
             if (Select.PhotoSource == null)
             {
@@ -262,41 +266,8 @@ namespace Telegram
                 // Favorite
             }
             // Messages
-            foreach (Message message in result.messages)
-            {
-                User user = null;
-                user = result.members.FirstOrDefault(member => member.Id == message.UserId);
-                message.User = user;
-                if (user == null)
-                {
-                    client = new HttpClient();
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                    response = await client.GetAsync($"https://localhost:7195/api/Users/{message.UserId}");
-                    responseString = await response.Content.ReadAsStringAsync();
-                    if (responseString == null)
-                    {
-                        MessageBox.Show("Server error...");
-                        this.Close();
-                        return;
-                    }
-                    var resulttmp = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", id=0, email="", userName="", aboutUser="", lastOnline=new DateTime(), photo="" });
-                    if (resulttmp?.id != null)
-                    {
-                        message.User = new User()
-                        {
-                            Id = resulttmp.id,
-                            Email = resulttmp.email,
-                            UserName = resulttmp.userName,
-                            AboutUser = resulttmp.aboutUser,
-                            Photo = resulttmp.photo,
-                            LastOnline = resulttmp.lastOnline
-                        };
-                    }
-                }
-            }
-
             Chat_ListView.ItemsSource = result.messages;
-            
+
             // RigthInfo
             if (Select.PhotoSource == null)
             {
@@ -333,12 +304,39 @@ namespace Telegram
             Chat_ListView.ScrollIntoView(lastItem);
             Button_To_Down.Visibility = Visibility.Hidden;
         }
+        private DependencyObject GetDescendantByType(DependencyObject element, Type type)
+        {
+            if (element == null) return null;
+            if (element.GetType() == type) return element;
+
+            DependencyObject foundElement = null;
+            if (element is FrameworkElement)
+            {
+                (element as FrameworkElement).ApplyTemplate();
+            }
+            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(element); i++)
+            {
+                DependencyObject visual = VisualTreeHelper.GetChild(element, i);
+                foundElement = GetDescendantByType(visual, type);
+                if (foundElement != null) break;
+            }
+            return foundElement;
+        }
         private void Chat_ListView_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (e.VerticalOffset > 0)
-                Button_To_Down.Visibility = Visibility.Visible;
-            else
+            // Получить ScrollViewer из ListView
+            ScrollViewer scrollViewer = GetDescendantByType(sender as ListView, typeof(ScrollViewer)) as ScrollViewer;
+
+            // Если ScrollViewer находится в нижней части, скрыть кнопку Button_To_Down
+            if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
+            {
                 Button_To_Down.Visibility = Visibility.Hidden;
+            }
+            // Если ScrollViewer не находится в нижней части, проверить его позицию
+            else
+            {
+                Button_To_Down.Visibility = Visibility.Visible;
+            }
         }
         private void Close_CreateGroup_Menu(object sender, MouseButtonEventArgs e)
         {
@@ -402,7 +400,6 @@ namespace Telegram
                         Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
                     }
                 }
-
             }
         }
         private void Close_EditUserName_Menu_Click(object sender, RoutedEventArgs e)
@@ -797,10 +794,48 @@ namespace Telegram
                     MessageBox.Show("Server error...");
                     return;
                 }
-                var result = JsonConvert.DeserializeAnonymousType(responseString, new { result = "" });
-                if (result.result == "Message sent.")
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { deliveryStatus = false });
+                if (result.deliveryStatus)
                 {
                     thistextBox.Text = "";
+                }
+            }
+        }
+        private void ContactsList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            foreach (User user in (sender as ListBox).SelectedItems)
+            {
+                if (!SelectedContacts.Contains(user))
+                {
+                    SelectedContacts.Add(user);
+                }
+            }
+        }
+        private async void AddFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image Files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg|All files (*.*)|*.*",
+                RestoreDirectory = true
+            };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                byte[] bytes = File.ReadAllBytes(openFileDialog.FileName);
+                string extension = Path.GetExtension(openFileDialog.SafeFileName);
+                string photo = $"data:image/{extension.Substring(1)};base64," + Convert.ToBase64String(bytes);
+                if (!String.IsNullOrWhiteSpace(photo))
+                {
+                    var client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                    var data = JsonConvert.SerializeObject(new { userId = LoginedUser.Id, chatId = (Contact_ListView.SelectedItem as Chat).Id, data = photo }); // Add data
+                    var content = new StringContent(data, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync("https://localhost:7195/api/Messages/sendmessage", content);
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    if (responseString == null)
+                    {
+                        MessageBox.Show("Server error...");
+                        return;
+                    }
                 }
             }
         }

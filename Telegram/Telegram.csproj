@@ -108,6 +108,11 @@
     <Compile Include="Model\UserContact.cs" />
     <Compile Include="Model\UserRole.cs" />
     <Compile Include="Model\UserSetting.cs" />
+    <Compile Include="Model\ViewModels\ChatViewModel.cs" />
+    <Compile Include="Model\ViewModels\MessageViewModel.cs" />
+    <Compile Include="Model\ViewModels\UserContactViewModel.cs" />
+    <Compile Include="Model\ViewModels\UserMessageViewModel.cs" />
+    <Compile Include="Model\ViewModels\UserViewModel.cs" />
     <Compile Include="SingUp.xaml.cs">
       <DependentUpon>SingUp.xaml</DependentUpon>
     </Compile>

@@ -9,14 +9,14 @@
                         <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                             <Ellipse x:Name="Ellipse_Avatar" Width="45" Height="45">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding User.PhotoSource}"/>
+                                    <ImageBrush ImageSource="{Binding PhotoSource}"/>
                                 </Ellipse.Fill>
                             </Ellipse>
                             <StackPanel Margin="10,0,0,0" Orientation="Vertical" Width="110">
-                                <Label Content="{Binding User.UserName}"
+                                <Label Content="{Binding UserName}"
                                        FontSize="12"
                                        Style="{DynamicResource MainColorLable}"/>
-                                <Label Content="{Binding User.LastOnline}"
+                                <Label Content="{Binding LastOnline}"
                                        FontSize="12"
                                        Style="{DynamicResource SecondaryColorLable}"/>
                             </StackPanel>
