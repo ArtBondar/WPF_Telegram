@@ -9,6 +9,34 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
         Title="MainWindow">
+    <Window.Resources>
+        <ContextMenu x:Key="ItemContextMenu" Style="{DynamicResource ContextMenuBorderBrush}">
+            <MenuItem Width="180" Style="{DynamicResource MenuItemThreePoints}" Cursor="Hand">
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
+                        <Path Width="20" Height="13" Margin="8,0,0,0" Data="M10 33C10 25.7011 14.103 19.4168 20 16.5919C22.1347 15.5693 24.5046 15 27 15C36.3888 15 44 23.0589 44 33 M18 28L10 33L4 25" Style="{DynamicResource IconStyleMenu}"/>
+                        <Label Content="Reply" FontSize="14" Style="{DynamicResource MainColorLable}" Margin="8,0,0,0"/>
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Width="180" Style="{DynamicResource MenuItemThreePoints}" Cursor="Hand" Click="CopyTextMessageMenu_Click" Tag="{Binding Text}">
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
+                        <Path Width="20" Height="20" Margin="8,0,0,0" Data="M13 12.4316V7.8125C13 6.2592 14.2592 5 15.8125 5H40.1875C41.7408 5 43 6.2592 43 7.8125V32.1875C43 33.7408 41.7408 35 40.1875 35H35.5163 M32.1875 13H7.8125C6.2592 13 5 14.2592 5 15.8125V40.1875C5 41.7408 6.2592 43 7.8125 43H32.1875C33.7408 43 35 41.7408 35 40.1875V15.8125C35 14.2592 33.7408 13 32.1875 13Z" Style="{DynamicResource IconStyleMenu}"/>
+                        <Label Content="Copy text" FontSize="14" Style="{DynamicResource MainColorLable}" Margin="8,0,0,0"/>
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+            <MenuItem Width="180" Style="{DynamicResource MenuItemThreePoints}" Cursor="Hand" Visibility="{Binding VisibilityDeleteMessage}" Click="DeleteMessageMenu_Click" Tag="{Binding Id}">
+                <MenuItem.Header>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
+                        <Path Margin="8,0,0,0" Data="M8 11L40 11 M18 5L30 5 M12 17H36V40C36 41.6569 34.6569 43 33 43H15C13.3431 43 12 41.6569 12 40V17Z" Style="{DynamicResource IconStyleFillRed}" Width="20" Height="20"/>
+                        <Label Content="Delete" FontSize="14" Style="{DynamicResource LableStyleRed}" Margin="8,0,0,0"/>
+                    </StackPanel>
+                </MenuItem.Header>
+            </MenuItem>
+        </ContextMenu>
+    </Window.Resources>
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
@@ -19,7 +47,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="265"/>
             <ColumnDefinition />
-            <ColumnDefinition x:Name="RigthInfoMenu" Width="250"/>
+            <ColumnDefinition x:Name="RigthInfoMenu" Width="0"/>
         </Grid.ColumnDefinitions>
         <!-- Left Chats -->
         <Grid Style="{DynamicResource MainColorGrid}" Grid.Row="1">
@@ -73,7 +101,7 @@
                         <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Cursor="Hand">
                             <MenuItem.Header>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
-                                    <Path Margin="8,0,0,0" Data="M8 11L40 11 M18 5L30 5 M12 17H36V40C36 41.6569 34.6569 43 33 43H15C13.3431 43 12 41.6569 12 40V17Z" Style="{DynamicResource IconStyleFillRed}" Width="20" Height="20"/>
+                                    <Path Margin="8,0,0,0" Data="M10.3001 3.4165H2.80359V18.4165H10.3036 M14.0536 14.6665L17.8036 10.9165L14.0536 7.1665 M6.97025 10.9131H17.8036" Style="{DynamicResource IconStyleFillRed}" Width="20" Height="20"/>
                                     <Label Content="Delete chat" FontSize="14" Style="{DynamicResource LableStyleRed}" Margin="8,0,0,0"/>
                                 </StackPanel>
                             </MenuItem.Header>
@@ -90,7 +118,7 @@
                 <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
             <!-- Chat User info -->
-            <Border Style="{DynamicResource MainColorBorder}" BorderThickness="0,0,0,2">
+            <Border Style="{DynamicResource MainColorBorder}" Cursor="Hand" PreviewMouseLeftButtonUp="OpenSelectedChatmenuInfo">
                 <Grid HorizontalAlignment="Stretch" Margin="8">
                     <StackPanel Orientation="Horizontal">
                         <Grid>
@@ -157,14 +185,63 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <!-- Messages -->
+            <!-- Messages --> <!--ItemContainerStyle="{StaticResource ChatItem}"-->
             <ListView x:Name="Chat_ListView"
                 Style="{DynamicResource ChatListListView}"
                 BorderThickness="0"
-                ItemContainerStyle="{StaticResource ChatItem}"
                 ScrollViewer.CanContentScroll="False"
                 ScrollViewer.ScrollChanged="Chat_ListView_ScrollChanged"
-                Grid.Row="1"/>
+                Grid.Row="1">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Tag" Value="{Binding Author.Id}"/>
+                        <Setter Property="Margin" Value="0,10,0,0"/>
+                        <Setter Property="ContextMenu" Value="{DynamicResource ItemContextMenu}"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                                        <Ellipse Width="40" Height="40" VerticalAlignment="Bottom">
+                                            <Ellipse.Fill>
+                                                <ImageBrush ImageSource="{Binding Author.PhotoSource}" RenderOptions.BitmapScalingMode="Fant"/>
+                                            </Ellipse.Fill>
+                                        </Ellipse>
+                                        <Border CornerRadius="10 10 10 0" Style="{DynamicResource MessageColorBorder}" Margin="10,0,0,0" MinWidth="150" Height="Auto">
+                                            <StackPanel Orientation="Vertical">
+                                                <Label Content="{Binding Author.UserName}"
+                                    Style="{DynamicResource MainColorLable}"
+                                    FontWeight="SemiBold"
+                                    VerticalAlignment="Center"
+                                    FontSize="14"/>
+                                                <Image Source="{Binding PhotoSource}" Height="Auto" MaxHeight="200" />
+                                                <Grid Margin="0,-5,0,5" >
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition Width="100"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding Text}"
+                                        TextWrapping="Wrap"
+                                        Style="{DynamicResource ColorTextMessageBlock}"
+                                        FontSize="14"
+                                        MaxWidth="450"
+                                        VerticalAlignment="Center" Grid.Column="0"/>
+                                                    <Label Content="{Binding SendTime}"
+                                        Style="{DynamicResource SecondaryColorLable}"
+                                        FontSize="8"
+                                        FontWeight="SemiBold"
+                                        VerticalAlignment="Bottom"
+                                        HorizontalAlignment="Right"
+                                        Grid.Column="1"/>
+                                                </Grid>
+                                            </StackPanel>
+                                        </Border>
+                                    </StackPanel>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
             <!-- To Down Button -->
             <Button x:Name="Button_To_Down" VerticalAlignment="Bottom" HorizontalAlignment="Right" Grid.Row="1" Width="35" Height="35" Margin="0,0,15,10" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconBorderedStyle}" Click="Button_To_Down_Messages" Visibility="Hidden">
                 <Path Data="M282.082,76.511l-14.274-14.273c-1.902-1.906-4.093-2.856-6.57-2.856c-2.471,0-4.661,0.95-6.563,2.856L142.466,174.441
@@ -338,7 +415,7 @@
                                 <MenuItem Width="150" Style="{StaticResource MenuItemThreePoints}" Margin="-5, 0, -5, 0" Cursor="Hand" PreviewMouseLeftButtonUp="Logout_MouseLeftButtonUp">
                                     <MenuItem.Header>
                                         <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}" >
-                                            <Path Data="M8 11L40 11 M18 5L30 5 M12 17H36V40C36 41.6569 34.6569 43 33 43H15C13.3431 43 12 41.6569 12 40V17Z" Style="{DynamicResource IconStyleFillRed}" Width="20" Height="25"/>
+                                            <Path Data="M10.3001 3.4165H2.80359V18.4165H10.3036 M14.0536 14.6665L17.8036 10.9165L14.0536 7.1665 M6.97025 10.9131H17.8036" Style="{DynamicResource IconStyleFillRed}" Width="20" Height="25"/>
                                             <Label Content="Logout" FontSize="14" Style="{DynamicResource LableStyleRed}" Margin="3"/>
                                         </StackPanel>
                                     </MenuItem.Header>
@@ -512,7 +589,7 @@
                 </StackPanel>
             </Border>
         </Grid>
-        <!-- Add contacts for create group -->
+        <!-- Add contacts for create group or channel -->
         <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Contacts_Create_Grid" PreviewMouseLeftButtonUp="Close_Contacts_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
@@ -533,6 +610,71 @@
                         <Button Content="Create" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="AddMembersClick"/>
                     </StackPanel>
                 </StackPanel>
+            </Border>
+        </Grid>
+        <!-- Info -->
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_Info_Grid" PreviewMouseLeftButtonUp="Close_Info_Menu">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity="0.3"/>
+            </Grid.Background>
+            <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" Width="400" Height="Auto">
+                <ScrollViewer>
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <Label Content="Information" Style="{DynamicResource MainColorLable}" FontSize="24" Margin="25,0,0,0"/>
+                            <Button Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconStyle}" Margin="195,0,0,0" Click="MenuInfoGridClose_Click">
+                                <Path Data="M8 8L40 40 M8 40L40 8" Style="{DynamicResource IconStyle}" Margin="1" Stretch="Fill"/>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="20, 25, 0, 0" Grid.Row="0" VerticalAlignment="Top">
+                            <Grid>
+                                <Ellipse x:Name="InfoEllipse" Width="75" Height="75"/>
+                                <TextBlock x:Name="InfoEllipseText" FontSize="25" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Grid>
+                            <StackPanel Orientation="Vertical" Margin="10, 0, 0, 0" VerticalAlignment="Center">
+                                <Label x:Name="Info_Name" Content="Bunny" Style="{DynamicResource MainColorLable}" FontSize="14"/>
+                                <Label x:Name="Info_Second" Content="Was online today at 17:28" Style="{DynamicResource SecondaryColorLable}"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <Border x:Name="UpInfoBorder" Style="{DynamicResource SecondaryColorBorder}" Height="5" Margin="0,15,0,0"/>
+                        <!-- INFO -->
+                        <Grid Grid.Row="2" Margin="0, 10, 0, 0" Height="Auto">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Path Width="30" Height="30" Data="M24,44C29.5228,44,34.5228,41.7614,38.1421,38.1421C41.7614,34.5228,44,29.5228,44,24C44,18.4772,41.7614,13.4772,38.1421,9.85786C34.5228,6.23858,29.5228,4,24,4C18.4772,4,13.4772,6.23858,9.85786,9.85786C6.23858,13.4772,4,18.4772,4,24C4,29.5228,6.23858,34.5228,9.85786,38.1421C13.4772,41.7614,18.4772,44,24,44Z M24,44C29.5228,44,34.5228,41.7614,38.1421,38.1421C41.7614,34.5228,44,29.5228,44,24C44,18.4772,41.7614,13.4772,38.1421,9.85786C34.5228,6.23858,29.5228,4,24,4C18.4772,4,13.4772,6.23858,9.85786,9.85786C6.23858,13.4772,4,18.4772,4,24C4,29.5228,6.23858,34.5228,9.85786,38.1421C13.4772,41.7614,18.4772,44,24,44Z M24,11C25.3807,11,26.5,12.1193,26.5,13.5C26.5,14.8807,25.3807,16,24,16C22.6193,16,21.5,14.8807,21.5,13.5C21.5,12.1193,22.6193,11,24,11Z M24.5,34V20H23.5H22.5 M21,34H28" Style="{DynamicResource IconStyle}" x:Name="InfoPath_Info" Margin="5,10,0,0" VerticalAlignment="Top" Stretch="Fill"/>
+                            <StackPanel Grid.Column="1" Orientation="Vertical" Height="Auto">
+                                <Label x:Name="Info1_Lable_Info" Content="+380632017150" Style="{DynamicResource MainColorLable}" FontSize="14"/>
+                                <Label x:Name="Info1_NameLable_Info" Content="Tel. number" Style="{DynamicResource SecondaryColorLable}" Margin="0, -5, 0, 0"/>
+                                <Border Height="5" Background="Transparent"/>
+                                <Label x:Name="Info2_Lable_Info" Content="Hello, my name..." Style="{DynamicResource MainColorLable}" FontSize="14"/>
+                                <Label x:Name="Info2_NameLable_Info" Content="About" Style="{DynamicResource SecondaryColorLable}" Margin="0, -5, 0, 0"/>
+                                <Border Height="5" Background="Transparent"/>
+                                <Label x:Name="Info3_Lable_Info" Content="@Art" Style="{DynamicResource MainColorLable}" FontSize="14"/>
+                                <Label x:Name="Info3_NameLable_Info" Content="Nickname" Style="{DynamicResource SecondaryColorLable}" Margin="0, -5, 0, 0"/>
+                            </StackPanel>
+                        </Grid>
+                        <Border Style="{DynamicResource SecondaryColorBorder}" Height="5"/>
+                        <!-- Muted -->
+                        <Border Background="Transparent" Grid.Row="4" PreviewMouseLeftButtonUp="ToogleButton_Notification_MouseDown" Cursor="Hand" Margin="15">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Path x:Name="Notifications_Path_Info" Width="25" Height="25" Data="M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z M32 15L32 15C32.6232 15.5565 33.1881 16.1797 33.6841 16.8588C35.1387 18.8504 36 21.3223 36 24C36 26.6545 35.1535 29.1067 33.7218 31.0893C33.2168 31.7885 32.6391 32.4293 32 33 M34.2359 41.1857C40.0836 37.6953 44 31.305 44 24C44 16.8085 40.2043 10.5035 34.507 6.97906" Style="{DynamicResource IconStyle}" Margin="25,0,0,0"/>
+                                <Label Content="Notifications" Style="{DynamicResource MainColorLable}" FontSize="14" Margin="25,0,0,0"/>
+                                <ToggleButton x:Name="ToogleButton_Notification_Info" Style="{StaticResource AnimatedSwitch}" Height="20" IsChecked="True" Margin="100, 0, 0, 0" VerticalAlignment="Center" Click="ToogleButton_DarkWhite_Click" />
+                            </StackPanel>
+                        </Border>
+                        <Border Style="{DynamicResource SecondaryColorBorder}" Height="5"/>
+                        <!-- Members in group -->
+                        <Label x:Name="Lable_Members" Content="Members" Style="{DynamicResource MainColorLable}" Height="Auto" FontSize="16" Margin="10"/>
+                        <ListBox Height="Auto"
+                             x:Name="MembersList"
+                             Style="{DynamicResource ListBoxContacts}"
+                             ItemContainerStyle="{DynamicResource MembersItemsStyle}"
+                             SelectionChanged="ContactsList_SelectionChanged">
+                        </ListBox>
+                    </StackPanel>
+                </ScrollViewer>
             </Border>
         </Grid>
     </Grid>

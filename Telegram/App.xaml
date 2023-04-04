@@ -6,7 +6,6 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source=".\themes\MainWindow\Chat\ChatItem.xaml"/>
                 <ResourceDictionary Source=".\themes\MainWindow\StylishScrollbar.xaml"/>
                 <ResourceDictionary Source=".\themes\MainWindow\Info\ToggleButton.xaml"/>
                 <ResourceDictionary Source=".\themes\MainWindow\Chat\MenuItemThreePoints.xaml"/>
@@ -15,6 +14,7 @@
                 <ResourceDictionary Source=".\themes\MainWindow\TextBox\MessageBox.xaml"/>
                 <ResourceDictionary Source=".\themes\MainWindow\TextBox\SearchBox.xaml"/>
                 <ResourceDictionary Source=".\themes\MainWindow\ListBox\ListBoxContacts.xaml"/>
+                <ResourceDictionary Source=".\themes\MainWindow\ListBox\ListBoxMembers.xaml"/>
                 <!-- Skins -->
                 <ResourceDictionary Source=".\themes\MainWindow\skins\white.xaml"/>
                 <ResourceDictionary Source=".\themes\MainWindow\skins\dark.xaml"/>

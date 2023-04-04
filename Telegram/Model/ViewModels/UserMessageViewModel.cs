@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Windows;
 
 namespace Telegram.ViewModels
 {
@@ -36,5 +37,6 @@ namespace Telegram.ViewModels
         public DateTime SendTime { get; set; }
         public string Text { get; set; }
         public UserViewModel Author{ get; set; }
+        public Visibility? VisibilityDeleteMessage { get; set; } = null;
     }
 }

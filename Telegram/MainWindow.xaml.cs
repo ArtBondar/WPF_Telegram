@@ -223,6 +223,7 @@ namespace Telegram
             if (Select.Type == "Group")
             {
                 ChatPanel_SecondInfo.Content = $"{Select.MembersCount} members";
+                MembersList.ItemsSource = result.members;
                 if (!String.IsNullOrWhiteSpace(Select.ChatInfo))
                 {
                     Info1_NameLable.Content = "About"; Info1_NameLable.Visibility = Visibility.Visible;
@@ -240,6 +241,7 @@ namespace Telegram
             if (Select.Type == "Channel")
             {
                 ChatPanel_SecondInfo.Content = $"{Select.MembersCount} members";
+                MembersList.ItemsSource = result.members;
                 if (!String.IsNullOrWhiteSpace(Select.ChatInfo))
                 {
                     Info1_NameLable.Content = "About"; Info1_NameLable.Visibility = Visibility.Visible;
@@ -257,8 +259,11 @@ namespace Telegram
                 RigthInfo_Name.Content = Select.ChatName;
                 RigthInfo_Second.Content = "?";
                 ChatPanel_SecondInfo.Content = Select.PublishTime;
-                Info1_NameLable.Content = "About"; Info1_NameLable.Visibility = Visibility.Visible;
-                Info1_Lable.Content = Select.ChatInfo; Info1_Lable.Visibility = Visibility.Visible;
+                if (!String.IsNullOrWhiteSpace(Select.ChatInfo))
+                {
+                    Info1_NameLable.Content = "About"; Info1_NameLable.Visibility = Visibility.Visible;
+                    Info1_Lable.Content = Select.ChatInfo; Info1_Lable.Visibility = Visibility.Visible;
+                }
                 Info2_NameLable.Content = "Username"; Info2_NameLable.Visibility = Visibility.Visible;
                 Info2_Lable.Content = Select.ChatName; Info2_Lable.Visibility = Visibility.Visible;
             }
@@ -268,6 +273,13 @@ namespace Telegram
                 // Favorite
             }
             // Messages
+            foreach (UserMessageViewModel message in result.messages)
+            {
+                if(message.Author.Id == LoginedUser.Id)
+                    message.VisibilityDeleteMessage = Visibility.Visible;
+                else
+                    message.VisibilityDeleteMessage = Visibility.Collapsed;
+            }
             Chat_ListView.ItemsSource = result.messages;
 
             // RigthInfo
@@ -840,6 +852,81 @@ namespace Telegram
                     }
                 }
             }
+        }
+        private void CopyTextMessageMenu_Click(object sender, RoutedEventArgs e)
+        {
+            string text = (sender as MenuItem).Tag.ToString();
+            Clipboard.SetText(text);
+        }
+        private async void DeleteMessageMenu_Click(object sender, RoutedEventArgs e)
+        {
+            int messageId = (int)(sender as MenuItem).Tag;
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+            var data = JsonConvert.SerializeObject(new { userId = LoginedUser.Id, messageId });
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("DELETE"), RequestUri = new Uri("https://localhost:7195/api/Messages/deletemessage"), Content = content });
+            var responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null)
+            {
+                MessageBox.Show("Server error...");
+                return;
+            }
+        }
+        private void OpenSelectedChatmenuInfo(object sender, MouseButtonEventArgs e)
+        {
+            Menu_Info_Grid.Visibility = Visibility.Visible;
+            Info_Name.Content = SelectedChat.ChatName;
+            Info_Second.Content = $"{SelectedChat.MembersCount} members";
+            Lable_Members.Visibility = Visibility.Collapsed;
+            ChatPanel_SecondInfo.Content = "";
+            Info1_NameLable_Info.Content = ""; Info1_NameLable_Info.Visibility = Visibility.Collapsed;
+            Info1_Lable_Info.Content = ""; Info1_Lable_Info.Visibility = Visibility.Collapsed;
+            Info2_NameLable_Info.Content = ""; Info2_NameLable_Info.Visibility = Visibility.Collapsed;
+            Info2_Lable_Info.Content = ""; Info2_Lable_Info.Visibility = Visibility.Collapsed;
+            Info3_NameLable_Info.Content = ""; Info3_NameLable_Info.Visibility = Visibility.Collapsed;
+            Info3_Lable_Info.Content = ""; Info3_Lable_Info.Visibility = Visibility.Collapsed;
+            InfoPath_Info.Visibility = Visibility.Collapsed;
+            UpInfoBorder.Visibility = Visibility.Collapsed;
+            MembersList.Visibility = Visibility.Collapsed;
+            if (SelectedChat.Type == "Private")
+            {
+                Info_Name.Content = SelectedChat.ChatName;
+                Info_Second.Content = SelectedChat.PublishTime;
+                ChatPanel_SecondInfo.Content = SelectedChat.PublishTime;
+                if (!String.IsNullOrWhiteSpace(SelectedChat.ChatInfo))
+                {
+                    Info1_NameLable_Info.Content = "About"; Info1_NameLable_Info.Visibility = Visibility.Visible;
+                    Info1_Lable_Info.Content = SelectedChat.ChatInfo; Info1_Lable_Info.Visibility = Visibility.Visible;
+                }
+                Info2_NameLable_Info.Content = "Username"; Info2_NameLable_Info.Visibility = Visibility.Visible;
+                Info2_Lable_Info.Content = SelectedChat.ChatName; Info2_Lable_Info.Visibility = Visibility.Visible;
+                InfoPath_Info.Visibility = Visibility.Visible;
+                UpInfoBorder.Visibility = Visibility.Visible;
+            }
+            if (SelectedChat.Type == "Group" || SelectedChat.Type == "Channel")
+            {
+                MembersList.Visibility = Visibility.Visible;
+                Lable_Members.Visibility = Visibility.Visible;
+            }
+            if (SelectedChat.PhotoSource == null)
+            {
+                InfoEllipse.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B8ACFF"));
+                InfoEllipseText.Text = SelectedChat.PhotoText;
+            }
+            else
+                InfoEllipse.Fill = new ImageBrush(SelectedChat.PhotoSource);
+        }
+        private void Close_Info_Menu(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source == Menu_Info_Grid)
+            {
+                Menu_Info_Grid.Visibility = Visibility.Hidden;
+            }
+        }
+        private void MenuInfoGridClose_Click(object sender, RoutedEventArgs e)
+        {
+            Menu_Info_Grid.Visibility = Visibility.Hidden;
         }
     }
 }

@@ -75,6 +75,16 @@ namespace Telegram.Models
         public string ShortMessage { get; set; }
         public DateTime PublishTime { get; set; }
         public bool MuteStatus { get; set; }
+        public string MutePath
+        {
+            get
+            {
+                if (MuteStatus)
+                    return "M40.7348,20.2858 L32.2495,28.7711 M32.2496,20.2858 L40.7349,28.7711 M24,6 V42 C17,42 11.7985,32.8391 11.7985,32.8391 H6 C4.89543,32.8391 4,31.9437 4,30.8391 V17.0108 C4,15.9062 4.89543,15.0108 6,15.0108 H11.7985 C11.7985,15.0108 17,6 24,6 Z";
+                else
+                    return "";
+            }
+        }
         public string Type { get; set; }
         public int MembersCount { get; set; }
         public int PinnedMessageId { get; set; }

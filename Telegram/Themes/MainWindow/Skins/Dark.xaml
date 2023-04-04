@@ -20,10 +20,12 @@
         <Setter Property="Background" Value="#11032F"/>
     </Style>
     <Style x:Key="ContextMenuBorderBrush" TargetType="ContextMenu">
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="BorderBrush" Value="#B8ACFF"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ContextMenu}">
-                    <Border CornerRadius="5" Background="#11032F">
+                    <Border CornerRadius="5" Background="#11032F" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <ItemsPresenter Margin="-5, 0, -5, 0"/>
                     </Border>
                 </ControlTemplate>
@@ -176,9 +178,12 @@
                                 </TextBlock>
                             </Grid>
                             <StackPanel Margin="10,0,0,0" Orientation="Vertical" Width="110">
-                                <Label Content="{Binding ChatName}"
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="{Binding ChatName}"
                                        FontSize="12"
-                                       Style="{DynamicResource MainColorLable}"/>
+                                       Style="{DynamicResource MainColorLable}" MaxWidth="90"/>
+                                    <Path Width="15" Height="15" Data="{Binding MutePath}" Style="{DynamicResource IconStyle}" Margin="0"/>
+                                </StackPanel>
                                 <Label Content="{Binding ShortMessage}"
                                        FontSize="12"
                                        Style="{DynamicResource SecondaryColorLable}"/>
