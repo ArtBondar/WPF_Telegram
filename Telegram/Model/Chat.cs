@@ -8,6 +8,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Linq;
 using System.ComponentModel;
 using System.Windows.Markup;
+using System.Windows;
 
 namespace Telegram.Models
 {
@@ -86,6 +87,15 @@ namespace Telegram.Models
             }
         }
         public string Type { get; set; }
+        public Visibility ChannelIconVisibility
+        {
+            get
+            {
+                if (Type == "Channel")
+                    return Visibility.Visible;
+                return Visibility.Collapsed;
+            }
+        }
         public int MembersCount { get; set; }
         public int PinnedMessageId { get; set; }
         public string ChatInfo { get; set; }

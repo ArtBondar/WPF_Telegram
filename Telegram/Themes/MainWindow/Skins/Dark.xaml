@@ -177,22 +177,24 @@
                                     </TextBlock.Style>
                                 </TextBlock>
                             </Grid>
-                            <StackPanel Margin="10,0,0,0" Orientation="Vertical" Width="110">
+                            <StackPanel Margin="10,0,0,0" Orientation="Vertical" Width="125">
                                 <StackPanel Orientation="Horizontal">
+                                    <Path Width="20" Height="18" Data="M5.625 6.34082H1.5V13.0908H5.625V6.34082Z M5.625 6.34082L12.375 3.71582V15.7158L5.625 13.0908 M15 7.09082H15.75 M14.625 10.0908H16.5 M15 13.0908H15.75" Style="{DynamicResource IconStyle}" Visibility="{Binding ChannelIconVisibility}" Margin="1" />
                                     <Label Content="{Binding ChatName}"
                                        FontSize="12"
-                                       Style="{DynamicResource MainColorLable}" MaxWidth="90"/>
+                                       Style="{DynamicResource MainColorLable}" MaxWidth="100"/>
                                     <Path Width="15" Height="15" Data="{Binding MutePath}" Style="{DynamicResource IconStyle}" Margin="0"/>
                                 </StackPanel>
                                 <Label Content="{Binding ShortMessage}"
                                        FontSize="12"
                                        Style="{DynamicResource SecondaryColorLable}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="10,0,0,0">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="8,0,0,0" Width="60">
                                 <Label Content="{Binding ViewTime}"
                                        FontSize="10"
-                                       Style="{DynamicResource SecondaryColorLable}"/>
-                                <Grid>
+                                       Style="{DynamicResource SecondaryColorLable}"
+                                       HorizontalAlignment="Center"/>
+                                <Grid HorizontalAlignment="Center">
                                     <Ellipse Height="25" Width="25">
                                         <Ellipse.Style>
                                             <Style TargetType="Ellipse">
