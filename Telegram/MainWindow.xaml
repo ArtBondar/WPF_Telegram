@@ -185,7 +185,7 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <!-- Messages --> <!--ItemContainerStyle="{StaticResource ChatItem}"-->
+            <!-- Messages -->
             <ListView x:Name="Chat_ListView"
                 Style="{DynamicResource ChatListListView}"
                 BorderThickness="0"
@@ -250,7 +250,7 @@
 		c1.902-1.903,2.847-4.093,2.847-6.565C284.929,80.607,283.984,78.417,282.082,76.511z" Style="{DynamicResource IconStyleFill}" Margin="5,10,5,10" Stretch="Fill"/>
             </Button>
             <!-- MessageBox -->
-            <Grid Grid.Row="2" Style="{DynamicResource MainColorGrid}">
+            <Grid Grid.Row="2" Style="{DynamicResource MainColorGrid}" x:Name="WriteMessageBox">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="50"/>
                     <ColumnDefinition/>
@@ -325,11 +325,11 @@
                 </StackPanel>
             </Grid>
             <Border Grid.Row="3" Style="{DynamicResource MainColorBorder}"/>
-            <Border Background="Transparent" Grid.Row="4" PreviewMouseLeftButtonUp="ToogleButton_Notification_MouseDown" Cursor="Hand">
+            <Border x:Name="BorderNotifucatuinRigthMenu" Background="Transparent" Grid.Row="4" PreviewMouseLeftButtonUp="ToogleButton_Notification_MouseDown" Cursor="Hand">
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                     <Path x:Name="Notifications_Path" Width="25" Height="25" Data="M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z M32 15L32 15C32.6232 15.5565 33.1881 16.1797 33.6841 16.8588C35.1387 18.8504 36 21.3223 36 24C36 26.6545 35.1535 29.1067 33.7218 31.0893C33.2168 31.7885 32.6391 32.4293 32 33 M34.2359 41.1857C40.0836 37.6953 44 31.305 44 24C44 16.8085 40.2043 10.5035 34.507 6.97906" Style="{DynamicResource IconStyle}" Margin="25,0,0,0"/>
                     <Label Content="Notifications" Style="{DynamicResource MainColorLable}" FontSize="14" Margin="25,0,0,0"/>
-                    <ToggleButton x:Name="ToogleButton_Notification" Style="{StaticResource AnimatedSwitch}" Height="20" IsChecked="True" Margin="25, 0, 0, 0" VerticalAlignment="Center" Click="ToogleButton_DarkWhite_Click" />
+                    <ToggleButton x:Name="ToogleButton_Notification" Style="{StaticResource AnimatedSwitch}" Height="20" IsChecked="True" Margin="25, 0, 0, 0" VerticalAlignment="Center" Click="ToogleButton_Notification_Click" />
                 </StackPanel>
             </Border>
             <Border Grid.Row="5" Style="{DynamicResource MainColorBorder}"/>
@@ -618,8 +618,8 @@
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
             <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" Width="400" Height="Auto">
-                <ScrollViewer>
-                    <StackPanel Orientation="Vertical">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Orientation="Vertical" Width="400">
                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                             <Label Content="Information" Style="{DynamicResource MainColorLable}" FontSize="24" Margin="25,0,0,0"/>
                             <Button Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconStyle}" Margin="195,0,0,0" Click="MenuInfoGridClose_Click">
@@ -636,7 +636,7 @@
                                 <Label x:Name="Info_Second" Content="Was online today at 17:28" Style="{DynamicResource SecondaryColorLable}"/>
                             </StackPanel>
                         </StackPanel>
-                        <Border x:Name="UpInfoBorder" Style="{DynamicResource SecondaryColorBorder}" Height="5" Margin="0,15,0,0"/>
+                        <Border x:Name="UpInfoBorder" Style="{DynamicResource SecondaryColorBorder}" Height="5" Margin="0,8,0,0"/>
                         <!-- INFO -->
                         <Grid Grid.Row="2" Margin="0, 10, 0, 0" Height="Auto">
                             <Grid.ColumnDefinitions>
@@ -655,13 +655,13 @@
                                 <Label x:Name="Info3_NameLable_Info" Content="Nickname" Style="{DynamicResource SecondaryColorLable}" Margin="0, -5, 0, 0"/>
                             </StackPanel>
                         </Grid>
-                        <Border Style="{DynamicResource SecondaryColorBorder}" Height="5"/>
+                        <Border Style="{DynamicResource SecondaryColorBorder}" Height="5" Margin="0,8,0,0"/>
                         <!-- Muted -->
-                        <Border Background="Transparent" Grid.Row="4" PreviewMouseLeftButtonUp="ToogleButton_Notification_MouseDown" Cursor="Hand" Margin="15">
+                        <Border Background="Transparent" Grid.Row="4" PreviewMouseLeftButtonUp="ToogleButton_NotificationInfo_Click" Cursor="Hand" Margin="15">
                             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                <Path x:Name="Notifications_Path_Info" Width="25" Height="25" Data="M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z M32 15L32 15C32.6232 15.5565 33.1881 16.1797 33.6841 16.8588C35.1387 18.8504 36 21.3223 36 24C36 26.6545 35.1535 29.1067 33.7218 31.0893C33.2168 31.7885 32.6391 32.4293 32 33 M34.2359 41.1857C40.0836 37.6953 44 31.305 44 24C44 16.8085 40.2043 10.5035 34.507 6.97906" Style="{DynamicResource IconStyle}" Margin="25,0,0,0"/>
+                                <Path x:Name="Notifications_Path_Info" Width="25" Height="25" Data="M10.9976 2.5V17.5C8.0809 17.5 5.9136 13.683 5.9136 13.683H3.49756C3.03733 13.683 2.66423 13.3099 2.66423 12.8496V7.08783C2.66423 6.62758 3.03733 6.2545 3.49756 6.2545H5.9136C5.9136 6.2545 8.0809 2.5 10.9976 2.5Z M14.3309 6.25C14.5906 6.48188 14.8259 6.74154 15.0326 7.0245C15.6387 7.85433 15.9976 8.88429 15.9976 10C15.9976 11.106 15.6448 12.1278 15.0483 12.9539C14.8379 13.2452 14.5972 13.5122 14.3309 13.75 M15.2625 17.1607C17.6991 15.7064 19.3309 13.0438 19.3309 10C19.3309 7.00356 17.7493 4.37648 15.3755 2.90796" Style="{DynamicResource IconStyle}" Margin="25,0,0,0"/>
                                 <Label Content="Notifications" Style="{DynamicResource MainColorLable}" FontSize="14" Margin="25,0,0,0"/>
-                                <ToggleButton x:Name="ToogleButton_Notification_Info" Style="{StaticResource AnimatedSwitch}" Height="20" IsChecked="True" Margin="100, 0, 0, 0" VerticalAlignment="Center" Click="ToogleButton_DarkWhite_Click" />
+                                <ToggleButton x:Name="ToogleButton_Notification_Info" Style="{StaticResource AnimatedSwitch}" Height="20" IsChecked="True" Margin="100, 0, 0, 0" VerticalAlignment="Center" Click="ToogleButton_MuteInfo_Click" />
                             </StackPanel>
                         </Border>
                         <Border Style="{DynamicResource SecondaryColorBorder}" Height="5"/>
