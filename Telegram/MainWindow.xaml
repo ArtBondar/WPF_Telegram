@@ -118,7 +118,7 @@
                 <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
             <!-- Chat User info -->
-            <Border Style="{DynamicResource MainColorBorder}" Cursor="Hand" PreviewMouseLeftButtonUp="OpenSelectedChatmenuInfo">
+            <Border x:Name="BorderChatInfoWithButtons" Style="{DynamicResource MainColorBorder}" Cursor="Hand" PreviewMouseLeftButtonUp="OpenSelectedChatmenuInfo">
                 <Grid HorizontalAlignment="Stretch" Margin="8">
                     <StackPanel Orientation="Horizontal">
                         <Grid>
@@ -590,7 +590,7 @@
             </Border>
         </Grid>
         <!-- Add contacts for create group or channel -->
-        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Contacts_Create_Grid" PreviewMouseLeftButtonUp="Close_Contacts_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Contacts_Create_Grid" PreviewMouseLeftButtonUp="Close_Contacts_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
@@ -607,7 +607,7 @@
                     </ListBox>
                     <StackPanel Orientation="Horizontal" Margin="0,25,0,0" HorizontalAlignment="Right">
                         <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_ContactsCreate_Click"/>
-                        <Button Content="Create" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="AddMembersClick"/>
+                        <Button Content="Next" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="AddMembersClick"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
