@@ -98,7 +98,7 @@
                                 </StackPanel>
                             </MenuItem.Header>
                         </MenuItem>
-                        <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Cursor="Hand">
+                        <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Cursor="Hand" Click="DeleteChat_Click">
                             <MenuItem.Header>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
                                     <Path Margin="8,0,0,0" Data="M10.3001 3.4165H2.80359V18.4165H10.3036 M14.0536 14.6665L17.8036 10.9165L14.0536 7.1665 M6.97025 10.9131H17.8036" Style="{DynamicResource IconStyleFillRed}" Width="20" Height="20"/>
@@ -590,7 +590,7 @@
             </Border>
         </Grid>
         <!-- Add contacts for create group or channel -->
-        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Contacts_Create_Grid" PreviewMouseLeftButtonUp="Close_Contacts_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Contacts_Create_Grid" PreviewMouseLeftButtonUp="Close_Contacts_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>

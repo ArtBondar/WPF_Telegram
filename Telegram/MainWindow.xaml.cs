@@ -35,6 +35,7 @@ namespace Telegram
         public string GroupOrChannelName { get; set; }
         public string DescriptionChannel { get; set; }
         public string SelectedPhoto { get; set; }
+        public Chat CreatedLastChat { get; set; }
         public List<User> SelectedContacts { get; set; } = new List<User>();
         //
         public void RefreshUI()
@@ -666,29 +667,29 @@ namespace Telegram
             {
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                var data = JsonConvert.SerializeObject(new { authorId = LoginedUser.Id, chatImage = SelectedPhoto, chatName = GroupOrChannelName, shortMessage = "Group created...", publishTime = DateTime.Now, type = "Group" });
+                var data = JsonConvert.SerializeObject(new { chatImage = SelectedPhoto, chatName = GroupOrChannelName, shortMessage = "Group created", publishTime = DateTime.Now, Type = "Group", authorId = LoginedUser.Id });
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
+                var response = await client.PostAsync("https://localhost:7195/api/Chats/createchat", content);
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
                     MessageBox.Show("Server error...");
                     return;
                 }
-                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
-                if (result.error != null)
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", result = "", chat = new Chat() });
+                if (result == null)
                 {
                     MessageBox.Show($"{result.error}");
                     return;
                 }
-                if (result.user != null)
+                if (result.result != null)
                 {
-                    LoginedUser = result.user;
-                    Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
+                    Menu_CreateGroup_Grid.Visibility = Visibility.Hidden;
+                    Contacts_Create_Grid.Visibility = Visibility.Visible;
+                    CreatedLastChat = result.chat;
                 }
             }
-            Menu_CreateGroup_Grid.Visibility = Visibility.Hidden;
-            Contacts_Create_Grid.Visibility = Visibility.Visible;
         }
         private async void CreateChanel_Click(object sender, RoutedEventArgs e)
         {
@@ -700,48 +701,50 @@ namespace Telegram
             {
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                var data = JsonConvert.SerializeObject(new { authorId = LoginedUser.Id, chatImage = SelectedPhoto, chatName = GroupOrChannelName, shortMessage = "Channel created...", publishTime = DateTime.Now, type = "Channel", chatInfo = ChannelDescription });
+                var data = JsonConvert.SerializeObject(new { chatImage = SelectedPhoto, chatName = GroupOrChannelName, shortMessage = "Channel created", publishTime = DateTime.Now, Type = "Channel", authorId = LoginedUser.Id });
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
+                var response = await client.PostAsync("https://localhost:7195/api/Chats/createchat", content);
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
                     MessageBox.Show("Server error...");
                     return;
                 }
-                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
-                if (result.error != null)
+                var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", result = "", chat = new Chat() });
+                if (result == null)
                 {
                     MessageBox.Show($"{result.error}");
                     return;
                 }
-                if (result.user != null)
+                if (result.result != null)
                 {
-                    LoginedUser = result.user;
-                    Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
+                    Menu_CreateChanel_Grid.Visibility = Visibility.Hidden;
+                    Contacts_Create_Grid.Visibility = Visibility.Visible;
+                    CreatedLastChat = result.chat;
                 }
             }
-            Menu_CreateChanel_Grid.Visibility = Visibility.Hidden;
-            Contacts_Create_Grid.Visibility = Visibility.Visible;
         }
-        private void AddMembersClick(object sender, RoutedEventArgs e)
+        private async void AddMembersClick(object sender, RoutedEventArgs e)
         {
-            if (CreateGroupOrChannel == CreateFrag.Null)
-            {
-                return;
-            }
+            List<User> users = new List<User>();
+            if (CreateGroupOrChannel == CreateFrag.Null) return;
+
             if (ContactsList.Items.Count != 0)
+                users = ContactsList.Items.Cast<User>().ToList();
+
+            List<int> members = users.Select(u => u.Id).ToList();
+            var client = new HttpClient();
+            var data = JsonConvert.SerializeObject(new { id = 0, members }); 
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:7195/api/Chats/editpublicchat", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null)
             {
-                List<User> users = ContactsList.Items.Cast<User>().ToList();
-                //...
-            }
-            if(CreateGroupOrChannel == CreateFrag.Group)
-            {
-                // Create group
-            }
-            if(CreateGroupOrChannel == CreateFrag.Channel)
-            {
-                // Create channel
+                MessageBox.Show("Server error...");
+                this.Close();
+                return;
             }
             Contacts_Create_Grid.Visibility = Visibility.Hidden;
         }
@@ -927,6 +930,21 @@ namespace Telegram
         private void MenuInfoGridClose_Click(object sender, RoutedEventArgs e)
         {
             Menu_Info_Grid.Visibility = Visibility.Hidden;
+        }
+        private async void DeleteChat_Click(object sender, RoutedEventArgs e)
+        {
+            var client = new HttpClient();
+            var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, chatName = SelectedChat.ChatName });
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:7195/api/Chats/leavepublicchat", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null)
+            {
+                MessageBox.Show("Server error...");
+                this.Close();
+                return;
+            }
         }
     }
 }
