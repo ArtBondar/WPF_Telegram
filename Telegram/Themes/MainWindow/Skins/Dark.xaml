@@ -200,14 +200,25 @@
                                             <Style TargetType="Ellipse">
                                                 <Setter Property="Fill" Value="#B8ACFF"/>
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding CountNotViwedMessages}" Value="0">
+                                                    <DataTrigger Binding="{Binding NotViewedCounter}" Value="0">
                                                         <Setter Property="Fill" Value="Transparent"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
                                         </Ellipse.Style>
                                     </Ellipse>
-                                    <Label Content="{Binding CountNotViwedMessages}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" Style="{DynamicResource MainColorLable}"/>
+                                    <Label Content="{Binding NotViewedCounter}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12">
+                                        <Label.Style>
+                                            <Style TargetType="Label">
+                                                <Setter Property="Foreground" Value="White"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding NotViewedCounter}" Value="0">
+                                                        <Setter Property="Foreground" Value="Transparent"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Label.Style>
+                                    </Label>
                                 </Grid>
                             </StackPanel>
                         </StackPanel>

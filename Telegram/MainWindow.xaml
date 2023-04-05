@@ -82,15 +82,15 @@
                       ItemContainerStyle="{DynamicResource ContactCard}">
                 <ListView.ContextMenu>
                     <ContextMenu Style="{DynamicResource ContextMenuBorderBrush}" BorderThickness="0" BorderBrush="Transparent">
-                        <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Cursor="Hand">
+                        <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Cursor="Hand" Click="ReadAllMessage_Click">
                             <MenuItem.Header>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
-                                    <Path Width="20" Height="20" Margin="5,0,0,0" Data="M24,44C29.5228,44,34.5228,41.7614,38.1421,38.1421C41.7614,34.5228,44,29.5228,44,24C44,18.4772,41.7614,13.4772,38.1421,9.85786C34.5228,6.23858,29.5228,4,24,4C18.4772,4,13.4772,6.23858,9.85786,9.85786C6.23858,13.4772,4,18.4772,4,24C4,29.5228,6.23858,34.5228,9.85786,38.1421C13.4772,41.7614,18.4772,44,24,44Z M24,44C29.5228,44,34.5228,41.7614,38.1421,38.1421C41.7614,34.5228,44,29.5228,44,24C44,18.4772,41.7614,13.4772,38.1421,9.85786C34.5228,6.23858,29.5228,4,24,4C18.4772,4,13.4772,6.23858,9.85786,9.85786C6.23858,13.4772,4,18.4772,4,24C4,29.5228,6.23858,34.5228,9.85786,38.1421C13.4772,41.7614,18.4772,44,24,44Z M24,11C25.3807,11,26.5,12.1193,26.5,13.5C26.5,14.8807,25.3807,16,24,16C22.6193,16,21.5,14.8807,21.5,13.5C21.5,12.1193,22.6193,11,24,11Z M24.5,34V20H23.5H22.5 M21,34H28" Style="{DynamicResource IconStyleMenu}"/>
-                                    <Label Content="Info" FontSize="14" Style="{DynamicResource MainColorLable}" Margin="8,0,0,0"/>
+                                    <Path Width="20" Height="20" Margin="5,0,0,0" Data="M19.3309 10.0001C19.3309 14.6025 15.5999 18.3334 10.9976 18.3334C8.5086 18.3334 2.66423 18.3334 2.66423 18.3334C2.66423 18.3334 2.66423 12.1135 2.66423 10.0001C2.66423 5.39771 6.39519 1.66675 10.9976 1.66675C15.5999 1.66675 19.3309 5.39771 19.3309 10.0001Z M6.83086 10.8334L9.3309 13.3334L14.7476 7.91675" Style="{DynamicResource IconStyleMenu}"/>
+                                    <Label Content="Read all message" FontSize="14" Style="{DynamicResource MainColorLable}" Margin="8,0,0,0"/>
                                 </StackPanel>
                             </MenuItem.Header>
                         </MenuItem>
-                        <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Cursor="Hand">
+                        <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Cursor="Hand" Click="PinChat_Click">
                             <MenuItem.Header>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
                                     <Path Margin="8,0,0,0" Width="20" Height="20" Data="M3.26013 6.31477C4.35947 5.2154 5.66588 5.24581 7.08588 6.02452L12.395 3.08181L12.0945 1.01587L16.8086 5.7299L14.7473 5.43415L11.7999 10.7386C12.543 12.2542 12.609 13.465 11.5097 14.5644C11.5097 14.5644 9.73459 12.7892 8.2688 11.3234L1.48795 16.3365L6.48592 9.54056C5.02009 8.07473 3.26013 6.31477 3.26013 6.31477Z" Style="{DynamicResource IconStyleMenu}"/>

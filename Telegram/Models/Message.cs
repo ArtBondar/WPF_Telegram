@@ -1,26 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
+using System.Windows;
 
-namespace Telegram.ViewModels
+namespace Telegram.Models
 {
-    public class UserViewModel
+    public partial class Message
     {
         public int Id { get; set; }
-        public int Age { get; set; }
-        public string Email { get; set; }
-        public string UserName { get; set; }
-        public string AboutUser { get; set; }
-        public DateTime LastOnline { get; set; }
-        public string Photo { get; set; }
+        public bool Viewed { get; set; }
+        public string Data { get; set; }
         public ImageSource PhotoSource
         {
             get
             {
-                if (!String.IsNullOrEmpty(Photo))
+                if (!String.IsNullOrEmpty(Data))
                 {
-                    string x = Photo.Substring(Photo.IndexOf("base64,") + 7);
+                    string x = Data.Substring(Data.IndexOf("base64,") + 7);
                     byte[] bytes;
                     try
                     {
@@ -36,6 +35,10 @@ namespace Telegram.ViewModels
                 return null;
             }
         }
-        public int? MemberId { get; set; }
+        public bool DeliveryStatus { get; set; }
+        public DateTime SendTime { get; set; }
+        public string Text { get; set; }
+        public User Author { get; set; }
+        public Visibility? VisibilityDeleteMessage { get; set; } = null;
     }
 }

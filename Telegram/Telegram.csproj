@@ -94,25 +94,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Core\ObservableObject.cs" />
-    <Compile Include="Core\ReplayCommand.cs" />
-    <Compile Include="Model\Chat.cs" />
-    <Compile Include="Model\ChatMessage.cs" />
-    <Compile Include="Model\Member.cs" />
-    <Compile Include="Model\Message.cs" />
-    <Compile Include="Model\Role.cs" />
-    <Compile Include="Model\SavedMessage.cs" />
-    <Compile Include="Model\Setting.cs" />
-    <Compile Include="Model\User.cs" />
-    <Compile Include="Model\UserChat.cs" />
-    <Compile Include="Model\UserContact.cs" />
-    <Compile Include="Model\UserRole.cs" />
-    <Compile Include="Model\UserSetting.cs" />
-    <Compile Include="Model\ViewModels\ChatViewModel.cs" />
-    <Compile Include="Model\ViewModels\MessageViewModel.cs" />
-    <Compile Include="Model\ViewModels\UserContactViewModel.cs" />
-    <Compile Include="Model\ViewModels\UserMessageViewModel.cs" />
-    <Compile Include="Model\ViewModels\UserViewModel.cs" />
+    <Compile Include="Models\Chat.cs" />
+    <Compile Include="Models\ChatMessage.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\SavedMessage.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserContact.cs" />
     <Compile Include="SingUp.xaml.cs">
       <DependentUpon>SingUp.xaml</DependentUpon>
     </Compile>

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media.Imaging;
 using System.Windows.Media;
-using Telegram.Model;
 using System.Runtime.InteropServices.ComTypes;
 using System.Linq;
 using System.ComponentModel;
@@ -50,7 +49,7 @@ namespace Telegram.Models
         {
             get
             {
-                if(ChatName.Length > 2)
+                if(ChatName.Length >= 2)
                     return ChatName.Substring(0, 2).ToUpper();
                 return null;
             }
@@ -100,7 +99,6 @@ namespace Telegram.Models
         public int PinnedMessageId { get; set; }
         public string ChatInfo { get; set; }
         public int AuthorId { get; set; }
-        public IList<ChatMessage> ChatMessages { get; set; }
-        public IList<UserChat> UserChats { get; set; }
+        public int NotViewedCounter { get; set; }
     }
 }

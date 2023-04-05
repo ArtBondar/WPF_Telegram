@@ -14,7 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using Telegram.Models;
-using Telegram.ViewModels;
 
 namespace Telegram
 {
@@ -52,7 +51,11 @@ namespace Telegram
                         LeftMenuEllipseText.Text = LoginedUser.UserName.Substring(0,2).ToUpper();
                     }
                     else
+                    {
                         LeftMenuEllipse.Fill = new ImageBrush(LoginedUser.PhotoSource);
+                        LeftMenuEllipseText.Text = "";
+                    }
+                        
                     // Chats
                     Contact_ListView.ItemsSource = Chats.OrderByDescending(chat => chat.PublishTime);
                     if (SelectedChat != null)
@@ -68,7 +71,11 @@ namespace Telegram
                         SettingsEllipseText.Text = LoginedUser.UserName.Substring(0, 2).ToUpper();
                     }
                     else
+                    {
                         Ellipse_Avatar.Fill = new ImageBrush(LoginedUser.PhotoSource);
+                        SettingsEllipseText.Text = "";
+                    }
+                        
                     SettingsEditEmail_Lable.Content = SettingsEmail_Lable.Content = LoginedUser.Email;
                     SettingsEditUserName_Lable.Content = SettingsUserName_Lable.Content = LoginedUser.UserName;
                     if (!String.IsNullOrWhiteSpace(LoginedUser.AboutUser))
@@ -198,7 +205,7 @@ namespace Telegram
                 this.Close();
                 return;
             }
-            var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", chat = new Chat(), messages = new List<UserMessageViewModel>(), members = new List<User>() });
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", chat = new Chat(), messages = new List<Message>(), members = new List<User>() });
             //
             if (result.chat == null) return;
             SelectedChat = result.chat;
@@ -208,7 +215,10 @@ namespace Telegram
                 SelectedEllipseText.Text = Select.PhotoText;
             }
             else
+            {
                 SelectedEllipse.Fill = new ImageBrush(Select.PhotoSource);
+                SelectedEllipseText.Text = "";
+            }
             ChatPanel_Name.Content = Select.ChatName;
             //
             InfoPath.Visibility = Visibility.Visible;
@@ -262,7 +272,7 @@ namespace Telegram
                 // Favorite
             }
             // Messages
-            foreach (UserMessageViewModel message in result.messages)
+            foreach (Message message in result.messages)
             {
                 if(message.Author.Id == LoginedUser.Id)
                     message.VisibilityDeleteMessage = Visibility.Visible;
@@ -278,7 +288,10 @@ namespace Telegram
                 RigthInfoEllipseText.Text = Select.PhotoText;
             }
             else
+            {
                 RigthInfoEllipse.Fill = new ImageBrush(Select.PhotoSource);
+                RigthInfoEllipseText.Text = "";
+            }
             RigthInfo_Name.Content = Select.ChatName;
             ToogleButton_Notification.IsChecked = !Select.MuteStatus;
         }
@@ -910,7 +923,11 @@ namespace Telegram
                     InfoEllipseText.Text = SelectedChat.PhotoText;
                 }
                 else
+                {
                     InfoEllipse.Fill = new ImageBrush(SelectedChat.PhotoSource);
+                    InfoEllipseText.Text = "";
+                }
+                    
             }
         }
         private void Close_Info_Menu(object sender, MouseButtonEventArgs e)
@@ -938,6 +955,9 @@ namespace Telegram
                 this.Close();
                 return;
             }
+            SelectedChat = null;
+            RigthInfoMenu.Width = new GridLength(0);
+            ChatGrid.Visibility = Visibility.Hidden;
         }
         private void ToogleButton_NotificationInfo_Click(object sender, MouseButtonEventArgs e)
         {
@@ -955,6 +975,24 @@ namespace Telegram
         private void ToogleButton_Notification_Click(object sender, RoutedEventArgs e)
         {
             Notifications_Path.Data = Geometry.Parse(ToogleButton_Notification.IsChecked.Value ? "M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z M32 15L32 15C32.6232 15.5565 33.1881 16.1797 33.6841 16.8588C35.1387 18.8504 36 21.3223 36 24C36 26.6545 35.1535 29.1067 33.7218 31.0893C33.2168 31.7885 32.6391 32.4293 32 33 M34.2359 41.1857C40.0836 37.6953 44 31.305 44 24C44 16.8085 40.2043 10.5035 34.507 6.97906" : "M1.0107,0.976807 L19.3955,19.3616 M10.3036,3.4165 V18.4165 C7.38692,18.4165 5.21963,14.5995 5.21963,14.5995 H2.80359 C2.34335,14.5995 1.97026,14.2264 1.97026,13.7661 V8.00434 C1.97026,7.54409 2.34335,7.171 2.80359,7.171 H5.21963 C5.21963,7.171 7.38692,3.4165 10.3036,3.4165 Z M13.6369,7.1665 C13.8966,7.39838 14.132,7.65805 14.3386,7.941 C14.9447,8.77084 15.3036,9.8008 15.3036,10.9165 C15.3036,12.0225 14.9509,13.0443 14.3543,13.8704 C14.1439,14.1617 13.9032,14.4287 13.6369,14.6665 M14.5686,18.0772 C17.0051,16.6229 18.6369,13.9603 18.6369,10.9165 C18.6369,7.92006 17.0554,5.29298 14.6815,3.82446");
+        }
+        private async void ReadAllMessage_Click(object sender, RoutedEventArgs e)
+        {
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+            var response = await client.PostAsync($"https://localhost:7195/api/Messages/readmessages/{SelectedChat.Id}", null);
+            var responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null)
+            {
+                MessageBox.Show("Server error...");
+                this.Close();
+                return;
+            }
+        }
+
+        private void PinChat_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
