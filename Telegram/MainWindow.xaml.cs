@@ -120,9 +120,7 @@ namespace Telegram
                         List<User> list = ContactsList.Items.Cast<User>().ToList();
                         var copyCollection = new List<User>(SelectedContacts);
                         foreach (User contact in copyCollection)
-                        {
                             ContactsList.SelectedItems.Add(list.FirstOrDefault(user => user.Id == contact.Id));
-                        }
                     }
                 }
             });
@@ -293,6 +291,7 @@ namespace Telegram
             }
             if (Select.Type == "Private")
             {
+                WriteMessageBox.Visibility = Visibility.Visible;
                 RigthInfo_Name.Content = Select.ChatName;
                 RigthInfo_Second.Content = "?";
                 ChatPanel_SecondInfo.Content = Select.PublishTime;
@@ -306,6 +305,7 @@ namespace Telegram
             }
             if (Select.Type == "Favorite")
             {
+                WriteMessageBox.Visibility = Visibility.Visible;
                 InfoPath.Visibility = Visibility.Collapsed;
                 // Favorite
             }
@@ -313,7 +313,11 @@ namespace Telegram
             foreach (Message message in result.messages)
             {
                 if(message.Author.Id == LoginedUser.Id)
+                {
                     message.VisibilityDeleteMessage = Visibility.Visible;
+                    if (message.Viewed)
+                        message.VisibilityViewed = Visibility.Visible;
+                }
                 else
                     message.VisibilityDeleteMessage = Visibility.Collapsed;
             }

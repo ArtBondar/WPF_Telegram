@@ -201,30 +201,28 @@
                                         <Border CornerRadius="10 10 10 0" Style="{DynamicResource MessageColorBorder}" Margin="10,0,0,0" MinWidth="150" Height="Auto">
                                             <StackPanel Orientation="Vertical">
                                                 <Label Content="{Binding Author.UserName}"
-                                    Style="{DynamicResource MainColorLable}"
-                                    FontWeight="SemiBold"
-                                    VerticalAlignment="Center"
-                                    FontSize="14"/>
+                                                    Style="{DynamicResource MainColorLable}"
+                                                    FontWeight="SemiBold"
+                                                    VerticalAlignment="Center"
+                                                    FontSize="14"/>
                                                 <Image Source="{Binding PhotoSource}" Height="Auto" MaxHeight="200" />
-                                                <Grid Margin="0,-5,0,5" >
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition />
-                                                        <ColumnDefinition Width="100"/>
-                                                    </Grid.ColumnDefinitions>
+                                                <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="{Binding Text}"
-                                        TextWrapping="Wrap"
-                                        Style="{DynamicResource ColorTextMessageBlock}"
-                                        FontSize="14"
-                                        MaxWidth="450"
-                                        VerticalAlignment="Center" Grid.Column="0"/>
-                                                    <Label Content="{Binding SendTime}"
-                                        Style="{DynamicResource SecondaryColorLable}"
-                                        FontSize="8"
-                                        FontWeight="SemiBold"
-                                        VerticalAlignment="Bottom"
-                                        HorizontalAlignment="Right"
-                                        Grid.Column="1"/>
-                                                </Grid>
+                                                        TextWrapping="Wrap"
+                                                        Style="{DynamicResource ColorTextMessageBlock}"
+                                                        FontSize="14"
+                                                        MaxWidth="450"
+                                                        VerticalAlignment="Center" Grid.Column="0"/>
+                                                    <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                                        <Label Content="{Binding SendTime}"
+                                                        Style="{DynamicResource SecondaryColorLable}"
+                                                        FontSize="8"
+                                                        FontWeight="SemiBold"
+                                                        VerticalAlignment="Bottom"
+                                                        HorizontalAlignment="Right"/>
+                                                        <Path Width="20" Height="11" Data="M1.42574 5.32582L5.47532 9.78713C5.57314 9.8949 5.78155 9.89637 5.86047 9.78985L12.195 1.23938 M6.34664 5.32582L10.3962 9.78713C10.494 9.8949 10.7025 9.89637 10.7814 9.78985L17.1159 1.23938" Style="{DynamicResource IconStyle}" Visibility="{Binding VisibilityViewed}" VerticalAlignment="Bottom" Margin="3"/>
+                                                    </StackPanel>
+                                                </StackPanel>
                                             </StackPanel>
                                         </Border>
                                     </StackPanel>

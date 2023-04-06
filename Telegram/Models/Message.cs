@@ -12,6 +12,7 @@ namespace Telegram.Models
     {
         public int Id { get; set; }
         public bool Viewed { get; set; }
+        public Visibility VisibilityViewed { get; set; } = Visibility.Collapsed;
         public string Data { get; set; }
         public ImageSource PhotoSource
         {
