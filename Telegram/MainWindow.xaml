@@ -90,14 +90,6 @@
                                 </StackPanel>
                             </MenuItem.Header>
                         </MenuItem>
-                        <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Cursor="Hand" Click="PinChat_Click">
-                            <MenuItem.Header>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
-                                    <Path Margin="8,0,0,0" Width="20" Height="20" Data="M3.26013 6.31477C4.35947 5.2154 5.66588 5.24581 7.08588 6.02452L12.395 3.08181L12.0945 1.01587L16.8086 5.7299L14.7473 5.43415L11.7999 10.7386C12.543 12.2542 12.609 13.465 11.5097 14.5644C11.5097 14.5644 9.73459 12.7892 8.2688 11.3234L1.48795 16.3365L6.48592 9.54056C5.02009 8.07473 3.26013 6.31477 3.26013 6.31477Z" Style="{DynamicResource IconStyleMenu}"/>
-                                    <Label Content="Pin" FontSize="14" Style="{DynamicResource MainColorLable}" Margin="8,0,0,0"/>
-                                </StackPanel>
-                            </MenuItem.Header>
-                        </MenuItem>
                         <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Cursor="Hand" Click="DeleteChat_Click">
                             <MenuItem.Header>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">

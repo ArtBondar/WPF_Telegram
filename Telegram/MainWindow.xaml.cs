@@ -24,6 +24,7 @@ namespace Telegram
     {
         public string JwtToken { get; set; }
         public User LoginedUser { get; set; }
+        // Updated values
         public List<User> UserContacts { get; set; }
         public List<Chat> Chats { get; set; } = new List<Chat>();
         public Chat SelectedChat { get; set; } 
@@ -36,8 +37,16 @@ namespace Telegram
         public string SelectedPhoto { get; set; }
         public Chat CreatedLastChat { get; set; }
         public List<User> SelectedContacts { get; set; } = new List<User>();
-        //
+        // Temp date
+
+        // Refresh UI
         public void RefreshUI()
+        {
+            RefreshUILoginedUser();
+            RefreshUIChats();
+            RefreshUIContacts();
+        }
+        public void RefreshUILoginedUser()
         {
             Dispatcher.Invoke(() =>
             {
@@ -48,22 +57,13 @@ namespace Telegram
                     if (LoginedUser.PhotoSource == null)
                     {
                         LeftMenuEllipse.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B8ACFF"));
-                        LeftMenuEllipseText.Text = LoginedUser.UserName.Substring(0,2).ToUpper();
+                        LeftMenuEllipseText.Text = LoginedUser.UserName.Substring(0, 2).ToUpper();
                     }
                     else
                     {
                         LeftMenuEllipse.Fill = new ImageBrush(LoginedUser.PhotoSource);
                         LeftMenuEllipseText.Text = "";
                     }
-                        
-                    // Chats
-                    Contact_ListView.ItemsSource = Chats.OrderByDescending(chat => chat.PublishTime);
-                    if (SelectedChat != null)
-                    {
-                        List<Chat> list = Contact_ListView.Items.Cast<Chat>().ToList();
-                        Contact_ListView.SelectedIndex = list.IndexOf(list.FirstOrDefault(chat => chat.Id == SelectedChat.Id));
-                    }
-                        
                     // Settings
                     if (LoginedUser.PhotoSource == null)
                     {
@@ -75,7 +75,7 @@ namespace Telegram
                         Ellipse_Avatar.Fill = new ImageBrush(LoginedUser.PhotoSource);
                         SettingsEllipseText.Text = "";
                     }
-                        
+                    // Settings
                     SettingsEditEmail_Lable.Content = SettingsEmail_Lable.Content = LoginedUser.Email;
                     SettingsEditUserName_Lable.Content = SettingsUserName_Lable.Content = LoginedUser.UserName;
                     if (!String.IsNullOrWhiteSpace(LoginedUser.AboutUser))
@@ -83,13 +83,39 @@ namespace Telegram
                         SettingsDescription_Lable.Text = LoginedUser.AboutUser;
                         SettingsDescription_Lable.Foreground = Brushes.White;
                     }
-                    else {
+                    else
+                    {
                         SettingsDescription_Lable.Foreground = Brushes.Gray;
                         SettingsDescription_Lable.Text = "Description...";
                     }
-                    // Create Group and Channel
+                }
+            });
+        }
+        public void RefreshUIChats()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (LoginedUser != null)
+                {
+                    // Chats
+                    Contact_ListView.ItemsSource = Chats.OrderByDescending(chat => chat.PublishTime);
+                    if (SelectedChat != null)
+                    {
+                        List<Chat> list = Contact_ListView.Items.Cast<Chat>().ToList();
+                        Contact_ListView.SelectedIndex = list.IndexOf(list.FirstOrDefault(chat => chat.Id == SelectedChat.Id));
+                    }
+                }
+            });
+        }
+        public void RefreshUIContacts()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (LoginedUser != null)
+                {
+                    // Contacts
                     ContactsList.ItemsSource = UserContacts;
-                    if(SelectedContacts.Count > 0)
+                    if (SelectedContacts.Count > 0)
                     {
                         List<User> list = ContactsList.Items.Cast<User>().ToList();
                         var copyCollection = new List<User>(SelectedContacts);
@@ -101,7 +127,8 @@ namespace Telegram
                 }
             });
         }
-        public async void RefreshDate()
+        // Refresh UI
+        public async void RefreshDate(object sender, EventArgs e)
         {
             if (JwtToken != null && LoginedUser.UserName != null)
             {
@@ -119,10 +146,22 @@ namespace Telegram
                 var result = JsonConvert.DeserializeAnonymousType(responseString, new { user = new User(), chats = new List<Chat>(), savedMessages = new List<SavedMessage>(), contacts = new List<User>() });
                 if(result.user != null)
                 {
-                    LoginedUser = result.user;
-                    Chats = result.chats;
-                    SavedMessages = result.savedMessages;
-                    UserContacts = result.contacts;
+                    if (JsonConvert.SerializeObject(LoginedUser) != JsonConvert.SerializeObject(result.user))
+                    {
+                        LoginedUser = result.user;
+                        RefreshUILoginedUser();
+                    }
+                    if (JsonConvert.SerializeObject(Chats) != JsonConvert.SerializeObject(result.chats) || JsonConvert.SerializeObject(SavedMessages) != JsonConvert.SerializeObject(result.savedMessages))
+                    {
+                        Chats = result.chats;
+                        SavedMessages = result.savedMessages;
+                        RefreshUIChats();
+                    }
+                    if(JsonConvert.SerializeObject(UserContacts) != JsonConvert.SerializeObject(result.contacts))
+                    {
+                        UserContacts = result.contacts;
+                        RefreshUIContacts();
+                    }
                 }
             }
         }
@@ -131,24 +170,23 @@ namespace Telegram
             InitializeComponent();
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += OnTimerElapsed;
+            timer.Tick += RefreshDate;
             timer.Start();
-        }
-        private void OnTimerElapsed(object sender, EventArgs e)
-        {
-            RefreshDate();
-            RefreshUI();
         }
         private void Close_Left_Menu(object sender, MouseButtonEventArgs e)
         {
             Left_Menu_Grid.Width = 0;
         }
-        private void ToogleButton_Notification_MouseDown(object sender, MouseButtonEventArgs e)
+        private async void ToogleButton_Notification_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.Source != ToogleButton_Notification)
             {
                 ToogleButton_Notification.IsChecked = !ToogleButton_Notification.IsChecked;
                 Notifications_Path.Data = Geometry.Parse(ToogleButton_Notification.IsChecked.Value ? "M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z M32 15L32 15C32.6232 15.5565 33.1881 16.1797 33.6841 16.8588C35.1387 18.8504 36 21.3223 36 24C36 26.6545 35.1535 29.1067 33.7218 31.0893C33.2168 31.7885 32.6391 32.4293 32 33 M34.2359 41.1857C40.0836 37.6953 44 31.305 44 24C44 16.8085 40.2043 10.5035 34.507 6.97906" : "M1.0107,0.976807 L19.3955,19.3616 M10.3036,3.4165 V18.4165 C7.38692,18.4165 5.21963,14.5995 5.21963,14.5995 H2.80359 C2.34335,14.5995 1.97026,14.2264 1.97026,13.7661 V8.00434 C1.97026,7.54409 2.34335,7.171 2.80359,7.171 H5.21963 C5.21963,7.171 7.38692,3.4165 10.3036,3.4165 Z M13.6369,7.1665 C13.8966,7.39838 14.132,7.65805 14.3386,7.941 C14.9447,8.77084 15.3036,9.8008 15.3036,10.9165 C15.3036,12.0225 14.9509,13.0443 14.3543,13.8704 C14.1439,14.1617 13.9032,14.4287 13.6369,14.6665 M14.5686,18.0772 C17.0051,16.6229 18.6369,13.9603 18.6369,10.9165 C18.6369,7.92006 17.0554,5.29298 14.6815,3.82446");
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri($"https://localhost:7195/api/Chats/notifications/{SelectedChat.Id}") });
+                var responseString = await response.Content.ReadAsStringAsync();
             }
         }
         private void ToogleButton_DarkWhite_MouseDown(object sender, MouseButtonEventArgs e)
@@ -280,6 +318,11 @@ namespace Telegram
                     message.VisibilityDeleteMessage = Visibility.Collapsed;
             }
             Chat_ListView.ItemsSource = result.messages;
+            // To end
+            var scrollViewer = GetDescendantByType(Chat_ListView, typeof(ScrollViewer)) as ScrollViewer;
+            if (scrollViewer != null)
+                scrollViewer.ScrollToEnd();
+            //
 
             // RigthInfo
             if (Select.PhotoSource == null)
@@ -338,7 +381,7 @@ namespace Telegram
             }
             return foundElement;
         }
-        private void Chat_ListView_ScrollChanged(object sender, ScrollChangedEventArgs e)
+        private async void Chat_ListView_ScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             // Получить ScrollViewer из ListView
             ScrollViewer scrollViewer = GetDescendantByType(sender as ListView, typeof(ScrollViewer)) as ScrollViewer;
@@ -347,6 +390,20 @@ namespace Telegram
             if (scrollViewer.VerticalOffset == scrollViewer.ScrollableHeight)
             {
                 Button_To_Down.Visibility = Visibility.Hidden;
+                // Read messages
+                if (SelectedChat != null)
+                {
+                    var client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                    var response = await client.PostAsync($"https://localhost:7195/api/Messages/readmessages/{SelectedChat.Id}", null);
+                    var responseString = await response.Content.ReadAsStringAsync();
+                    if (responseString == null)
+                    {
+                        MessageBox.Show("Server error...");
+                        this.Close();
+                        return;
+                    }
+                }
             }
             // Если ScrollViewer не находится в нижней части, проверить его позицию
             else
@@ -927,7 +984,6 @@ namespace Telegram
                     InfoEllipse.Fill = new ImageBrush(SelectedChat.PhotoSource);
                     InfoEllipseText.Text = "";
                 }
-                    
             }
         }
         private void Close_Info_Menu(object sender, MouseButtonEventArgs e)
@@ -959,22 +1015,37 @@ namespace Telegram
             RigthInfoMenu.Width = new GridLength(0);
             ChatGrid.Visibility = Visibility.Hidden;
         }
-        private void ToogleButton_NotificationInfo_Click(object sender, MouseButtonEventArgs e)
+        private async void ToogleButton_NotificationInfo_Click(object sender, MouseButtonEventArgs e)
         {
             if (e.Source != ToogleButton_DarkWhite)
             {
                 ToogleButton_Notification_Info.IsChecked = !ToogleButton_Notification_Info.IsChecked;
                 Notifications_Path_Info.Data = Geometry.Parse((ToogleButton_Notification_Info.IsChecked == true) ? "M10.9976 2.5V17.5C8.0809 17.5 5.9136 13.683 5.9136 13.683H3.49756C3.03733 13.683 2.66423 13.3099 2.66423 12.8496V7.08783C2.66423 6.62758 3.03733 6.2545 3.49756 6.2545H5.9136C5.9136 6.2545 8.0809 2.5 10.9976 2.5Z M14.3309 6.25C14.5906 6.48188 14.8259 6.74154 15.0326 7.0245C15.6387 7.85433 15.9976 8.88429 15.9976 10C15.9976 11.106 15.6448 12.1278 15.0483 12.9539C14.8379 13.2452 14.5972 13.5122 14.3309 13.75 M15.2625 17.1607C17.6991 15.7064 19.3309 13.0438 19.3309 10C19.3309 7.00356 17.7493 4.37648 15.3755 2.90796" : "M1.0107,0.976807 L19.3955,19.3616 M10.3036,3.4165 V18.4165 C7.38692,18.4165 5.21963,14.5995 5.21963,14.5995 H2.80359 C2.34335,14.5995 1.97026,14.2264 1.97026,13.7661 V8.00434 C1.97026,7.54409 2.34335,7.171 2.80359,7.171 H5.21963 C5.21963,7.171 7.38692,3.4165 10.3036,3.4165 Z M13.6369,7.1665 C13.8966,7.39838 14.132,7.65805 14.3386,7.941 C14.9447,8.77084 15.3036,9.8008 15.3036,10.9165 C15.3036,12.0225 14.9509,13.0443 14.3543,13.8704 C14.1439,14.1617 13.9032,14.4287 13.6369,14.6665 M14.5686,18.0772 C17.0051,16.6229 18.6369,13.9603 18.6369,10.9165 C18.6369,7.92006 17.0554,5.29298 14.6815,3.82446");
+                //
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri($"https://localhost:7195/api/Chats/notifications/{SelectedChat.Id}")});
+                var responseString = await response.Content.ReadAsStringAsync();
             }
         }
-        private void ToogleButton_MuteInfo_Click(object sender, RoutedEventArgs e)
+        private async void ToogleButton_MuteInfo_Click(object sender, RoutedEventArgs e)
         {
             ToogleButton_Notification_Info.IsChecked = !ToogleButton_Notification_Info.IsChecked;
             Notifications_Path_Info.Data = Geometry.Parse((ToogleButton_Notification_Info.IsChecked == true) ? "M10.9976 2.5V17.5C8.0809 17.5 5.9136 13.683 5.9136 13.683H3.49756C3.03733 13.683 2.66423 13.3099 2.66423 12.8496V7.08783C2.66423 6.62758 3.03733 6.2545 3.49756 6.2545H5.9136C5.9136 6.2545 8.0809 2.5 10.9976 2.5Z M14.3309 6.25C14.5906 6.48188 14.8259 6.74154 15.0326 7.0245C15.6387 7.85433 15.9976 8.88429 15.9976 10C15.9976 11.106 15.6448 12.1278 15.0483 12.9539C14.8379 13.2452 14.5972 13.5122 14.3309 13.75 M15.2625 17.1607C17.6991 15.7064 19.3309 13.0438 19.3309 10C19.3309 7.00356 17.7493 4.37648 15.3755 2.90796" : "M1.0107,0.976807 L19.3955,19.3616 M10.3036,3.4165 V18.4165 C7.38692,18.4165 5.21963,14.5995 5.21963,14.5995 H2.80359 C2.34335,14.5995 1.97026,14.2264 1.97026,13.7661 V8.00434 C1.97026,7.54409 2.34335,7.171 2.80359,7.171 H5.21963 C5.21963,7.171 7.38692,3.4165 10.3036,3.4165 Z M13.6369,7.1665 C13.8966,7.39838 14.132,7.65805 14.3386,7.941 C14.9447,8.77084 15.3036,9.8008 15.3036,10.9165 C15.3036,12.0225 14.9509,13.0443 14.3543,13.8704 C14.1439,14.1617 13.9032,14.4287 13.6369,14.6665 M14.5686,18.0772 C17.0051,16.6229 18.6369,13.9603 18.6369,10.9165 C18.6369,7.92006 17.0554,5.29298 14.6815,3.82446");
+            //
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+            var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri($"https://localhost:7195/api/Chats/notifications/{SelectedChat.Id}") });
+            var responseString = await response.Content.ReadAsStringAsync();
         }
-        private void ToogleButton_Notification_Click(object sender, RoutedEventArgs e)
+        private async void ToogleButton_Notification_Click(object sender, RoutedEventArgs e)
         {
             Notifications_Path.Data = Geometry.Parse(ToogleButton_Notification.IsChecked.Value ? "M24 6V42C17 42 11.7985 32.8391 11.7985 32.8391H6C4.89543 32.8391 4 31.9437 4 30.8391V17.0108C4 15.9062 4.89543 15.0108 6 15.0108H11.7985C11.7985 15.0108 17 6 24 6Z M32 15L32 15C32.6232 15.5565 33.1881 16.1797 33.6841 16.8588C35.1387 18.8504 36 21.3223 36 24C36 26.6545 35.1535 29.1067 33.7218 31.0893C33.2168 31.7885 32.6391 32.4293 32 33 M34.2359 41.1857C40.0836 37.6953 44 31.305 44 24C44 16.8085 40.2043 10.5035 34.507 6.97906" : "M1.0107,0.976807 L19.3955,19.3616 M10.3036,3.4165 V18.4165 C7.38692,18.4165 5.21963,14.5995 5.21963,14.5995 H2.80359 C2.34335,14.5995 1.97026,14.2264 1.97026,13.7661 V8.00434 C1.97026,7.54409 2.34335,7.171 2.80359,7.171 H5.21963 C5.21963,7.171 7.38692,3.4165 10.3036,3.4165 Z M13.6369,7.1665 C13.8966,7.39838 14.132,7.65805 14.3386,7.941 C14.9447,8.77084 15.3036,9.8008 15.3036,10.9165 C15.3036,12.0225 14.9509,13.0443 14.3543,13.8704 C14.1439,14.1617 13.9032,14.4287 13.6369,14.6665 M14.5686,18.0772 C17.0051,16.6229 18.6369,13.9603 18.6369,10.9165 C18.6369,7.92006 17.0554,5.29298 14.6815,3.82446");
+            //
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+            var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri($"https://localhost:7195/api/Chats/notifications/{SelectedChat.Id}") });
+            var responseString = await response.Content.ReadAsStringAsync();
         }
         private async void ReadAllMessage_Click(object sender, RoutedEventArgs e)
         {
@@ -988,11 +1059,6 @@ namespace Telegram
                 this.Close();
                 return;
             }
-        }
-
-        private void PinChat_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
