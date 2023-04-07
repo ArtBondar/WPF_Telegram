@@ -865,7 +865,7 @@ namespace Telegram
             {
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                var data = JsonConvert.SerializeObject(new { userId = LoginedUser.Id, chatId = (Contact_ListView.SelectedItem as Chat).Id, text = thistextBox.Text, data = String.Empty }); // Add data
+                var data = JsonConvert.SerializeObject(new { userId = LoginedUser.Id, chatId = (Contact_ListView.SelectedItem as Chat).Id, text = thistextBox.Text });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
                 var response = await client.PostAsync("https://localhost:7195/api/Messages/sendmessage", content);
                 var responseString = await response.Content.ReadAsStringAsync();

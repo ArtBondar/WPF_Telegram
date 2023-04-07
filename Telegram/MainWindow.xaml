@@ -198,7 +198,7 @@
                                                 <ImageBrush ImageSource="{Binding Author.PhotoSource}" RenderOptions.BitmapScalingMode="Fant"/>
                                             </Ellipse.Fill>
                                         </Ellipse>
-                                        <Border CornerRadius="10 10 10 0" Style="{DynamicResource MessageColorBorder}" Margin="10,0,0,0" MinWidth="150" Height="Auto">
+                                        <Border CornerRadius="10 10 10 0" Style="{DynamicResource MessageColorBorder}" Margin="10,0,0,0" Height="Auto">
                                             <StackPanel Orientation="Vertical">
                                                 <Label Content="{Binding Author.UserName}"
                                                     Style="{DynamicResource MainColorLable}"
@@ -206,7 +206,7 @@
                                                     VerticalAlignment="Center"
                                                     FontSize="14"/>
                                                 <Image Source="{Binding PhotoSource}" Height="Auto" MaxHeight="200" />
-                                                <StackPanel Orientation="Horizontal">
+                                                <StackPanel Orientation="Horizontal" Margin="0,-5,0,0">
                                                     <TextBlock Text="{Binding Text}"
                                                         TextWrapping="Wrap"
                                                         Style="{DynamicResource ColorTextMessageBlock}"
