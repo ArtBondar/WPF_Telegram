@@ -119,7 +119,7 @@
             </StackPanel>
         </Grid>
         <!-- Chat -->
-        <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Visible">
+        <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
                 <RowDefinition />

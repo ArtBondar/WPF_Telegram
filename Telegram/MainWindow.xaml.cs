@@ -398,8 +398,10 @@ namespace Telegram
                 if (SelectedChat != null)
                 {
                     var client = new HttpClient();
+                    var data = JsonConvert.SerializeObject(new { chatId = SelectedChat.Id, userId = LoginedUser.Id });
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                    var response = await client.PostAsync($"https://localhost:7195/api/Messages/readmessages/{SelectedChat.Id}", null);
+                    var content = new StringContent(data, Encoding.UTF8, "application/json");
+                    var response = await client.PostAsync("https://localhost:7195/api/Messages/readmessages", content);
                     var responseString = await response.Content.ReadAsStringAsync();
                     if (responseString == null)
                     {
@@ -1055,7 +1057,9 @@ namespace Telegram
         {
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-            var response = await client.PostAsync($"https://localhost:7195/api/Messages/readmessages/{SelectedChat.Id}", null);
+            var data = JsonConvert.SerializeObject(new { chatId = SelectedChat.Id, userId = LoginedUser.Id });
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:7195/api/Messages/readmessages/", content);
             var responseString = await response.Content.ReadAsStringAsync();
             if (responseString == null)
             {
