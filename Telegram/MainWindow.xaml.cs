@@ -27,7 +27,7 @@ namespace Telegram
         // Updated values
         public List<User> UserContacts { get; set; }
         public List<Chat> Chats { get; set; } = new List<Chat>();
-        public Chat SelectedChat { get; set; } 
+        public Chat SelectedChat { get; set; }
         public List<SavedMessage> SavedMessages { get; set; }
         // Temp date
         public enum CreateFrag { Null, Group, Channel }
@@ -1063,6 +1063,97 @@ namespace Telegram
                 this.Close();
                 return;
             }
+        }
+        private async void SearchTextChanged(object sender, TextChangedEventArgs e)
+        {
+            string text = ((TextBox)(sender as TextBox).Template.FindName("MainTextBox", sender as TextBox)).Text;
+            var client = new HttpClient();
+            var data = JsonConvert.SerializeObject(new { text });
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:7195/api/Chats/findchats", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null)
+            {
+                MessageBox.Show("Server error...");
+                this.Close();
+                return;
+            }
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { users = new List<User>(), chats = new List<Chat>() });
+            //
+            Contact_Search_Users.Items.Clear();
+            Contact_Search.Items.Clear();
+            //
+            bool flag = false;
+            if (result?.users != null)
+            {
+                if (result.users.Count > 0)
+                {
+                    flag = true;
+                    foreach (var user in result.users)
+                    {
+                        Contact_Search_Users.Items.Add(user);
+                    }
+                }
+            }
+            if (result?.chats != null)
+            {
+                if (result.chats.Count > 0)
+                {
+                    flag = true;
+                    foreach (var chat in result.chats)
+                    {
+                        Contact_Search.Items.Add(chat);
+                    }
+                }
+            }
+            Contact_ListView.Visibility = (flag) ? Visibility.Collapsed : Visibility.Visible;
+        }
+        private async void SearchChat_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Contact_Search.SelectedItems.Count > 0)
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, chatName = (Contact_Search.SelectedItem as Chat).ChatName });
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync("https://localhost:7195/api/Chats/enterpublicchat", content);
+                var responseString = await response.Content.ReadAsStringAsync();
+                if (responseString == null)
+                {
+                    MessageBox.Show("Server error...");
+                    this.Close();
+                    return;
+                }
+                // Select new chat
+                List<Chat> myList = Contact_ListView.Items.Cast<Chat>().ToList();
+                Contact_ListView.SelectedIndex = myList.IndexOf(myList.FirstOrDefault(chat => chat.ChatName == (Contact_Search.SelectedItem as Chat).ChatName));
+            }
+            // Clear search lists
+            ((TextBox)SearchTextBox.Template.FindName("MainTextBox", SearchTextBox)).Text = "";
+        }
+        private async void SearchUser_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Contact_Search_Users.SelectedItems.Count > 0)
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, opponentName = (Contact_Search_Users.SelectedItem as User).UserName });
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync("https://localhost:7195/api/Chats/enterprivatechat", content);
+                var responseString = await response.Content.ReadAsStringAsync();
+                if (responseString == null)
+                {
+                    MessageBox.Show("Server error...");
+                    this.Close();
+                    return;
+                }
+                // Select new chat
+                List<Chat> myList = Contact_ListView.Items.Cast<Chat>().ToList();
+                Contact_ListView.SelectedIndex = myList.IndexOf(myList.FirstOrDefault(chat => chat.ChatName == (Contact_Search_Users.SelectedItem as User).UserName));
+            }
+            // Clear search lists
+            ((TextBox)SearchTextBox.Template.FindName("MainTextBox", SearchTextBox)).Text = "";
         }
     }
 }

@@ -17,6 +17,24 @@ namespace Telegram.Models
         public string AboutUser { get; set; }
         public DateTime? LastOnline { get; set; }
         public string Photo { get; set; }
+        public bool Tag
+        {
+            get
+            {
+                if (!String.IsNullOrEmpty(Photo))
+                    return true;
+                return false;
+            }
+        }
+        public string PhotoText
+        {
+            get
+            {
+                if (UserName.Length >= 2)
+                    return UserName.Substring(0, 2).ToUpper();
+                return null;
+            }
+        }
         public ImageSource PhotoSource
         {
             get
