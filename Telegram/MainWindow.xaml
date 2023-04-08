@@ -122,8 +122,8 @@
                 <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
             <!-- Chat User info -->
-            <Border x:Name="BorderChatInfoWithButtons" Style="{DynamicResource BackgroundBorderSelectedInfo}" Cursor="Hand" PreviewMouseLeftButtonUp="OpenSelectedChatmenuInfo">
-                <Grid HorizontalAlignment="Stretch" Margin="8">
+            <Border x:Name="BorderChatInfoWithButtons" Style="{DynamicResource BackgroundBorderSelectedInfo}" Opacity="0.75" Cursor="Hand" PreviewMouseLeftButtonUp="OpenSelectedChatmenuInfo">
+                <Grid x:Name="SelectedInfoGrid" HorizontalAlignment="Stretch" Margin="8">
                     <StackPanel Orientation="Horizontal">
                         <Grid>
                             <Border Style="{DynamicResource SelectedAvatarBorder}">
