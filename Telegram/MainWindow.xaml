@@ -42,7 +42,8 @@
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
                 <GradientStop Color="#8366e2" Offset="0" />
-                <GradientStop Color="#3a2386" Offset="1" />
+                <GradientStop Color="#554199" Offset="0.5" />
+                <GradientStop Color="#8366e2" Offset="1" />
             </LinearGradientBrush>
         </Grid.Background>
         <Grid.ColumnDefinitions>
@@ -62,7 +63,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <!-- Button Menu -->
-                <Button Width="30" Height="25" Click="OpenLeftMenu_Click" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconStyle}">
+                <Button Width="25" Height="22.5" Click="OpenLeftMenu_Click" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconStyle}">
                     <Path Margin="3,5,3,5" Data="M0.803711 0.0212402H25.8037C25.8037 1.48317 24.6186 2.6683 23.1567 2.6683H3.45077C1.98884 2.6683 0.803711 1.48317 0.803711 0.0212402Z M0.803711 6.19775H25.8037C25.8037 7.65968 24.6186 8.84481 23.1567 8.84481H3.45077C1.98884 8.84481 0.803711 7.65968 0.803711 6.19775Z M0.803711 12.3743H25.8037C25.8037 13.8362 24.6186 15.0213 23.1567 15.0213H3.45077C1.98884 15.0213 0.803711 13.8362 0.803711 12.3743Z" Style="{DynamicResource IconStyleDarkFill}">
                     </Path>
                 </Button>
@@ -119,14 +120,23 @@
             </StackPanel>
         </Grid>
         <!-- Chat -->
-        <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Hidden">
+        <!-- Pattern -->
+        <Image Source="./Image/pattern.png" Grid.Column="1" Stretch="UniformToFill" StretchDirection="Both" />
+        <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Visible">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
                 <RowDefinition />
                 <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
+            
             <!-- Chat User info -->
             <Border x:Name="BorderChatInfoWithButtons" Style="{DynamicResource MainColorBorder}" Cursor="Hand" PreviewMouseLeftButtonUp="OpenSelectedChatmenuInfo">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                        <GradientStop Color="#554199" Offset="0.55" />
+                        <GradientStop Color="#8366e2" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
                 <Grid HorizontalAlignment="Stretch" Margin="8">
                     <StackPanel Orientation="Horizontal">
                         <Grid>
