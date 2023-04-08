@@ -38,14 +38,7 @@
             </MenuItem>
         </ContextMenu>
     </Window.Resources>
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                <GradientStop Color="#8366e2" Offset="0" />
-                <GradientStop Color="#554199" Offset="0.5" />
-                <GradientStop Color="#8366e2" Offset="1" />
-            </LinearGradientBrush>
-        </Grid.Background>
+    <Grid Style="{DynamicResource BackGroundMainGrid}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="265"/>
             <ColumnDefinition />
@@ -128,15 +121,8 @@
                 <RowDefinition />
                 <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
-            
             <!-- Chat User info -->
-            <Border x:Name="BorderChatInfoWithButtons" Style="{DynamicResource MainColorBorder}" Cursor="Hand" PreviewMouseLeftButtonUp="OpenSelectedChatmenuInfo">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                        <GradientStop Color="#554199" Offset="0.55" />
-                        <GradientStop Color="#8366e2" Offset="1" />
-                    </LinearGradientBrush>
-                </Border.Background>
+            <Border x:Name="BorderChatInfoWithButtons" Style="{DynamicResource BackgroundBorderSelectedInfo}" Cursor="Hand" PreviewMouseLeftButtonUp="OpenSelectedChatmenuInfo">
                 <Grid HorizontalAlignment="Stretch" Margin="8">
                     <StackPanel Orientation="Horizontal">
                         <Grid>

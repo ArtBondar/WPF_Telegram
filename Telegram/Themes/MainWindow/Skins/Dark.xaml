@@ -1,6 +1,17 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- Main Window -->
+    <Style x:Key="BackGroundMainGrid" TargetType="Grid">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                    <GradientStop Color="#8366e2" Offset="0" />
+                    <GradientStop Color="#554199" Offset="0.5" />
+                    <GradientStop Color="#8366e2" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style> 
     <Style x:Key="MainColorGrid" TargetType="Grid">
         <Setter Property="Background" Value="#16043C"/>
     </Style>
@@ -323,6 +334,16 @@
         </Setter>
     </Style>
     <!-- Chat -->
+    <Style x:Key="BackgroundBorderSelectedInfo" TargetType="Border">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                    <GradientStop Color="#372263" Offset="0" />
+                    <GradientStop Color="#4a3674" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="SelectedAvatarBorder" TargetType="Border">
         <Setter Property="CornerRadius" Value="180" />
         <Setter Property="BorderBrush" Value="#7E5EFC"/>
