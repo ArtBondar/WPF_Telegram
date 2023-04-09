@@ -1,29 +1,45 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <!-- Main Window -->
+    <Style x:Key="BackGroundMainGrid" TargetType="Grid">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                    <GradientStop Color="#8366e2" Offset="0" />
+                    <GradientStop Color="#554199" Offset="0.5" />
+                    <GradientStop Color="#8366e2" Offset="1" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="MainColorGrid" TargetType="Grid">
-        <Setter Property="Background" Value="#11032F"/>
+        <Setter Property="Background" Value="#D0C1FC"/>
     </Style>
     <Style x:Key="MainColorBorder" TargetType="Border">
-        <Setter Property="Background" Value="#11032F"/>
+        <Setter Property="Background" Value="#D0C1FC"/>
     </Style>
     <Style x:Key="SecondaryColorBorder" TargetType="Border">
         <Setter Property="Background" Value="#584CA3"/>
     </Style>
     <Style x:Key="MainColorLable" TargetType="Label">
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="#1F0850"/>
     </Style>
     <Style x:Key="SecondaryColorLable" TargetType="Label">
-        <Setter Property="Foreground" Value="#B8ACFF"/>
+        <Setter Property="Foreground" Value="#584CA3"/>
     </Style>
     <Style x:Key="MenuBorderBrush" TargetType="Border">
-        <Setter Property="Background" Value="#262626"/>
+        <Setter Property="Background" Value="#D0C1FC"/>
+    </Style>
+    <Style x:Key="BorderThreePoints" TargetType="Border">
+        <Setter Property="Background" Value="#7E5EFC"/>
     </Style>
     <Style x:Key="ContextMenuBorderBrush" TargetType="ContextMenu">
+        <Setter Property="BorderThickness" Value="1.5"/>
+        <Setter Property="BorderBrush" Value="#584CA3"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ContextMenu}">
-                    <Border CornerRadius="5" Background="#262626">
+                    <Border CornerRadius="5" Background="#D0C1FC" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <ItemsPresenter Margin="-5, 0, -5, 0"/>
                     </Border>
                 </ControlTemplate>
@@ -31,7 +47,7 @@
         </Setter>
     </Style>
     <Style x:Key="LableDarkWhiteTheme" TargetType="Label">
-        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Foreground" Value="#1F0850"/>
         <Setter Property="Content" Value="Dark Style"/>
     </Style>
     <!-- Icons -->
@@ -41,7 +57,25 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
+                    <Border Name="border" BorderThickness="0" Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Opacity" Value="0.8" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ButtonThreePointsButton" TargetType="Button">
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" CornerRadius="180" Style="{DynamicResource BorderThreePoints}">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
@@ -59,7 +93,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Name="border" CornerRadius="25" BorderThickness="0" BorderBrush="Black" Background="#11032F">
+                    <Border Name="border" CornerRadius="25" BorderThickness="0" BorderBrush="Black" Background="#D0C1FC">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
@@ -73,21 +107,42 @@
     </Style>
     <Style x:Key="IconStyle" TargetType="Path">
         <Setter Property="Margin" Value="5,2,5,2"/>
-        <Setter Property="Stroke" Value="#584CA3"/>
-        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="Stroke" Value="#1F0850"/>
+        <Setter Property="StrokeThickness" Value="1.5"/>
+        <Setter Property="StrokeLineJoin" Value="Round"/>
+        <Setter Property="Stretch" Value="Fill"/>
+    </Style>
+    <Style x:Key="IconStyleDarkFill" TargetType="Path">
+        <Setter Property="Margin" Value="5,2,5,2"/>
+        <Setter Property="Fill" Value="#1F0850"/>
+        <Setter Property="StrokeThickness" Value="1.5"/>
+        <Setter Property="StrokeLineJoin" Value="Round"/>
+        <Setter Property="Stretch" Value="Fill"/>
+    </Style>
+    <Style x:Key="IconStyleMenu" TargetType="Path">
+        <Setter Property="Margin" Value="5,2,5,2"/>
+        <Setter Property="Stroke" Value="#1F0850"/>
+        <Setter Property="StrokeThickness" Value="1.5"/>
+        <Setter Property="StrokeLineJoin" Value="Round"/>
+        <Setter Property="Stretch" Value="Fill"/>
+    </Style>
+    <Style x:Key="IconStyleMenuFill" TargetType="Path">
+        <Setter Property="Margin" Value="5,2,5,2"/>
+        <Setter Property="Fill" Value="#1F0850"/>
+        <Setter Property="StrokeThickness" Value="1.5"/>
         <Setter Property="StrokeLineJoin" Value="Round"/>
         <Setter Property="Stretch" Value="Fill"/>
     </Style>
     <Style x:Key="IconStyleFill" TargetType="Path">
         <Setter Property="Margin" Value="5,2,5,2"/>
-        <Setter Property="Fill" Value="#584CA3"/>
-        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="Fill" Value="#1F0850"/>
+        <Setter Property="StrokeThickness" Value="1.5"/>
         <Setter Property="StrokeLineJoin" Value="Round"/>
         <Setter Property="Stretch" Value="Fill"/>
     </Style>
     <Style x:Key="IconDarkWhiteTheme" TargetType="Path">
         <Setter Property="Margin" Value="5,2,5,2"/>
-        <Setter Property="Fill" Value="#584CA3"/>
+        <Setter Property="Fill" Value="#1F0850"/>
         <Setter Property="StrokeThickness" Value="2"/>
         <Setter Property="StrokeLineJoin" Value="Round"/>
         <Setter Property="Stretch" Value="Fill"/>
@@ -95,7 +150,7 @@
     </Style>
     <!-- TextBoxWithPlaceHolder -->
     <Style x:Key="TextBoxWithPlaceHolderBorder" TargetType="Border">
-        <Setter Property="Background" Value="#11032F"/>
+        <Setter Property="Background" Value="#D0C1FC"/>
     </Style>
     <Style x:Key="TextBoxWithPlaceHolderTextBox" TargetType="TextBox">
         <Setter Property="Background" Value="Transparent"/>
@@ -106,13 +161,13 @@
         <Setter Property="Foreground" Value="#584CA3"/>
         <Setter Property="Visibility" Value="Collapsed"/>
         <Style.Triggers>
-            <DataTrigger Binding="{Binding Text, ElementName=SearchBox}" Value="">
+            <DataTrigger Binding="{Binding Text, ElementName=MainTextBox}" Value="">
                 <Setter Property="Visibility" Value="Visible"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>
     <Style x:Key="SearchBoxBorder" TargetType="Border">
-        <Setter Property="Background" Value="#1F0850"/>
+        <Setter Property="Background" Value="#F2F0FF"/>
     </Style>
     <!-- Contacts List -->
     <Style x:Key="ContactsListListView" TargetType="ListView">
@@ -125,39 +180,153 @@
                 <ControlTemplate TargetType="ListViewItem">
                     <Border Background="{TemplateBinding Background}" Height="62" BorderThickness="0,0.5,0,0.5" BorderBrush="#584CA3" Margin="0,-0.5,0,0">
                         <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-                            <Ellipse Width="46" Height="46">
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding ImageSource}"/>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                            <StackPanel Margin="10,0,0,0" Orientation="Vertical" Width="80">
-                                <Label Content="{Binding UserName}"
-                                       FontSize="14"
-                                       Style="{DynamicResource MainColorLable}"/>
-                                <Label Content="{Binding LastMessage}"
+                            <Grid>
+                                <Ellipse Width="46" Height="46">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Setter Property="Fill" Value="#584CA3"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Tag}" Value="True">
+                                                    <Setter Property="Fill">
+                                                        <Setter.Value>
+                                                            <ImageBrush ImageSource="{Binding PhotoSource}" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Tag}" Value="False">
+                                                    <Setter Property="Text" Value="{Binding PhotoText}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                            <StackPanel Margin="10,0,0,0" Orientation="Vertical" Width="125">
+                                <StackPanel Orientation="Horizontal">
+                                    <Path Width="20" Height="18" Data="M5.625 6.34082H1.5V13.0908H5.625V6.34082Z M5.625 6.34082L12.375 3.71582V15.7158L5.625 13.0908 M15 7.09082H15.75 M14.625 10.0908H16.5 M15 13.0908H15.75" Style="{DynamicResource IconStyle}" Visibility="{Binding ChannelIconVisibility}" Margin="1" />
+                                    <Label Content="{Binding ChatName}"
+                                       FontSize="12"
+                                       Style="{DynamicResource MainColorLable}" MaxWidth="100"/>
+                                    <Path Width="15" Height="15" Data="{Binding MutePath}" Style="{DynamicResource IconStyle}" Margin="0"/>
+                                </StackPanel>
+                                <Label Content="{Binding ShortMessage}"
                                        FontSize="12"
                                        Style="{DynamicResource SecondaryColorLable}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="45,0,0,0">
-                                <Label Content="{Binding LastMessageTime}"
-                                       FontSize="12"
-                                       Style="{DynamicResource SecondaryColorLable}"/>
-                                <Border Style="{DynamicResource SecondaryColorBorder}" CornerRadius="50" Width="25">
-                                    <Label Content="{Binding NewMessageCount}" FontSize="12" Style="{DynamicResource MainColorLable}" />
-                                </Border>
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Right" Margin="8,0,0,0" Width="60">
+                                <Label Content="{Binding ViewTime}"
+                                       FontSize="10"
+                                       Style="{DynamicResource SecondaryColorLable}"
+                                       HorizontalAlignment="Center"/>
+                                <Grid HorizontalAlignment="Center">
+                                    <Ellipse Height="25" Width="25">
+                                        <Ellipse.Style>
+                                            <Style TargetType="Ellipse">
+                                                <Setter Property="Fill" Value="#584CA3"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding NotViewedCounter}" Value="0">
+                                                        <Setter Property="Fill" Value="Transparent"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                    <Label Content="{Binding NotViewedCounter}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12">
+                                        <Label.Style>
+                                            <Style TargetType="Label">
+                                                <Setter Property="Foreground" Value="White"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding NotViewedCounter}" Value="0">
+                                                        <Setter Property="Foreground" Value="Transparent"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Label.Style>
+                                    </Label>
+                                </Grid>
                             </StackPanel>
                         </StackPanel>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#584CA3"/>
+                            <Setter Property="Background" Value="#423692"/>
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsSelected" Value="False"/>
                                 <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" Value="#1D0949"/>
+                            <Setter Property="Background" Value="#B8ACFF"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ListViewItem" x:Key="ContactCardUser">
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border Background="{TemplateBinding Background}" Height="62" BorderThickness="0,0.5,0,0.5" BorderBrush="#584CA3" Margin="0,-0.5,0,0">
+                        <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                            <Grid>
+                                <Ellipse Width="46" Height="46">
+                                    <Ellipse.Style>
+                                        <Style TargetType="Ellipse">
+                                            <Setter Property="Fill" Value="#584CA3"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Tag}" Value="True">
+                                                    <Setter Property="Fill">
+                                                        <Setter.Value>
+                                                            <ImageBrush ImageSource="{Binding PhotoSource}" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                                <TextBlock FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Tag}" Value="False">
+                                                    <Setter Property="Text" Value="{Binding PhotoText}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                            <StackPanel Margin="10,0,0,0" Orientation="Vertical" Width="125">
+                                <Label Content="{Binding UserName}"
+                                       FontSize="12"
+                                       Style="{DynamicResource MainColorLable}" MaxWidth="100"/>
+                                <Label Content="{Binding LastOnline}"
+                                       FontSize="12"
+                                       Style="{DynamicResource SecondaryColorLable}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#423692"/>
+                        </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsSelected" Value="False"/>
+                                <Condition Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="#584CA3"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -165,17 +334,34 @@
         </Setter>
     </Style>
     <!-- Chat -->
+    <Style x:Key="BackgroundBorderSelectedInfo" TargetType="Border">
+        <Setter Property="Background" Value="#F2F0FF"/>
+        <Setter Property="Opacity" Value="0.85"/>
+    </Style>
+    <Style x:Key="SelectedAvatarBorder" TargetType="Border">
+        <Setter Property="CornerRadius" Value="180" />
+        <Setter Property="BorderBrush" Value="#584CA3"/>
+        <Setter Property="BorderThickness" Value="2"/>
+    </Style>
     <Style x:Key="ChatListListView" TargetType="ListView">
         <Setter Property="Background" Value="Transparent"/>
     </Style>
     <Style x:Key="MessageColorBorder" TargetType="Border">
-        <Setter Property="Background" Value="#11032F"/>
+        <Setter Property="Background" Value="#D0C1FC"/>
+    </Style>
+    <Style x:Key="ColorTextMessageBlock" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#584CA3"/>
+        <Setter Property="Margin" Value="8,4,0,4"/>
+    </Style>
+    <Style x:Key="ColorTextTimeBlock" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#584CA3"/>
+        <Setter Property="Margin" Value="0,0,5,0"/>
     </Style>
     <!-- Menus -->
     <Style x:Key="StackPanelWithHover" TargetType="StackPanel">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="DarkGray" />
+                <Setter Property="Background" Value="#B8ACFF" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="False">
                 <Setter Property="Background" Value="Transparent" />
@@ -183,21 +369,20 @@
         </Style.Triggers>
     </Style>
     <Style x:Key="MainColorBorderBorderBrush" TargetType="Border">
-        <Setter Property="BorderBrush" Value="#32a898"/>
+        <Setter Property="BorderBrush" Value="#584CA3"/>
     </Style>
     <Style x:Key="Menu_Buttons" TargetType="Button">
         <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Foreground" Value="#32a898"/>
+        <Setter Property="Foreground" Value="#584CA3"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border CornerRadius="10"
-                                Background="{TemplateBinding Background}">
+                    <Border CornerRadius="10" Background="{TemplateBinding Background}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -213,18 +398,71 @@
     </Style>
     <Style x:Key="IconStyleFillRed" TargetType="Path">
         <Setter Property="Margin" Value="5,2,5,2"/>
-        <Setter Property="Stroke" Value="#E50303"/>
-        <Setter Property="StrokeThickness" Value="2"/>
+        <Setter Property="Stroke" Value="#FB3535"/>
+        <Setter Property="StrokeThickness" Value="1.5"/>
         <Setter Property="StrokeLineJoin" Value="Round"/>
         <Setter Property="Stretch" Value="Fill"/>
     </Style>
     <Style x:Key="LableStyleRed" TargetType="Label">
-        <Setter Property="Foreground" Value="#E50303"/>
+        <Setter Property="Foreground" Value="#FB3535"/>
+    </Style>
+    <!-- Settings -->
+    <Style TargetType="Ellipse" x:Key="EllipseImage">
+        <Setter Property="StrokeThickness" Value="1.5"/>
+        <Setter Property="Stroke" Value="#B8ACFF"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Stroke" Value="#584CA3"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="ColorDescription" TargetType="TextBlock">
+        <Setter Property="Foreground" Value="#584CA3"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style TargetType="Border" x:Key="BorderDescription">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="#584CA3"/>
+        <Setter Property="BorderThickness" Value="0,0.75,0,0.75" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="#B8ACFF"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="TextBoxSettings" TargetType="TextBlock">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Foreground" Value="#584CA3"/>
+        <Setter Property="IsHitTestVisible" Value="False"/>
+        <Setter Property="Margin" Value="8,0,0,0"/>
+    </Style>
+    <Style x:Key="PasswordBoxSettings" TargetType="PasswordBox">
+        <Setter Property="Foreground" Value="#584CA3"/>
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CaretBrush" Value="#C6BDFF"/>
+        <Setter Property="FontWeight" Value="Thin" />
+        <Setter Property="Margin" Value="8,0,0,0"/>
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="PasswordChar" Value="*" />
+        <Setter Property="FontFamily" Value="pack://application:,,,/Themes/#Montserrat" />
+        <Setter Property="Background" Value="Transparent" />
+    </Style>
+    <Style x:Key="BorederForPasswordBoxSettings" TargetType="Border">
+        <Setter Property="BorderBrush" Value="#584CA3"/>
+    </Style>
+    <!-- Contacts in Settings -->
+    <Style x:Key="ListBoxContacts" TargetType="ListBox">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
     </Style>
     <!--ScrollBars-->
     <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
-        <Setter Property="Foreground" Value="#11032F"/>
+        <Setter Property="Foreground" Value="#D0C1FC"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Width" Value="8" />
         <Setter Property="Template">
@@ -249,10 +487,10 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger SourceName="Thumb" Property="IsMouseOver" Value="true">
-                            <Setter Value="#1e0555" TargetName="Thumb" Property="Background" />
+                            <Setter Value="#584CA3" TargetName="Thumb" Property="Background" />
                         </Trigger>
                         <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
-                            <Setter Value="#11032F" TargetName="Thumb" Property="Background" />
+                            <Setter Value="#D0C1FC" TargetName="Thumb" Property="Background" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
@@ -281,6 +519,6 @@
     </Style>
     <Style x:Key="BorderScrollBar" TargetType="Border">
         <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="BorderBrush" Value="#584CA3" />
+        <Setter Property="BorderBrush" Value="#584CA3"/>
     </Style>
 </ResourceDictionary>

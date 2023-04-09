@@ -73,20 +73,20 @@
             <StackPanel Orientation="Vertical" Grid.Row="1">
                 <ListView Style="{DynamicResource ContactsListListView}"
                       BorderThickness="0"
-                      x:Name="Contact_Search_Users"
                       ScrollViewer.CanContentScroll="False"
+                      x:Name="Contact_Search_Users"
                       SelectionChanged="SearchUser_SelectionChanged"
                       ItemContainerStyle="{DynamicResource ContactCardUser}"/>
                 <ListView Style="{DynamicResource ContactsListListView}"
                       BorderThickness="0"
-                      x:Name="Contact_Search"
                       ScrollViewer.CanContentScroll="False"
+                      x:Name="Contact_Search"
                       SelectionChanged="SearchChat_SelectionChanged"
                       ItemContainerStyle="{DynamicResource ContactCard}"/>
                 <ListView Style="{DynamicResource ContactsListListView}"
                       BorderThickness="0"
-                      x:Name="Contact_ListView"
                       ScrollViewer.CanContentScroll="False"
+                      x:Name="Contact_ListView"
                       SelectionChanged="ListView_SelectionChanged"
                       ItemContainerStyle="{DynamicResource ContactCard}">
                     <ListView.ContextMenu>
@@ -115,7 +115,7 @@
         <!-- Chat -->
         <!-- Pattern -->
         <Image Source="./Image/pattern.png" Grid.Column="1" Stretch="UniformToFill" StretchDirection="Both" />
-        <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Visible">
+        <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
                 <RowDefinition />
