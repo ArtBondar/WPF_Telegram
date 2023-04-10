@@ -20,7 +20,7 @@ namespace Telegram
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Criptic : Window
     {
         public string JwtToken { get; set; }
         public User LoginedUser { get; set; }
@@ -163,7 +163,7 @@ namespace Telegram
                 }
             }
         }
-        public MainWindow()
+        public Criptic()
         {
             InitializeComponent();
             DispatcherTimer timer = new DispatcherTimer();
@@ -1158,6 +1158,11 @@ namespace Telegram
             }
             // Clear search lists
             ((TextBox)SearchTextBox.Template.FindName("MainTextBox", SearchTextBox)).Text = "";
+        }
+
+        private void Close_RigthMenu_Click(object sender, RoutedEventArgs e)
+        {
+            RigthInfoMenu.Width = new GridLength(0);
         }
     }
 }

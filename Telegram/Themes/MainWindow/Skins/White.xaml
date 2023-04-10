@@ -217,7 +217,7 @@
                                        Style="{DynamicResource MainColorLable}" MaxWidth="100"/>
                                     <Path Width="15" Height="15" Data="{Binding MutePath}" Style="{DynamicResource IconStyle}" Margin="0"/>
                                 </StackPanel>
-                                <Label Content="{Binding ShortMessage}"
+                                <Label Content="{Binding ShortMsg.Message}"
                                        FontSize="12"
                                        Style="{DynamicResource SecondaryColorLable}"/>
                             </StackPanel>

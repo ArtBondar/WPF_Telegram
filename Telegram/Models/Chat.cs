@@ -11,6 +11,12 @@ using System.Windows;
 
 namespace Telegram.Models
 {
+    public class ShortMessg
+    {
+        public int? UserId { get; set; }
+        public string Message { get; set; }
+        public string Username { get; set; }
+    }
     public partial class Chat
     {
         public int Id { get; set; }
@@ -100,5 +106,6 @@ namespace Telegram.Models
         public string ChatInfo { get; set; }
         public int AuthorId { get; set; }
         public int NotViewedCounter { get; set; }
+        public ShortMessg ShortMsg { get; set; }
     }
 }

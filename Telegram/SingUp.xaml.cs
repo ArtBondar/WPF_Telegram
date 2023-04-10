@@ -26,7 +26,7 @@ namespace Telegram
         private string codeString = "";
         private string emailString = "";
         // Защита пароля
-        private static readonly byte[] entropy = Encoding.Unicode.GetBytes("My Salt Value");
+        private static readonly byte[] entropy = Encoding.Unicode.GetBytes("@Criptic/1028490275bbcc");
 
         // Сохранение логина и пароля в файл
         public static void SaveCredentialsToFile(string login, string password, string fileName)
@@ -242,7 +242,7 @@ namespace Telegram
             {
                 // Open Main Form
                 SaveCredentialsToFile(login, password, "login.txt");
-                MainWindow mainForm = new MainWindow();
+                Criptic mainForm = new Criptic();
                 mainForm.JwtToken = result.jwtToken;
                 mainForm.LoginedUser = result.user;
                 mainForm.Chats = result.chats;
@@ -299,7 +299,7 @@ namespace Telegram
             {
                 // Open Main Form
                 SaveCredentialsToFile(userName, password, "login.txt");
-                MainWindow mainForm = new MainWindow();
+                Criptic mainForm = new Criptic();
                 mainForm.JwtToken = result.jwtToken;
                 mainForm.LoginedUser = result.user;
                 mainForm.Chats = result.chats;
@@ -470,7 +470,7 @@ namespace Telegram
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
             {
                 // Open Main Form
-                MainWindow mainForm = new MainWindow();
+                Criptic mainForm = new Criptic();
                 mainForm.JwtToken = result.jwtToken;
                 mainForm.LoginedUser = result.user;
                 mainForm.Chats = result.chats;
