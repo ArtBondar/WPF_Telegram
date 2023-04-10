@@ -104,7 +104,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Chat.cs" />
-    <Compile Include="Models\ChatMessage.cs" />
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\SavedMessage.cs" />
     <Compile Include="Models\User.cs" />

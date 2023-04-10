@@ -78,7 +78,85 @@
                       x:Name="Contact_Search_Users"
                       SelectionChanged="SearchUser_SelectionChanged"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      ItemContainerStyle="{DynamicResource ContactCardUser}"/>
+                      SelectionMode="Single"
+                      PreviewMouseRightButtonDown="UserSearch_ContextOpen">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border Background="{TemplateBinding Background}" Height="62" BorderThickness="0,0.5,0,0.5" BorderBrush="#584CA3" Margin="0,-0.5,0,0">
+                                            <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
+                                                <Grid>
+                                                    <Ellipse Width="46" Height="46">
+                                                        <Ellipse.Style>
+                                                            <Style TargetType="Ellipse">
+                                                                <Setter Property="Fill" Value="#B8ACFF"/>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Tag}" Value="True">
+                                                                        <Setter Property="Fill">
+                                                                            <Setter.Value>
+                                                                                <ImageBrush ImageSource="{Binding PhotoSource}" />
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Ellipse.Style>
+                                                    </Ellipse>
+                                                    <TextBlock FontSize="20" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <TextBlock.Style>
+                                                            <Style TargetType="TextBlock">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Tag}" Value="False">
+                                                                        <Setter Property="Text" Value="{Binding PhotoText}"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </TextBlock.Style>
+                                                    </TextBlock>
+                                                </Grid>
+                                                <StackPanel Margin="10,0,0,0" Orientation="Vertical" Width="125">
+                                                    <Label Content="{Binding UserName}"
+                                       FontSize="12"
+                                       Style="{DynamicResource MainColorLable}" MaxWidth="100"/>
+                                                    <Label Content="{Binding LastOnline}"
+                                       FontSize="12"
+                                       Style="{DynamicResource SecondaryColorLable}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                            <Border.ContextMenu>
+                                                <ContextMenu Style="{DynamicResource ContextMenuBorderBrush}">
+                                                    <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Cursor="Hand" Visibility="{Binding VisibilityAddContact}" Click="Addcontact_Click" Tag="{Binding Id}">
+                                                        <MenuItem.Header>
+                                                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
+                                                                <Path Margin="8,0,0,0" Data="M10 8.33333C11.6109 8.33333 12.9167 7.0275 12.9167 5.41667C12.9167 3.80584 11.6109 2.5 10 2.5C8.38921 2.5 7.08337 3.80584 7.08337 5.41667C7.08337 7.0275 8.38921 8.33333 10 8.33333Z M2.5 17V17.5H17.5V17C17.5 15.1332 17.5 14.1998 17.1367 13.4867C16.8171 12.8595 16.3072 12.3496 15.68 12.03C14.9669 11.6667 14.0335 11.6667 12.1667 11.6667H7.83333C5.9665 11.6667 5.03308 11.6667 4.32004 12.03C3.69283 12.3496 3.18289 12.8595 2.86331 13.4867C2.5 14.1998 2.5 15.1332 2.5 17Z" Style="{DynamicResource IconStyle}" Width="20" Height="20"/>
+                                                                <Label Content="Add contact" FontSize="14" Style="{DynamicResource MainColorLable}" Margin="8,0,0,0"/>
+                                                            </StackPanel>
+                                                        </MenuItem.Header>
+                                                    </MenuItem>
+                                                </ContextMenu>
+                                            </Border.ContextMenu>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="#584CA3"/>
+                                            </Trigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsSelected" Value="False"/>
+                                                    <Condition Property="IsMouseOver" Value="True"/>
+                                                </MultiTrigger.Conditions>
+                                                <Setter Property="Background" Value="#1D0949"/>
+                                            </MultiTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
                 <ListView Style="{DynamicResource ContactsListListView}"
                       BorderThickness="0"
                       ScrollViewer.CanContentScroll="False"
@@ -359,13 +437,9 @@
                         <Path Width="25" Height="25" Data="M15 15L33 8V40L15 33  M40 17H42 M39 25H44 M40 33H42 M4,15 L15,15 L15,33 L4,33z" Style="{DynamicResource IconStyle}" Margin="20,0,0,0"/>
                         <Label Content="Create chanel" Style="{DynamicResource MainColorLable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}" Height="35" Cursor="Hand">
+                    <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}" Height="35" Cursor="Hand" PreviewMouseLeftButtonUp="Menu_Contacts_Open">
                         <Path Width="25" Height="25" Data="M24 20C27.866 20 31 16.866 31 13C31 9.13401 27.866 6 24 6C20.134 6 17 9.13401 17 13C17 16.866 20.134 20 24 20Z M6 40.8V42H42V40.8C42 36.3196 42 34.0794 41.1281 32.3681C40.3611 30.8628 39.1372 29.6389 37.6319 28.8719C35.9206 28 33.6804 28 29.2 28H18.8C14.3196 28 12.0794 28 10.3681 28.8719C8.86278 29.6389 7.63893 30.8628 6.87195 32.3681C6 34.0794 6 36.3196 6 40.8Z" Style="{DynamicResource IconStyle}" Margin="20,0,0,0"/>
                         <Label Content="Contacts" Style="{DynamicResource MainColorLable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}" Height="35" Cursor="Hand">
-                        <Path Width="25" Height="25" Data="M16.9961 7.68583C17.7227 7.68583 18.3921 8.07985 18.7448 8.71509L21.1912 13.1219C21.5115 13.6989 21.5266 14.3968 21.2314 14.9871L18.8746 19.7008C18.8746 19.7008 19.5576 23.2122 22.416 26.0706C25.2744 28.929 28.7741 29.6002 28.7741 29.6002L33.487 27.2438C34.0777 26.9484 34.7761 26.9637 35.3533 27.2846L39.7726 29.7416C40.4072 30.0945 40.8008 30.7635 40.8008 31.4896L40.8008 36.5631C40.8008 39.1468 38.4009 41.0129 35.9528 40.1868C30.9249 38.4903 23.1202 35.2601 18.1734 30.3132C13.2265 25.3664 9.99631 17.5617 8.29977 12.5338C7.47375 10.0857 9.33984 7.68583 11.9235 7.68583L16.9961 7.68583Z" Style="{DynamicResource IconStyle}" Margin="20,0,0,0"/>
-                        <Label Content="Calls" Style="{DynamicResource MainColorLable}" VerticalAlignment="Center" Margin="15,0,0,0"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}" Height="35" Cursor="Hand" PreviewMouseLeftButtonUp="Menu_Favorites_LeftButtonUp">
                         <Border Background="Transparent" Margin="20,0,0,0" Width="25" Height="25">
@@ -724,6 +798,35 @@
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
+            </Border>
+        </Grid>
+        <!-- Contacts -->
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Contacts_Settings_Grid" PreviewMouseLeftButtonUp="Close_ContactsSettings_Menu">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity="0.3"/>
+            </Grid.Background>
+            <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="350" Width="Auto" Height="350">
+                <StackPanel Orientation="Vertical">
+                    <Label Content="Contacts" Style="{DynamicResource MainColorLable}" FontSize="24" Margin="8,10,0,0"/>
+                    <ListBox Height="270"
+                             x:Name="ContactsList_Settings"
+                             Style="{DynamicResource ListBoxContacts}"
+                             Margin="0,10,0,0" 
+                             ItemContainerStyle="{DynamicResource ContactItemsStyle}">
+                        <ListBox.ContextMenu>
+                            <ContextMenu Style="{DynamicResource ContextMenuBorderBrush}" BorderThickness="0" BorderBrush="Transparent">
+                                <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Cursor="Hand" Click="DeleteContact_Click">
+                                    <MenuItem.Header>
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Style="{DynamicResource StackPanelWithHover}">
+                                            <Path Margin="8,0,0,0" Data="M10.3001 3.4165H2.80359V18.4165H10.3036 M14.0536 14.6665L17.8036 10.9165L14.0536 7.1665 M6.97025 10.9131H17.8036" Style="{DynamicResource IconStyleFillRed}" Width="20" Height="20"/>
+                                            <Label Content="Delete contact" FontSize="14" Style="{DynamicResource LableStyleRed}" Margin="8,0,0,0"/>
+                                        </StackPanel>
+                                    </MenuItem.Header>
+                                </MenuItem>
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                    </ListBox>
+                </StackPanel>
             </Border>
         </Grid>
     </Grid>

@@ -57,7 +57,7 @@ namespace Telegram.Models
                 return null;
             }
         }
-
+        public Visibility VisibilityAddContact { get; set; } = Visibility.Visible;
         public User()
         {
             

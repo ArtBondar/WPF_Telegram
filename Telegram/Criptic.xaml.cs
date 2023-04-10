@@ -1104,6 +1104,10 @@ namespace Telegram
                     flag = true;
                     foreach (var user in result.users)
                     {
+                        if (UserContacts.Contains(user))
+                        {
+                            user.VisibilityAddContact = Visibility.Collapsed;
+                        }
                         Contact_Search_Users.Items.Add(user);
                     }
                 }
@@ -1268,6 +1272,64 @@ namespace Telegram
         {
             if (e.Source == Edit_Info_Grid)
                 Edit_Info_Grid.Visibility = Visibility.Hidden;
+        }
+        private void Menu_Contacts_Open(object sender, MouseButtonEventArgs e)
+        {
+            ContactsList_Settings.ItemsSource = UserContacts;
+            Contacts_Settings_Grid.Visibility = Visibility.Visible;
+        }
+        private void Close_ContactsSettings_Menu(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source == Contacts_Settings_Grid)
+                Contacts_Settings_Grid.Visibility = Visibility.Hidden;
+        }
+        private async void DeleteContact_Click(object sender, RoutedEventArgs e)
+        {
+            if (ContactsList_Settings.SelectedItem is User Selectedcontact)
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var data = JsonConvert.SerializeObject(new { currentUserLogin = LoginedUser.UserName, contactUserName = Selectedcontact.UserName });
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("DELETE"), RequestUri = new Uri("https://localhost:7195/api/UserContacts/deletecontact"), Content = content });
+                var responseString = await response.Content.ReadAsStringAsync();
+                if (responseString == null)
+                {
+                    MessageBox.Show("Server error...");
+                    return;
+                }
+            }
+        }
+        private void UserSearch_ContextOpen(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            var element = sender as FrameworkElement;
+            var menu = element.ContextMenu;
+            if (menu != null)
+            {
+                menu.PlacementTarget = element;
+                menu.IsOpen = true;
+            }
+        }
+        private async void Addcontact_Click(object sender, RoutedEventArgs e)
+        {
+            int.TryParse((sender as MenuItem).Tag.ToString(), out int id);
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+            var response = await client.GetAsync($"https://localhost:7195/api/Users/{id}");
+            var responseString = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { user = new User() });
+            //
+            var data = JsonConvert.SerializeObject(new { currentUserLogin = LoginedUser.UserName, contactUserName = result.user.UserName });
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            response = await client.PostAsync("https://localhost:7195/api/UserContacts/createcontact", content);
+            responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null)
+            {
+                MessageBox.Show("Server error...");
+                this.Close();
+                return;
+            }
         }
     }
 }
