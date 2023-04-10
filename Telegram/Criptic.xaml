@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         mc:Ignorable="d"
         Height="650" Width="1200"
         MinHeight="450" MinWidth="800"
@@ -205,7 +206,7 @@
                                                     FontSize="14"/>
                                                 <Image Source="{Binding PhotoSource}" Height="Auto" MaxHeight="200" />
                                                 <StackPanel Orientation="Horizontal" Margin="0,-5,0,0">
-                                                    <TextBlock Text="{Binding Text}"
+                                                    <emoji:TextBlock Text="{Binding Text}"
                                                         TextWrapping="Wrap"
                                                         Style="{DynamicResource ColorTextMessageBlock}"
                                                         FontSize="14"
@@ -254,6 +255,7 @@
                          FontSize="14"
                          MaxLength="500"
                          Style="{StaticResource MessageBox}"
+                         Background="Transparent"
                          PreviewKeyDown="MessageBox_PreviewKeyDown"
                          Grid.ColumnSpan="1"
                          Margin="0,0,10,0"/>

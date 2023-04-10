@@ -142,7 +142,7 @@ namespace Telegram
                     return;
                 }
                 var result = JsonConvert.DeserializeAnonymousType(responseString, new { user = new User(), chats = new List<Chat>(), savedMessages = new List<SavedMessage>(), contacts = new List<User>() });
-                if(result.user != null)
+                if (result.user != null)
                 {
                     if (JsonConvert.SerializeObject(LoginedUser) != JsonConvert.SerializeObject(result.user))
                     {
@@ -155,7 +155,7 @@ namespace Telegram
                         SavedMessages = result.savedMessages;
                         RefreshUIChats();
                     }
-                    if(JsonConvert.SerializeObject(UserContacts) != JsonConvert.SerializeObject(result.contacts))
+                    if (JsonConvert.SerializeObject(UserContacts) != JsonConvert.SerializeObject(result.contacts))
                     {
                         UserContacts = result.contacts;
                         RefreshUIContacts();
@@ -228,7 +228,7 @@ namespace Telegram
             //
             var client = new HttpClient();
             string additionalChatName = null;
-            if(Select.Type == "Private")
+            if (Select.Type == "Private")
                 additionalChatName = Select.ChatName;
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
             var data = JsonConvert.SerializeObject(new { chatName = Select.ChatName, authorId = Select.AuthorId, additionalChatName });
@@ -266,6 +266,7 @@ namespace Telegram
             Info2_Lable.Content = ""; Info2_Lable.Visibility = Visibility.Collapsed;
             Info3_NameLable.Content = ""; Info3_NameLable.Visibility = Visibility.Collapsed;
             Info3_Lable.Content = ""; Info3_Lable.Visibility = Visibility.Collapsed;
+            WriteMessageBox.Visibility = Visibility.Visible;
             //
             Edit_ThreePointInfoSelectedChat.Visibility = Visibility.Collapsed;
             //
@@ -288,14 +289,11 @@ namespace Telegram
                 RigthInfo_Second.Content = $"{result.members.Count} members";
                 if (Select.AuthorId == LoginedUser.Id)
                     Edit_ThreePointInfoSelectedChat.Visibility = Visibility.Visible;
-                if (Select.Type == "Channel" && Select.AuthorId == LoginedUser.Id)
-                    WriteMessageBox.Visibility = Visibility.Visible;
-                else
+                if (Select.Type == "Channel" && Select.AuthorId != LoginedUser.Id)
                     WriteMessageBox.Visibility = Visibility.Collapsed;
             }
             if (Select.Type == "Private")
             {
-                WriteMessageBox.Visibility = Visibility.Visible;
                 RigthInfo_Name.Content = Select.ChatName;
                 RigthInfo_Second.Content = "?";
                 ChatPanel_SecondInfo.Content = Select.PublishTime;
@@ -309,14 +307,13 @@ namespace Telegram
             }
             if (Select.Type == "Favorite")
             {
-                WriteMessageBox.Visibility = Visibility.Visible;
                 InfoPath.Visibility = Visibility.Collapsed;
                 // Favorite
             }
             // Messages
             foreach (Message message in result.messages)
             {
-                if(message.Author.Id == LoginedUser.Id)
+                if (message.Author.Id == LoginedUser.Id)
                 {
                     message.VisibilityDeleteMessage = Visibility.Visible;
                     if (message.Viewed)
@@ -540,7 +537,7 @@ namespace Telegram
                     MessageBox.Show($"{result.error}");
                     return;
                 }
-                if(result.user != null)
+                if (result.user != null)
                 {
                     LoginedUser = result.user;
                     Menu_EditUserName_Grid.Visibility = Visibility.Hidden;
@@ -713,7 +710,7 @@ namespace Telegram
                     PhotoPath_CreateChannel.Visibility = Visibility.Collapsed;
                 }
                 catch (Exception ex) { MessageBox.Show($"Error: {ex.Message}"); }
-                
+
             }
         }
         private void Close_Contacts_Menu(object sender, MouseButtonEventArgs e)
@@ -759,8 +756,8 @@ namespace Telegram
                     Menu_CreateGroup_Grid.Visibility = Visibility.Hidden;
                     Contacts_Create_Grid.Visibility = Visibility.Visible;
                     CreatedLastChat = result.chat;
-                    SelectedPhoto = null; 
-                    GroupOrChannelName = null; 
+                    SelectedPhoto = null;
+                    GroupOrChannelName = null;
                 }
             }
         }
@@ -1041,7 +1038,7 @@ namespace Telegram
                 //
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri($"https://localhost:7195/api/Chats/notifications/{SelectedChat.Id}")});
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri($"https://localhost:7195/api/Chats/notifications/{SelectedChat.Id}") });
                 var responseString = await response.Content.ReadAsStringAsync();
             }
         }
