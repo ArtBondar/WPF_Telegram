@@ -267,6 +267,8 @@ namespace Telegram
             Info3_NameLable.Content = ""; Info3_NameLable.Visibility = Visibility.Collapsed;
             Info3_Lable.Content = ""; Info3_Lable.Visibility = Visibility.Collapsed;
             //
+            Edit_ThreePointInfoSelectedChat.Visibility = Visibility.Collapsed;
+            //
             if (Select.Type == "Group" || Select.Type == "Channel")
             {
                 ChatPanel_SecondInfo.Content = $"{result.members.Count} members";
@@ -284,10 +286,12 @@ namespace Telegram
                 Info2_NameLable.Content = $"{Select.Type} name"; Info2_NameLable.Visibility = Visibility.Visible;
                 Info2_Lable.Content = Select.ChatName; Info2_Lable.Visibility = Visibility.Visible;
                 RigthInfo_Second.Content = $"{result.members.Count} members";
-                if(Select.Type == "Channel" && Select.AuthorId != LoginedUser.Id)
-                    WriteMessageBox.Visibility = Visibility.Collapsed;
-                else
+                if (Select.AuthorId == LoginedUser.Id)
+                    Edit_ThreePointInfoSelectedChat.Visibility = Visibility.Visible;
+                if (Select.Type == "Channel" && Select.AuthorId == LoginedUser.Id)
                     WriteMessageBox.Visibility = Visibility.Visible;
+                else
+                    WriteMessageBox.Visibility = Visibility.Collapsed;
             }
             if (Select.Type == "Private")
             {
@@ -671,9 +675,10 @@ namespace Telegram
                 try
                 {
                     image = BitmapFrame.Create(new MemoryStream(bytes));
+                    Ellipse_CreateGroup.Fill = new ImageBrush(image);
+                    PhotoPath_CreateGroup.Visibility = Visibility.Collapsed;
                 }
                 catch (Exception ex) { MessageBox.Show($"Error: {ex.Message}"); }
-                Ellipse_CreateGroup.Fill = new ImageBrush(image);
             }
         }
         private void EditImageCreateChannel(object sender, MouseButtonEventArgs e)
@@ -704,9 +709,11 @@ namespace Telegram
                 try
                 {
                     image = BitmapFrame.Create(new MemoryStream(bytes));
+                    Ellipse_CreateChannel.Fill = new ImageBrush(image);
+                    PhotoPath_CreateChannel.Visibility = Visibility.Collapsed;
                 }
                 catch (Exception ex) { MessageBox.Show($"Error: {ex.Message}"); }
-                Ellipse_CreateChannel.Fill = new ImageBrush(image);
+                
             }
         }
         private void Close_Contacts_Menu(object sender, MouseButtonEventArgs e)
@@ -752,6 +759,8 @@ namespace Telegram
                     Menu_CreateGroup_Grid.Visibility = Visibility.Hidden;
                     Contacts_Create_Grid.Visibility = Visibility.Visible;
                     CreatedLastChat = result.chat;
+                    SelectedPhoto = null; 
+                    GroupOrChannelName = null; 
                 }
             }
         }
@@ -786,6 +795,8 @@ namespace Telegram
                     Menu_CreateChanel_Grid.Visibility = Visibility.Hidden;
                     Contacts_Create_Grid.Visibility = Visibility.Visible;
                     CreatedLastChat = result.chat;
+                    SelectedPhoto = null;
+                    GroupOrChannelName = null;
                 }
             }
         }
@@ -1159,10 +1170,107 @@ namespace Telegram
             // Clear search lists
             ((TextBox)SearchTextBox.Template.FindName("MainTextBox", SearchTextBox)).Text = "";
         }
-
         private void Close_RigthMenu_Click(object sender, RoutedEventArgs e)
         {
             RigthInfoMenu.Width = new GridLength(0);
+        }
+        private void OpenPointMenuInfo_Click(object sender, RoutedEventArgs e)
+        {
+            ThreePointsInfo.IsSubmenuOpen = true;
+        }
+        private async void Leave_SelectedInfo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            var client = new HttpClient();
+            var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, chatName = SelectedChat.ChatName });
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:7195/api/Chats/leavepublicchat", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null)
+            {
+                MessageBox.Show("Server error...");
+                this.Close();
+                return;
+            }
+            SelectedChat = null;
+            RigthInfoMenu.Width = new GridLength(0);
+            // Close info
+            Menu_Info_Grid.Visibility = Visibility.Hidden;
+            // Close selected message
+            ChatGrid.Visibility = Visibility.Hidden;
+        }
+        private void Edit_SelectedInfo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            Edit_Info_Grid.Visibility = Visibility.Visible;
+            EditInfoEllipse.Fill = new ImageBrush(SelectedChat.PhotoSource);
+            if (SelectedChat.PhotoSource == null)
+            {
+                PhotoPath.Visibility = Visibility.Visible;
+            }
+            ((TextBox)Channel_Name.Template.FindName("MainTextBox", Channel_Name as TextBox)).Text = SelectedChat.ChatName;
+            ((TextBox)Channel_Description.Template.FindName("MainTextBox", Channel_Description as TextBox)).Text = SelectedChat.ChatInfo;
+        }
+        private void EditImageEditChannel(object sender, MouseButtonEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image Files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg|All files (*.*)|*.*",
+                RestoreDirectory = true
+            };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                byte[] tbytes = File.ReadAllBytes(openFileDialog.FileName);
+                string extension = Path.GetExtension(openFileDialog.SafeFileName);
+                SelectedPhoto = $"data:image/{extension.Substring(1)};base64," + Convert.ToBase64String(tbytes);
+                //
+                string imagePath = openFileDialog.FileName;
+                BitmapImage bitmap = new BitmapImage(new Uri(imagePath, UriKind.RelativeOrAbsolute));
+                byte[] bytes;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    PngBitmapEncoder encoder = new PngBitmapEncoder();
+                    encoder.Frames.Add(BitmapFrame.Create(bitmap));
+                    encoder.Save(ms);
+                    bytes = ms.ToArray();
+                }
+                ImageSource image = null;
+                try
+                {
+                    image = BitmapFrame.Create(new MemoryStream(bytes));
+                    PhotoPath.Visibility = Visibility.Hidden;
+                    EditInfoEllipse.Fill = new ImageBrush(image);
+                }
+                catch (Exception ex) { MessageBox.Show($"Error: {ex.Message}"); }
+            }
+        }
+        private void Close_EditChat_Menu_Click(object sender, RoutedEventArgs e)
+        {
+            Edit_Info_Grid.Visibility = Visibility.Hidden;
+        }
+        private async void Edit_Chat_Click(object sender, RoutedEventArgs e)
+        {
+            string chatImage = SelectedPhoto;
+            string chatName = ((TextBox)Channel_Name.Template.FindName("MainTextBox", Channel_Name as TextBox)).Text;
+            string chatInfo = ((TextBox)Channel_Description.Template.FindName("MainTextBox", Channel_Description as TextBox)).Text;
+            var client = new HttpClient();
+            var data = JsonConvert.SerializeObject(new { id = SelectedChat.Id, chatImage, chatName, chatInfo });
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:7195/api/Chats/editpublicchat", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            if (responseString == null)
+            {
+                MessageBox.Show("Server error...");
+                this.Close();
+                return;
+            }
+            Edit_Info_Grid.Visibility = Visibility.Hidden;
+            Menu_Info_Grid.Visibility = Visibility.Hidden;
+        }
+        private void Close_Edit_Menu(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source == Edit_Info_Grid)
+                Edit_Info_Grid.Visibility = Visibility.Hidden;
         }
     }
 }

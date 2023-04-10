@@ -117,7 +117,6 @@
             </ListView>
         </Grid>
         <!-- Chat -->
-        <!-- Pattern -->
         <Image Source="./Image/pattern.png" Grid.Column="1" Stretch="UniformToFill" StretchDirection="Both" />
         <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Hidden">
             <Grid.RowDefinitions>
@@ -126,7 +125,7 @@
                 <RowDefinition Height="70"/>
             </Grid.RowDefinitions>
             <!-- Chat User info -->
-            <Border x:Name="BorderChatInfoWithButtons" Style="{DynamicResource BackgroundBorderSelectedInfo}" Opacity="0.75" Cursor="Hand" PreviewMouseLeftButtonUp="OpenSelectedChatmenuInfo">
+            <Border x:Name="BorderChatInfoWithButtons" Style="{DynamicResource BackgroundBorderSelectedInfo}" Cursor="Hand" PreviewMouseLeftButtonUp="OpenSelectedChatmenuInfo">
                 <Grid x:Name="SelectedInfoGrid" HorizontalAlignment="Stretch" Margin="8">
                     <StackPanel Orientation="Horizontal">
                         <Grid>
@@ -163,10 +162,10 @@
                                         </StackPanel>
                                     </MenuItem.Header>
                                 </MenuItem>
-                                <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Margin="-5, 0, -5, 0" Cursor="Hand">
+                                <MenuItem Width="180" Style="{StaticResource MenuItemThreePoints}" Margin="-5, 0, -5, 0" Cursor="Hand" Click="DeleteChat_Click">
                                     <MenuItem.Header>
                                         <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}">
-                                            <Path Margin="8,0,0,0" Data="M8 11L40 11 M18 5L30 5 M12 17H36V40C36 41.6569 34.6569 43 33 43H15C13.3431 43 12 41.6569 12 40V17Z" Style="{DynamicResource IconStyleFillRed}" Width="22.5" Height="25"/>
+                                            <Path Margin="8,0,0,0" Data="M10.3001 3.4165H2.80359V18.4165H10.3036 M14.0536 14.6665L17.8036 10.9165L14.0536 7.1665 M6.97025 10.9131H17.8036" Style="{DynamicResource IconStyleFillRed}" Width="22.5" Height="25"/>
                                             <Label Content="Delete chat" FontSize="14" Style="{DynamicResource LableStyleRed}" Margin="10.5,0,0,0"/>
                                         </StackPanel>
                                     </MenuItem.Header>
@@ -456,8 +455,10 @@
             <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="350" Width="Auto" Height="150">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="25">
-                        <Ellipse x:Name="Ellipse_CreateGroup" Width="75" Height="75" StrokeThickness="1.5" Margin="5" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="EditImageCreateGroup" Fill="Black">
-                        </Ellipse>
+                        <Grid>
+                            <Ellipse x:Name="Ellipse_CreateGroup" Width="75" Height="75" StrokeThickness="1.5" Margin="5" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="EditImageCreateGroup" Fill="#584CA3"/>
+                            <Path x:Name="PhotoPath_CreateGroup" Data="M11.4351 9.396L13.6226 5.021H22.3726L24.5601 9.396H11.4351Z M30.3935 9.396H5.60181C4.39368 9.396 3.41431 10.3754 3.41431 11.5835V29.0835C3.41431 30.2916 4.39368 31.271 5.60181 31.271H30.3935C31.6016 31.271 32.581 30.2916 32.581 29.0835V11.5835C32.581 10.3754 31.6016 9.396 30.3935 9.396Z M17.9976 26.1669C21.2193 26.1669 23.831 23.5552 23.831 20.3336C23.831 17.1119 21.2193 14.5002 17.9976 14.5002C14.776 14.5002 12.1643 17.1119 12.1643 20.3336C12.1643 23.5552 14.776 26.1669 17.9976 26.1669Z" Style="{DynamicResource IconStyle}" Width="35" Height="30" IsHitTestVisible="False"/>
+                        </Grid>
                         <TextBox x:Name="GroupCreateTextBox"  Margin="25" Width="180" FontSize="14" Style="{DynamicResource TextBoxWithPlaceHolderMenu}" Tag="Group name"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,-20, 0, 0">
@@ -475,8 +476,10 @@
             <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="450" Width="Auto" Height="250">
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="25">
-                        <Ellipse x:Name="Ellipse_CreateChannel" Width="75" Height="75" StrokeThickness="1.5" Margin="5" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="EditImageCreateChannel" Fill="Black">
-                        </Ellipse>
+                        <Grid Width="75" Height="75">
+                            <Ellipse x:Name="Ellipse_CreateChannel"  StrokeThickness="1.5" Margin="5" Style="{DynamicResource EllipseImage}" Cursor="Hand" PreviewMouseLeftButtonUp="EditImageCreateChannel" Fill="#584CA3"/>
+                            <Path x:Name="PhotoPath_CreateChannel" Data="M11.4351 9.396L13.6226 5.021H22.3726L24.5601 9.396H11.4351Z M30.3935 9.396H5.60181C4.39368 9.396 3.41431 10.3754 3.41431 11.5835V29.0835C3.41431 30.2916 4.39368 31.271 5.60181 31.271H30.3935C31.6016 31.271 32.581 30.2916 32.581 29.0835V11.5835C32.581 10.3754 31.6016 9.396 30.3935 9.396Z M17.9976 26.1669C21.2193 26.1669 23.831 23.5552 23.831 20.3336C23.831 17.1119 21.2193 14.5002 17.9976 14.5002C14.776 14.5002 12.1643 17.1119 12.1643 20.3336C12.1643 23.5552 14.776 26.1669 17.9976 26.1669Z" Style="{DynamicResource IconStyle}" Width="35" Height="30" IsHitTestVisible="False"/>
+                        </Grid>
                         <TextBox Margin="35, 0, 0, 0" Width="250" FontSize="16" x:Name="ChannelName"
                                  Style="{DynamicResource TextBoxWithPlaceHolderMenu}" Tag="Channel name" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -613,7 +616,32 @@
                     <StackPanel Orientation="Vertical" Width="400">
                         <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                             <Label Content="Information" Style="{DynamicResource MainColorLable}" FontSize="24" Margin="25,0,0,0"/>
-                            <Button Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconStyle}" Margin="195,0,0,0" Click="MenuInfoGridClose_Click">
+                            <Menu Background="Transparent" Height="20" Width="20" Margin="180,0,0,0">
+                                <MenuItem x:Name="ThreePointsInfo" Style="{StaticResource MenuItemThreePoints}" VerticalAlignment="Center" HorizontalAlignment="Center" Height="30" Width="30">
+                                    <MenuItem.Header>
+                                        <Button Click="OpenPointMenuInfo_Click" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconStyle}">
+                                            <Path Margin="7.5,0,7.5,0" Data="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" Style="{DynamicResource IconStyleFill}"/>
+                                        </Button>
+                                    </MenuItem.Header>
+                                    <MenuItem x:Name="Edit_ThreePointInfoSelectedChat" Visibility="Collapsed" Width="150" Style="{StaticResource MenuItemThreePoints}" Margin="-5, 0, -5, 0" Cursor="Hand" PreviewMouseLeftButtonUp="Edit_SelectedInfo_MouseLeftButtonUp">
+                                        <MenuItem.Header>
+                                            <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}" >
+                                                <Path Style="{DynamicResource IconStyle}" Data="M13.6456,3.18701L17.8122,7.35367L13.6456,3.18701Z M2.18724,15.1661L5.83307,18.812 M4.27057,16.7287L15.7289,5.27039L4.27057,16.7287Z M1.66642,15.1662L16.2497,0.583374L20.4164,4.74952L5.83307,19.3329L0.624741,20.3745L1.66642,15.1662Z M13.6456,3.18701L17.8122,7.35367 M13.6456,3.18701L17.8122,7.35367 M2.18724,15.1661L5.83307,18.812 M4.27057,16.7287L15.7289,5.27039" Width="20" Height="20"/>
+                                                <Label Content="Edit" FontSize="14" Style="{DynamicResource MainColorLable}" Margin="3"/>
+                                            </StackPanel>
+                                        </MenuItem.Header>
+                                    </MenuItem>
+                                    <MenuItem Width="150" Style="{StaticResource MenuItemThreePoints}" Margin="-5, 0, -5, 0" Cursor="Hand" PreviewMouseLeftButtonUp="Leave_SelectedInfo_MouseLeftButtonUp">
+                                        <MenuItem.Header>
+                                            <StackPanel Orientation="Horizontal" Style="{DynamicResource StackPanelWithHover}" >
+                                                <Path Data="M10.3001 3.4165H2.80359V18.4165H10.3036 M14.0536 14.6665L17.8036 10.9165L14.0536 7.1665 M6.97025 10.9131H17.8036" Style="{DynamicResource IconStyleFillRed}" Width="20" Height="25"/>
+                                                <Label Content="Leave" FontSize="14" Style="{DynamicResource LableStyleRed}" Margin="3"/>
+                                            </StackPanel>
+                                        </MenuItem.Header>
+                                    </MenuItem>
+                                </MenuItem>
+                            </Menu>
+                            <Button Width="20" Height="20" Background="Transparent" BorderBrush="Transparent" Style="{DynamicResource ButtonIconStyle}" Margin="8,0,0,0" Click="MenuInfoGridClose_Click">
                                 <Path Data="M8 8L40 40 M8 40L40 8" Style="{DynamicResource IconStyle}" Margin="1" Stretch="Fill"/>
                             </Button>
                         </StackPanel>
@@ -664,6 +692,34 @@
                              ItemContainerStyle="{DynamicResource MembersItemsStyle}"
                              SelectionChanged="ContactsList_SelectionChanged">
                         </ListBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+        <!-- Edit selected chat-->
+        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Edit_Info_Grid" PreviewMouseLeftButtonUp="Close_Edit_Menu">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity="0.3"/>
+            </Grid.Background>
+            <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" Width="400" Height="180">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Orientation="Vertical" Width="400">
+                        <StackPanel Orientation="Horizontal" Margin="20, 25, 0, 0" Grid.Row="0" VerticalAlignment="Top">
+                            <Grid Width="80" Height="80">
+                                <Ellipse x:Name="EditInfoEllipse" PreviewMouseLeftButtonUp="EditImageEditChannel" Cursor="Hand" Style="{DynamicResource EllipseImage}" Fill="#584CA3"/>
+                                <Path x:Name="PhotoPath" Data="M11.4351 9.396L13.6226 5.021H22.3726L24.5601 9.396H11.4351Z M30.3935 9.396H5.60181C4.39368 9.396 3.41431 10.3754 3.41431 11.5835V29.0835C3.41431 30.2916 4.39368 31.271 5.60181 31.271H30.3935C31.6016 31.271 32.581 30.2916 32.581 29.0835V11.5835C32.581 10.3754 31.6016 9.396 30.3935 9.396Z M17.9976 26.1669C21.2193 26.1669 23.831 23.5552 23.831 20.3336C23.831 17.1119 21.2193 14.5002 17.9976 14.5002C14.776 14.5002 12.1643 17.1119 12.1643 20.3336C12.1643 23.5552 14.776 26.1669 17.9976 26.1669Z" Style="{DynamicResource IconStyle}" Width="35" Height="30" IsHitTestVisible="False"/>
+                            </Grid>
+                            <StackPanel Orientation="Vertical" Margin="10, 0, 0, 0" VerticalAlignment="Center">
+                                <TextBox x:Name="Channel_Name" Margin="8" Width="150" FontSize="16" Tag="Channel name"
+                                 Style="{DynamicResource TextBoxWithPlaceHolderMenu}" HorizontalAlignment="Left"/>
+                                <TextBox x:Name="Channel_Description" Margin="8" Width="250" FontSize="16" Tag="Description..."
+                                 Style="{DynamicResource TextBoxWithPlaceHolderMenu}" HorizontalAlignment="Left"/>
+                            </StackPanel>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20, 0, 0">
+                            <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_EditChat_Menu_Click"/>
+                            <Button Content="Edit" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Edit_Chat_Click"/>
+                        </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
             </Border>
