@@ -697,7 +697,7 @@
             </Border>
         </Grid>
         <!-- Edit selected chat-->
-        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Edit_Info_Grid" PreviewMouseLeftButtonUp="Close_Edit_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Edit_Info_Grid" PreviewMouseLeftButtonUp="Close_Edit_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
