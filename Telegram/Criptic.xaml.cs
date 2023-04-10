@@ -1104,7 +1104,7 @@ namespace Telegram
                     flag = true;
                     foreach (var user in result.users)
                     {
-                        if (UserContacts.Contains(user))
+                        if (UserContacts.FirstOrDefault(cont => cont.UserName == user.UserName) != null)
                         {
                             user.VisibilityAddContact = Visibility.Collapsed;
                         }
@@ -1133,14 +1133,7 @@ namespace Telegram
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, chatName = (Contact_Search.SelectedItem as Chat).ChatName });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:7195/api/Chats/enterpublicchat", content);
-                var responseString = await response.Content.ReadAsStringAsync();
-                if (responseString == null)
-                {
-                    MessageBox.Show("Server error...");
-                    this.Close();
-                    return;
-                }
+                await client.PostAsync("https://localhost:7195/api/Chats/enterpublicchat", content);
                 // Select new chat
                 List<Chat> myList = Contact_ListView.Items.Cast<Chat>().ToList();
                 Contact_ListView.SelectedIndex = myList.IndexOf(myList.FirstOrDefault(chat => chat.ChatName == (Contact_Search.SelectedItem as Chat).ChatName));
@@ -1322,14 +1315,7 @@ namespace Telegram
             //
             var data = JsonConvert.SerializeObject(new { currentUserLogin = LoginedUser.UserName, contactUserName = result.user.UserName });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
-            response = await client.PostAsync("https://localhost:7195/api/UserContacts/createcontact", content);
-            responseString = await response.Content.ReadAsStringAsync();
-            if (responseString == null)
-            {
-                MessageBox.Show("Server error...");
-                this.Close();
-                return;
-            }
+            await client.PostAsync("https://localhost:7195/api/UserContacts/createcontact", content);
         }
     }
 }
