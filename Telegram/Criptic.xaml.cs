@@ -1013,17 +1013,19 @@ namespace Telegram
         }
         private async void DeleteChat_Click(object sender, RoutedEventArgs e)
         {
-            var client = new HttpClient();
-            var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, chatName = SelectedChat.ChatName });
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-            var content = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:7195/api/Chats/leavepublicchat", content);
-            var responseString = await response.Content.ReadAsStringAsync();
-            if (responseString == null)
+            if (SelectedChat.Type == "Channel" || SelectedChat.Type == "Group")
             {
-                MessageBox.Show("Server error...");
-                this.Close();
-                return;
+                var client = new HttpClient();
+                var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, chatName = SelectedChat.ChatName });
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                await client.PostAsync("https://localhost:7195/api/Chats/leavepublicchat", content);
+            }
+            else
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+               await client.DeleteAsync($"https://localhost:7195/api/Chats/{SelectedChat.Id}");
             }
             SelectedChat = null;
             RigthInfoMenu.Width = new GridLength(0);
@@ -1174,18 +1176,21 @@ namespace Telegram
         }
         private async void Leave_SelectedInfo_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            var client = new HttpClient();
-            var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, chatName = SelectedChat.ChatName });
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-            var content = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:7195/api/Chats/leavepublicchat", content);
-            var responseString = await response.Content.ReadAsStringAsync();
-            if (responseString == null)
+            if (SelectedChat.Type == "Channel" || SelectedChat.Type == "Group")
             {
-                MessageBox.Show("Server error...");
-                this.Close();
-                return;
+                var client = new HttpClient();
+                var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, chatName = SelectedChat.ChatName });
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                var content = new StringContent(data, Encoding.UTF8, "application/json");
+                await client.PostAsync("https://localhost:7195/api/Chats/leavepublicchat", content);
             }
+            else
+            {
+                var client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
+                await client.DeleteAsync($"https://localhost:7195/api/Chats/{SelectedChat.Id}");
+            }
+            
             SelectedChat = null;
             RigthInfoMenu.Width = new GridLength(0);
             // Close info
