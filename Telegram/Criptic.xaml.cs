@@ -37,6 +37,7 @@ namespace Telegram
         public string SelectedPhoto { get; set; }
         public Chat CreatedLastChat { get; set; }
         public List<User> SelectedContacts { get; set; } = new List<User>();
+        public string codeString { get; set; }
         // Temp date
 
         // Refresh UI
@@ -324,9 +325,8 @@ namespace Telegram
             }
             Chat_ListView.ItemsSource = result.messages;
             // To end
-            var scrollViewer = GetDescendantByType(Chat_ListView, typeof(ScrollViewer)) as ScrollViewer;
-            if (scrollViewer != null)
-                scrollViewer.ScrollToEnd();
+            ScrollViewer scrollViewer = GetDescendantByType(Chat_ListView, typeof(ScrollViewer)) as ScrollViewer;
+            scrollViewer?.ScrollToEnd();
             //
 
             // RigthInfo
@@ -402,14 +402,7 @@ namespace Telegram
                     var data = JsonConvert.SerializeObject(new { chatId = SelectedChat.Id, userId = LoginedUser.Id });
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                     var content = new StringContent(data, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync("https://localhost:7195/api/Messages/readmessages", content);
-                    var responseString = await response.Content.ReadAsStringAsync();
-                    if (responseString == null)
-                    {
-                        MessageBox.Show("Server error...");
-                        this.Close();
-                        return;
-                    }
+                    await client.PostAsync("https://localhost:7195/api/Messages/readmessages", content);
                 }
             }
             // Если ScrollViewer не находится в нижней части, проверить его позицию
@@ -640,9 +633,16 @@ namespace Telegram
                 PasswordBorder2.BorderBrush = Brushes.Red;
             }
         }
-        private void Open_EditPassword_ButtonUp(object sender, MouseButtonEventArgs e)
+        private async void Open_EditPassword_ButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Menu_EditPassword_Grid.Visibility = Visibility.Visible;
+            Menu_EditPasswordCode_Grid.Visibility = Visibility.Visible;
+            var client = new HttpClient();
+            var data = JsonConvert.SerializeObject(new { email = LoginedUser.Email });
+            var content = new StringContent(data, Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:7195/api/Email/sendcode", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+            var result = JsonConvert.DeserializeAnonymousType(responseString, new { code = "" });
+            codeString = result?.code;
         }
         private void EditImageCreateGroup(object sender, MouseButtonEventArgs e)
         {
@@ -1190,7 +1190,6 @@ namespace Telegram
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 await client.DeleteAsync($"https://localhost:7195/api/Chats/{SelectedChat.Id}");
             }
-            
             SelectedChat = null;
             RigthInfoMenu.Width = new GridLength(0);
             // Close info
@@ -1321,6 +1320,52 @@ namespace Telegram
             var data = JsonConvert.SerializeObject(new { currentUserLogin = LoginedUser.UserName, contactUserName = result.user.UserName });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
             await client.PostAsync("https://localhost:7195/api/UserContacts/createcontact", content);
+        }
+        private void TextBoxCode_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Back) return;
+            if (e.Key == Key.Delete) return;
+            if (!char.IsDigit((sender as TextBox).Text[0]))
+            {
+                (sender as TextBox).Text = "";
+                e.Handled = true;
+            }
+            else
+            {
+                var textBox = sender as TextBox;
+                if (char.IsDigit(textBox.Text[0]))
+                {
+                    if (textBox.Tag == null) return;
+                    int.TryParse(textBox.Tag.ToString(), out int index);
+                    if (index != 0)
+                    {
+                        if (FindName("TextBoxCode" + (++index)) is TextBox nextTextBox)
+                        {
+                            nextTextBox.Focus();
+                            nextTextBox.SelectAll();
+                            e.Handled = true;
+                        }
+                    }
+                }
+            }
+        }
+        private void Close_EditPasswordCode_Menu(object sender, MouseButtonEventArgs e)
+        {
+            if (e.Source == Menu_EditPasswordCode_Grid)
+                Menu_EditPasswordCode_Grid.Visibility = Visibility.Hidden;
+        }
+        private void Close_EditPasswordCode_Click(object sender, RoutedEventArgs e)
+        {
+            Menu_EditPasswordCode_Grid.Visibility = Visibility.Hidden;
+        }
+        private void Check_EditPasswordCode_Click(object sender, RoutedEventArgs e)
+        {
+            string code = (TextBoxCode1.Text + TextBoxCode2.Text + TextBoxCode3.Text + TextBoxCode4.Text + TextBoxCode5.Text);
+            if (code.Length == 5 && code == codeString)
+            {
+                Menu_EditPassword_Grid.Visibility = Visibility.Visible;
+                Menu_EditPasswordCode_Grid.Visibility = Visibility.Hidden;
+            }
         }
     }
 }

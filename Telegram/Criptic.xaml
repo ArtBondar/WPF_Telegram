@@ -619,6 +619,101 @@
                 </StackPanel>
             </Border>
         </Grid>
+        <!-- Edit password code -->
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_EditPasswordCode_Grid" PreviewMouseLeftButtonUp="Close_EditPasswordCode_Menu">
+            <Grid.Background>
+                <SolidColorBrush Color="Black" Opacity="0.3"/>
+            </Grid.Background>
+            <Border Style="{DynamicResource MainColorBorder}" CornerRadius="15" Margin="50" MaxWidth="350" Width="Auto" Height="200">
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Vertical" Margin="25">
+                        <TextBlock HorizontalAlignment="Center" Text="We have sent you an email with a code" Style="{DynamicResource TextBoxSettings}" />
+                        <TextBlock HorizontalAlignment="Center" Text="Please enter the received code" Style="{DynamicResource TextBoxSettings}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,25,0,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Border BorderThickness="0,0,0,1" BorderBrush="#C6BDFF" Width="40" Height="25" Margin="10">
+                                <TextBox VerticalAlignment="Center" x:Name="TextBoxCode1" Tag="1" KeyUp="TextBoxCode_KeyUp"
+                                   HorizontalContentAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   MaxLength="1"
+                                   BorderThickness="0"
+                                   CaretBrush="#C6BDFF"
+                                   Width="40"
+                                   Foreground="#C6BDFF"
+                                   FontWeight="Thin"
+                                   FontFamily="pack://application:,,,/Themes/#Montserrat"
+                                   FontSize="16"
+                                   Background="Transparent">
+                                </TextBox>
+                            </Border>
+                            <Border BorderThickness="0,0,0,1" BorderBrush="#C6BDFF" Width="40" Height="25" Margin="10">
+                                <TextBox VerticalAlignment="Center" x:Name="TextBoxCode2" Tag="2" KeyUp="TextBoxCode_KeyUp"
+                                   HorizontalContentAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   MaxLength="1"
+                                   BorderThickness="0"
+                                   CaretBrush="#C6BDFF"
+                                   Width="40"
+                                   Foreground="#C6BDFF"
+                                   FontWeight="Thin"
+                                   FontFamily="pack://application:,,,/Themes/#Montserrat"
+                                   FontSize="16"
+                                   Background="Transparent">
+                                </TextBox>
+                            </Border>
+                            <Border BorderThickness="0,0,0,1" BorderBrush="#C6BDFF" Width="40" Height="25" Margin="10">
+                                <TextBox VerticalAlignment="Center" x:Name="TextBoxCode3" Tag="3" KeyUp="TextBoxCode_KeyUp"
+                                   HorizontalContentAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   MaxLength="1"
+                                   BorderThickness="0"
+                                   CaretBrush="#C6BDFF"
+                                   Width="40"
+                                   Foreground="#C6BDFF"
+                                   FontWeight="Thin"
+                                   FontFamily="pack://application:,,,/Themes/#Montserrat"
+                                   FontSize="16"
+                                   Background="Transparent">
+                                </TextBox>
+                            </Border>
+                            <Border BorderThickness="0,0,0,1" BorderBrush="#C6BDFF" Width="40" Height="25" Margin="10">
+                                <TextBox VerticalAlignment="Center" x:Name="TextBoxCode4" Tag="4" KeyUp="TextBoxCode_KeyUp"
+                                   HorizontalContentAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   MaxLength="1"
+                                   BorderThickness="0"
+                                   CaretBrush="#C6BDFF"
+                                   Width="40"
+                                   Foreground="#C6BDFF"
+                                   FontWeight="Thin"
+                                   FontFamily="pack://application:,,,/Themes/#Montserrat"
+                                   FontSize="16"
+                                   Background="Transparent">
+                                </TextBox>
+                            </Border>
+                            <Border BorderThickness="0,0,0,1" BorderBrush="#C6BDFF" Width="40" Height="25" Margin="10">
+                                <TextBox VerticalAlignment="Center" x:Name="TextBoxCode5" KeyUp="TextBoxCode_KeyUp"
+                                   HorizontalContentAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   MaxLength="1"
+                                   BorderThickness="0"
+                                   CaretBrush="#C6BDFF"
+                                   Width="40"
+                                   Foreground="#C6BDFF"
+                                   FontWeight="Thin"
+                                   FontFamily="pack://application:,,,/Themes/#Montserrat"
+                                   FontSize="16"
+                                   Background="Transparent">
+                                </TextBox>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Cancel" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Close_EditPasswordCode_Click"/>
+                        <Button Content="Check" Width="75" Height="30" Margin="0,0,15,0" Style="{DynamicResource Menu_Buttons}" Click="Check_EditPasswordCode_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
         <!-- Edit password -->
         <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_EditPassword_Grid" PreviewMouseLeftButtonUp="Close_EditPassword_Menu">
             <Grid.Background>
