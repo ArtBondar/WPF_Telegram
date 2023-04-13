@@ -1325,29 +1325,33 @@ namespace Telegram
         {
             if (e.Key == Key.Back) return;
             if (e.Key == Key.Delete) return;
-            if (!char.IsDigit((sender as TextBox).Text[0]))
+            try
             {
-                (sender as TextBox).Text = "";
-                e.Handled = true;
-            }
-            else
-            {
-                var textBox = sender as TextBox;
-                if (char.IsDigit(textBox.Text[0]))
+                if (!char.IsDigit((sender as TextBox).Text[0]))
                 {
-                    if (textBox.Tag == null) return;
-                    int.TryParse(textBox.Tag.ToString(), out int index);
-                    if (index != 0)
+                    (sender as TextBox).Text = "";
+                    e.Handled = true;
+                }
+                else
+                {
+                    var textBox = sender as TextBox;
+                    if (char.IsDigit(textBox.Text[0]))
                     {
-                        if (FindName("TextBoxCode" + (++index)) is TextBox nextTextBox)
+                        if (textBox.Tag == null) return;
+                        int.TryParse(textBox.Tag.ToString(), out int index);
+                        if (index != 0)
                         {
-                            nextTextBox.Focus();
-                            nextTextBox.SelectAll();
-                            e.Handled = true;
+                            if (FindName("TextBoxCode" + (++index)) is TextBox nextTextBox)
+                            {
+                                nextTextBox.Focus();
+                                nextTextBox.SelectAll();
+                                e.Handled = true;
+                            }
                         }
                     }
                 }
             }
+            catch { }
         }
         private void Close_EditPasswordCode_Menu(object sender, MouseButtonEventArgs e)
         {
@@ -1365,6 +1369,13 @@ namespace Telegram
             {
                 Menu_EditPassword_Grid.Visibility = Visibility.Visible;
                 Menu_EditPasswordCode_Grid.Visibility = Visibility.Hidden;
+            }
+        }
+        private void BlockClipboard_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.V) && ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control))
+            {
+                e.Handled = true;
             }
         }
     }

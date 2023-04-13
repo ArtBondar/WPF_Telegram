@@ -133,20 +133,17 @@ namespace Telegram
             (sender as PasswordBox).Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
             BorderPasswordReg1.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
         }
-
         private void RegistrationPassword2_PasswordChanged(object sender, RoutedEventArgs e)
         {
             PlaceHolderTextBlockRegistration2.Visibility = (sender as PasswordBox).Password.Length == 0 ? Visibility.Visible : Visibility.Hidden;
             (sender as PasswordBox).Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
             BorderPasswordReg2.BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
         }
-
         private void OpenRegistrationMenuButton_Click(object sender, RoutedEventArgs e)
         {
             SingUpStackPanel.Visibility = Visibility.Hidden;
             RegistrationStackPanel.Visibility = Visibility.Visible;
         }
-
         private void OnlyNumberPreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
@@ -157,31 +154,34 @@ namespace Telegram
         {
             if (e.Key == Key.Back) return;
             if (e.Key == Key.Delete) return;
-            if (!char.IsDigit((sender as TextBox).Text[0]))
+            try
             {
-                (sender as TextBox).Text = "";
-                e.Handled = true;
-            }
-            else
-            {
-                var textBox = sender as TextBox;
-                if (char.IsDigit(textBox.Text[0]))
+                if (!char.IsDigit((sender as TextBox).Text[0]))
                 {
-                    if (textBox.Tag == null) return;
-                    int.TryParse(textBox.Tag.ToString(), out int index);
-                    if (index != 0)
+                    (sender as TextBox).Text = "";
+                    e.Handled = true;
+                }
+                else
+                {
+                    var textBox = sender as TextBox;
+                    if (char.IsDigit(textBox.Text[0]))
                     {
-                        if (FindName("TextBoxCode" + (++index)) is TextBox nextTextBox)
+                        if (textBox.Tag == null) return;
+                        int.TryParse(textBox.Tag.ToString(), out int index);
+                        if (index != 0)
                         {
-                            nextTextBox.Focus();
-                            nextTextBox.SelectAll();
-                            e.Handled = true;
+                            if (FindName("TextBoxCode" + (++index)) is TextBox nextTextBox)
+                            {
+                                nextTextBox.Focus();
+                                nextTextBox.SelectAll();
+                                e.Handled = true;
+                            }
                         }
                     }
                 }
             }
+            catch { }
         }
-
         private async void ButtonSingUp_Click(object sender, RoutedEventArgs e)
         {
             Login_Button.IsEnabled = false;
@@ -418,6 +418,13 @@ namespace Telegram
         private void TextBoxEmailLogin_TextChanged(object sender, TextChangedEventArgs e)
         {
             ((Border)TextBoxEmailLogin.Template.FindName("Border", TextBoxEmailLogin)).BorderBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#C6BDFF"));
+        }
+        private void BlockClipboard_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.Key == Key.V) && ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control))
+            {
+                e.Handled = true;
+            }
         }
     }
 }
