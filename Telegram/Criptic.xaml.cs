@@ -1378,5 +1378,13 @@ namespace Telegram
                 e.Handled = true;
             }
         }
+        private void Theme_Checked(object sender, RoutedEventArgs e)
+        {
+            string name = (sender as RadioButton).Name;
+            ResourceDictionary resource = new ResourceDictionary();
+            string uri = $"Themes/MainWindow/Skins/{name}.xaml";
+            resource.Source = new Uri(uri, UriKind.Relative);
+            this.Resources = resource;
+        }
     }
 }

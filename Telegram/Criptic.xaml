@@ -463,7 +463,7 @@
         <!-- Menus -->
 
         <!-- Settings Menu-->
-        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_Settings_Grid" PreviewMouseLeftButtonUp="Close_Settings_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Menu_Settings_Grid" PreviewMouseLeftButtonUp="Close_Settings_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
@@ -519,6 +519,24 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Cursor="Hand" Height="45" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{DynamicResource StackPanelWithHover}" PreviewMouseLeftButtonUp="Open_EditPassword_ButtonUp">
                         <Label FontSize="14" VerticalAlignment="Center" Content="Edit password" Style="{DynamicResource SecondaryColorLable}"/>
+                    </StackPanel>
+                    <Label FontSize="14" VerticalAlignment="Center" Content="Themes" Style="{DynamicResource SecondaryColorLable}" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Border CornerRadius="8" Background="#c6bdfe" Height="60" Width="55" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
+                            <RadioButton x:Name="White" GroupName="Theme" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Theme_Checked" Cursor="Hand"/>
+                        </Border>
+                        <Border CornerRadius="8" Background="#0c0322" Height="60" Width="55" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
+                            <RadioButton x:Name="Dark" GroupName="Theme" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Theme_Checked" Cursor="Hand"/>
+                        </Border>
+                        <Border CornerRadius="8" Background="#591D75" Height="60" Width="55" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
+                            <RadioButton x:Name="Pink" GroupName="Theme" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Theme_Checked" Cursor="Hand"/>
+                        </Border>
+                        <Border CornerRadius="8" Background="#13333A" Height="60" Width="55" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
+                            <RadioButton x:Name="Blue" GroupName="Theme" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Theme_Checked" Cursor="Hand"/>
+                        </Border>
+                        <Border CornerRadius="8" Background="#163F27" Height="60" Width="55" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
+                            <RadioButton x:Name="Green" GroupName="Theme" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Theme_Checked" Cursor="Hand"/>
+                        </Border>
                     </StackPanel>
                 </StackPanel>
             </Border>
