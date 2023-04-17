@@ -273,7 +273,7 @@
                                 <Condition Property="IsSelected" Value="False"/>
                                 <Condition Property="IsMouseOver" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter Property="Background" Value="#1D0949"/>
+                            <Setter Property="Background" Value="#BB33FB"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -285,8 +285,8 @@
         <Setter Property="Background">
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
-                    <GradientStop Color="#11032F" Offset="0" />
-                    <GradientStop Color="#251051" Offset="1" />
+                    <GradientStop Color="#591D75" Offset="0" />
+                    <GradientStop Color="#BB33FB" Offset="1" />
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
@@ -314,7 +314,7 @@
     <Style x:Key="StackPanelWithHover" TargetType="StackPanel">
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="#1D0949" />
+                <Setter Property="Background" Value="#BB33FB" />
             </Trigger>
             <Trigger Property="IsMouseOver" Value="False">
                 <Setter Property="Background" Value="Transparent" />
