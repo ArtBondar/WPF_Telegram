@@ -197,7 +197,7 @@
         </Grid>
         <!-- Chat -->
         <Image x:Name="PatternImage" Source="./Image/pattern.png" Grid.Column="1" Stretch="UniformToFill" StretchDirection="Both"/>
-        <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Visible">
+        <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
                 <RowDefinition />
@@ -409,7 +409,7 @@
         <!-- Left Menu-->
         <Grid x:Name="Left_Menu_Grid" Grid.Row="1" Grid.ColumnSpan="3" Width="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="265"/>
+                <ColumnDefinition Width="275"/>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <!-- Left Menu-->

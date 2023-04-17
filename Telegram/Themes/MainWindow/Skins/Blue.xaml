@@ -166,7 +166,7 @@
         <Setter Property="Foreground" Value="White"/>
     </Style>
     <Style x:Key="TextBlockPlaceHolderTextBlock" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="#526367"/>
+        <Setter Property="Foreground" Value="#C3F5F9"/>
         <Setter Property="Visibility" Value="Collapsed"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding Text, ElementName=MainTextBox}" Value="">
@@ -175,7 +175,7 @@
         </Style.Triggers>
     </Style>
     <Style x:Key="SearchBoxBorder" TargetType="Border">
-        <Setter Property="Background" Value="#13333A"/>
+        <Setter Property="Background" Value="#24616F"/>
     </Style>
     <!-- Contacts List -->
     <Style x:Key="ContactsListListView" TargetType="ListView">

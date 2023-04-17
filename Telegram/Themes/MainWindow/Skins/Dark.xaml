@@ -14,10 +14,10 @@
         </Setter>
     </Style>
     <Style x:Key="MainColorGrid" TargetType="Grid">
-        <Setter Property="Background" Value="#1F0850"/>
+        <Setter Property="Background" Value="#16043C"/>
     </Style>
     <Style x:Key="MainColorBorder" TargetType="Border">
-        <Setter Property="Background" Value="#1F0850"/>
+        <Setter Property="Background" Value="#16043C"/>
     </Style>
     <Style x:Key="SecondaryColorBorder" TargetType="Border">
         <Setter Property="Background" Value="#584CA3"/>
@@ -36,7 +36,7 @@
         <Setter Property="BorderThickness" Value="1"/>
     </Style>
     <Style x:Key="MenuBorderBrush" TargetType="Border">
-        <Setter Property="Background" Value="#1F0850"/>
+        <Setter Property="Background" Value="#16043C"/>
     </Style>
     <Style x:Key="BorderThreePoints" TargetType="Border">
         <Setter Property="Background" Value="#7E5EFC"/>
@@ -47,7 +47,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ContextMenu}">
-                    <Border CornerRadius="5" Background="#1F0850" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border CornerRadius="5" Background="#16043C" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <ItemsPresenter Margin="-5, 0, -5, 0"/>
                     </Border>
                 </ControlTemplate>
@@ -101,7 +101,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border Name="border" CornerRadius="25" BorderThickness="0" BorderBrush="Black" Background="#1F0850">
+                    <Border Name="border" CornerRadius="25" BorderThickness="0" BorderBrush="Black" Background="#16043C">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
@@ -300,7 +300,7 @@
         <Setter Property="Background" Value="Transparent"/>
     </Style>
     <Style x:Key="MessageColorBorder" TargetType="Border">
-        <Setter Property="Background" Value="#1F0850"/>
+        <Setter Property="Background" Value="#16043C"/>
     </Style>
     <Style x:Key="ColorTextMessageBlock" TargetType="emoji:TextBlock">
         <Setter Property="Foreground" Value="White"/>
@@ -415,7 +415,7 @@
     <!--ScrollBars-->
     <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
         <Setter Property="Stylus.IsFlicksEnabled" Value="false" />
-        <Setter Property="Foreground" Value="#1F0850"/>
+        <Setter Property="Foreground" Value="#16043C"/>
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Width" Value="8" />
         <Setter Property="Template">
@@ -443,7 +443,7 @@
                             <Setter Value="#1e0555" TargetName="Thumb" Property="Background" />
                         </Trigger>
                         <Trigger SourceName="Thumb" Property="IsDragging" Value="true">
-                            <Setter Value="#1F0850" TargetName="Thumb" Property="Background" />
+                            <Setter Value="#16043C" TargetName="Thumb" Property="Background" />
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter TargetName="Thumb" Property="Visibility" Value="Collapsed" />
