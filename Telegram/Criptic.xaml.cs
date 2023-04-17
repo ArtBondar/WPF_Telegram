@@ -1386,5 +1386,9 @@ namespace Telegram
             resource.Source = new Uri(uri, UriKind.Relative);
             this.Resources = resource;
         }
+        private void Piker_SelectionChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            ((TextBox)(TextBox_MessageBox).Template.FindName("MainTextBox", TextBox_MessageBox)).AppendText(Piker.Selection);
+        }
     }
 }
