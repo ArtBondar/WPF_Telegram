@@ -286,7 +286,7 @@
             <Setter.Value>
                 <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
                     <GradientStop Color="#591D75" Offset="0" />
-                    <GradientStop Color="#BB33FB" Offset="1" />
+                    <GradientStop Color="#886798" Offset="1" />
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
