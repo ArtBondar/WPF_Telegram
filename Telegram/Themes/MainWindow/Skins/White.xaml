@@ -31,10 +31,7 @@
     <Style x:Key="SecondaryColorTextBlock" TargetType="emoji:TextBlock">
         <Setter Property="Foreground" Value="#584CA3"/>
     </Style>
-    <Style x:Key="BorderBrushThemeBorder" TargetType="Border">
-        <Setter Property="BorderBrush" Value="#D0C1FC"/>
-        <Setter Property="BorderThickness" Value="1"/>
-    </Style>
+
     <Style x:Key="MenuBorderBrush" TargetType="Border">
         <Setter Property="Background" Value="#D0C1FC"/>
     </Style>

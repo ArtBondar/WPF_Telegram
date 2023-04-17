@@ -39,7 +39,7 @@
         <Setter Property="Background" Value="#163F27"/>
     </Style>
     <Style x:Key="BorderThreePoints" TargetType="Border">
-        <Setter Property="Background" Value="#163F27"/>
+        <Setter Property="Background" Value="#137039"/>
     </Style>
     <Style x:Key="ContextMenuBorderBrush" TargetType="ContextMenu">
         <Setter Property="BorderThickness" Value="1.5"/>
@@ -166,7 +166,7 @@
         <Setter Property="Foreground" Value="White"/>
     </Style>
     <Style x:Key="TextBlockPlaceHolderTextBlock" TargetType="TextBlock">
-        <Setter Property="Foreground" Value="#4F6859"/>
+        <Setter Property="Foreground" Value="#BBECAA"/>
         <Setter Property="Visibility" Value="Collapsed"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding Text, ElementName=MainTextBox}" Value="">
@@ -175,7 +175,7 @@
         </Style.Triggers>
     </Style>
     <Style x:Key="SearchBoxBorder" TargetType="Border">
-        <Setter Property="Background" Value="#163F27"/>
+        <Setter Property="Background" Value="#137039"/>
     </Style>
     <!-- Contacts List -->
     <Style x:Key="ContactsListListView" TargetType="ListView">

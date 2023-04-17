@@ -53,7 +53,7 @@ namespace Telegram
         {
             await Task.Run(async () =>
             {
-                Thread.Sleep(3000);
+                Thread.Sleep(1000);
                 string loadedLogin, loadedPassword;
                 if (LoadCredentialsFromFile("login.txt", out loadedLogin, out loadedPassword))
                 {
