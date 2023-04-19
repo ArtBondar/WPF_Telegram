@@ -80,7 +80,8 @@ namespace Telegram.Models
         public string ChatName { get; set; }
         public string ShortMessage { get; set; }
         public DateTime PublishTime { get; set; }
-        public bool MuteStatus { get; set; }
+        public List<int> WhoMuted { get; set; }
+        public bool MuteStatus { get; set; } = false;
         public string MutePath
         {
             get

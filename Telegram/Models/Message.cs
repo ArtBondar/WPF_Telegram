@@ -11,7 +11,7 @@ namespace Telegram.Models
     public partial class Message
     {
         public int Id { get; set; }
-        public bool Viewed { get; set; }
+        public List<int> WhoViewed { get; set; }
         public Visibility VisibilityViewed { get; set; } = Visibility.Collapsed;
         public string Data { get; set; }
         public ImageSource PhotoSource
