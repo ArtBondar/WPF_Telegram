@@ -24,18 +24,18 @@ namespace Telegram
         // Защита пароля
         private static readonly byte[] entropy = Encoding.Unicode.GetBytes("@Criptic/1028490275bbcc");
 
-        // Загрузка логина и пароля из файла
-        public static bool LoadCredentialsFromFile(string fileName, out string login, out string password)
+        // Loading from file
+        public static bool LoadDateFromFile(string fileName, out string login, out string password)
         {
             try
             {
-                // Чтение логина и пароля из файла
+                
                 using (StreamReader reader = new StreamReader(fileName))
                 {
                     login = reader.ReadLine();
                     byte[] encryptedPassword = Convert.FromBase64String(reader.ReadLine());
 
-                    // Расшифровка пароля
+                    
                     byte[] decryptedPassword = ProtectedData.Unprotect(encryptedPassword, entropy, DataProtectionScope.CurrentUser);
                     password = Encoding.Unicode.GetString(decryptedPassword);
                 }
@@ -54,7 +54,7 @@ namespace Telegram
             await Task.Run(async () =>
             {
                 Thread.Sleep(1000);
-                if (LoadCredentialsFromFile("login.txt", out string loadedLogin, out string loadedPassword))
+                if (LoadDateFromFile("login.txt", out string loadedLogin, out string loadedPassword))
                 {
                     try
                     {
