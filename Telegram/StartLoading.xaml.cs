@@ -54,43 +54,39 @@ namespace Telegram
             await Task.Run(async () =>
             {
                 Thread.Sleep(1000);
-                string loadedLogin, loadedPassword;
-                if (LoadCredentialsFromFile("login.txt", out loadedLogin, out loadedPassword))
+                if (LoadCredentialsFromFile("login.txt", out string loadedLogin, out string loadedPassword))
                 {
-                    Console.WriteLine($"Логин: {loadedLogin}");
-                    Console.WriteLine($"Пароль: {loadedPassword}");
+                    try
+                    {
+                        var client = new HttpClient();
+                        var data = JsonConvert.SerializeObject(new { login = loadedLogin, password = loadedPassword });
+                        var content = new StringContent(data, Encoding.UTF8, "application/json");
+                        var response = await client.PostAsync("https://localhost:7195/api/Users/login", content);
+                        var responseString = await response.Content.ReadAsStringAsync();
+                        if (responseString == null) return;
+                        var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User() });
+                        if (!String.IsNullOrWhiteSpace(result.jwtToken))
+                        {
+                            // Open Main Form
+                            Dispatcher.Invoke(() =>
+                            {
+                                Criptic mainForm = new Criptic
+                                {
+                                    JwtToken = result.jwtToken,
+                                    LoginedUser = result.user
+                                };
+                                mainForm.Show();
+                                this.Close();
+                            });
+                        }
+                    }
+                    catch { }
                 }
                 else
                 {
                     SingUp singUp = new SingUp();
                     singUp.Show();
                     this.Close();
-                }
-                var client = new HttpClient();
-                var data = JsonConvert.SerializeObject(new { login = loadedLogin, password = loadedPassword });
-                var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:7195/api/Users/login", content);
-                var responseString = await response.Content.ReadAsStringAsync();
-                if (responseString == null)
-                {
-                    MessageBox.Show("Server error...");
-                    return;
-                }
-                var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), chats = new List<Models.Chat>(), contacts = new List<User>() });
-                if (!String.IsNullOrWhiteSpace(result.jwtToken))
-                {
-                    // Open Main Form
-                    Dispatcher.Invoke(() =>
-                    {
-                        Criptic mainForm = new Criptic();
-                        mainForm.JwtToken = result.jwtToken;
-                        mainForm.LoginedUser = result.user;
-                        mainForm.Chats = result.chats;
-                        mainForm.UserContacts = result.contacts;
-                        mainForm.RefreshUI();
-                        mainForm.Show();
-                        this.Close();
-                    });
                 }
             });
         }

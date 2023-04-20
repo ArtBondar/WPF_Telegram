@@ -1413,7 +1413,6 @@ namespace Telegram
         {
             ((TextBox)(TextBox_MessageBox).Template.FindName("MainTextBox", TextBox_MessageBox)).AppendText(Piker.Selection);
         }
-
         private void Pattern_Checked(object sender, RoutedEventArgs e)
         {
             BitmapImage image = new BitmapImage();

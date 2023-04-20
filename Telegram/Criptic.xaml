@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         mc:Ignorable="d"
-        Height="1080" Width="1920"
+        Height="900" Width="1600"
         MinHeight="450" MinWidth="800"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
@@ -465,7 +465,7 @@
         <!-- Menus -->
 
         <!-- Settings Menu-->
-        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Menu_Settings_Grid" PreviewMouseLeftButtonUp="Close_Settings_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_Settings_Grid" PreviewMouseLeftButtonUp="Close_Settings_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
