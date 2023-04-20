@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:emoji="clr-namespace:Emoji.Wpf;assembly=Emoji.Wpf"
         mc:Ignorable="d"
-        Height="650" Width="1200"
+        Height="1080" Width="1920"
         MinHeight="450" MinWidth="800"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
@@ -196,7 +196,7 @@
             </ListView>
         </Grid>
         <!-- Chat -->
-        <Image x:Name="PatternImage" Source="./Image/pattern.png" Grid.Column="1" Stretch="UniformToFill" StretchDirection="Both"/>
+        <Image x:Name="PatternImage" Source="./Image/Pattern_1.png" Grid.Column="1" Stretch="UniformToFill" StretchDirection="Both"/>
         <Grid x:Name="ChatGrid" Grid.Column="1" Grid.Row="1" Visibility="Hidden">
             <Grid.RowDefinitions>
                 <RowDefinition Height="60"/>
@@ -465,7 +465,7 @@
         <!-- Menus -->
 
         <!-- Settings Menu-->
-        <Grid Grid.ColumnSpan="3" Visibility="Hidden" x:Name="Menu_Settings_Grid" PreviewMouseLeftButtonUp="Close_Settings_Menu">
+        <Grid Grid.ColumnSpan="3" Visibility="Visible" x:Name="Menu_Settings_Grid" PreviewMouseLeftButtonUp="Close_Settings_Menu">
             <Grid.Background>
                 <SolidColorBrush Color="Black" Opacity="0.3"/>
             </Grid.Background>
@@ -522,7 +522,7 @@
                     <StackPanel Orientation="Horizontal" Cursor="Hand" Height="45" VerticalAlignment="Center" HorizontalAlignment="Center" Style="{DynamicResource StackPanelWithHover}" PreviewMouseLeftButtonUp="Open_EditPassword_ButtonUp">
                         <Label FontSize="14" VerticalAlignment="Center" Content="Edit password" Style="{DynamicResource SecondaryColorLable}"/>
                     </StackPanel>
-                    <Label FontSize="14" VerticalAlignment="Center" Content="Themes" Style="{DynamicResource SecondaryColorLable}" HorizontalAlignment="Center"/>
+                    <Label FontSize="14" VerticalAlignment="Center" Content="Themes" Style="{DynamicResource MainColorLable}" HorizontalAlignment="Center"/>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Border CornerRadius="8" Background="#c6bdfe" Height="60" Width="55" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
                             <RadioButton x:Name="White" GroupName="Theme" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Theme_Checked" Cursor="Hand"/>
@@ -538,6 +538,33 @@
                         </Border>
                         <Border CornerRadius="8" Background="#163F27" Height="60" Width="55" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
                             <RadioButton x:Name="Green" GroupName="Theme" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Theme_Checked" Cursor="Hand"/>
+                        </Border>
+                    </StackPanel>
+                    <Label FontSize="14" VerticalAlignment="Center" Content="Background" Style="{DynamicResource MainColorLable}" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Border CornerRadius="8" Height="90" Width="75" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
+                            <Grid>
+                                <Image Source="/Image/Pattern_1.png" Stretch="UniformToFill" StretchDirection="Both" />
+                                <RadioButton x:Name="Pattern_1" GroupName="Pattern" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Pattern_Checked" Cursor="Hand"/>
+                            </Grid>
+                        </Border>
+                        <Border CornerRadius="8" Height="90" Width="75" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
+                            <Grid>
+                                <Image Source="/Image/Pattern_2.png" Stretch="UniformToFill" StretchDirection="Both"/>
+                                <RadioButton x:Name="Pattern_2" GroupName="Pattern" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Pattern_Checked" Cursor="Hand"/>
+                            </Grid>
+                        </Border>
+                        <Border CornerRadius="8" Height="90" Width="75" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
+                            <Grid>
+                                <Image Source="/Image/Pattern_3.png" Stretch="UniformToFill" StretchDirection="Both" />
+                                <RadioButton x:Name="Pattern_3" GroupName="Pattern" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Pattern_Checked" Cursor="Hand"/>
+                            </Grid>
+                        </Border>
+                        <Border CornerRadius="8" Height="90" Width="75" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
+                            <Grid>
+                                <Image Source="/Image/Pattern_4.png" Stretch="UniformToFill" StretchDirection="Both" />
+                                <RadioButton x:Name="Pattern_4" GroupName="Pattern" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Pattern_Checked" Cursor="Hand"/>
+                            </Grid>
                         </Border>
                     </StackPanel>
                 </StackPanel>

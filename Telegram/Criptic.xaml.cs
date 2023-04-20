@@ -1413,5 +1413,14 @@ namespace Telegram
         {
             ((TextBox)(TextBox_MessageBox).Template.FindName("MainTextBox", TextBox_MessageBox)).AppendText(Piker.Selection);
         }
+
+        private void Pattern_Checked(object sender, RoutedEventArgs e)
+        {
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.UriSource = new Uri($"Image/{(sender as RadioButton).Name}.png", UriKind.RelativeOrAbsolute);
+            image.EndInit();
+            PatternImage.Source = image;
+        }
     }
 }
