@@ -251,6 +251,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Image\icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Image\Pattern_2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

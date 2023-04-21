@@ -10,6 +10,7 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         ResizeMode="CanResizeWithGrip"
+        Icon="Image/icon.ico"
         Title="Criptic">
     <Window.Resources>
         <ContextMenu x:Key="ItemContextMenu" Style="{DynamicResource ContextMenuBorderBrush}">
