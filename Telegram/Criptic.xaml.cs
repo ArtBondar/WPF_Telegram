@@ -23,6 +23,7 @@ namespace Telegram
     /// </summary>
     public partial class Criptic : Window
     {
+        public string API_STRING = "https://localhost:7195/api";
         public string JwtToken { get; set; }
         public User LoginedUser { get; set; }
         // Updated values
@@ -135,7 +136,7 @@ namespace Telegram
                 var client = new HttpClient();
                 var data = JsonConvert.SerializeObject(new { token = JwtToken, id = LoginedUser.Id });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:7195/api/Users/updateinfo", content);
+                var response = await client.PostAsync($"{API_STRING}/Users/updateinfo", content);
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
@@ -189,7 +190,7 @@ namespace Telegram
                 var data = JsonConvert.SerializeObject(new { chatId = SelectedChat.Id, userId = LoginedUser.Id });
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://localhost:7195/api/Chats/mutechat", content);
+                await client.PostAsync($"{API_STRING}/Chats/mutechat", content);
             }
         }
         private void ToogleButton_DarkWhite_MouseDown(object sender, MouseButtonEventArgs e)
@@ -236,20 +237,20 @@ namespace Telegram
             string responseString;
             if (Select.Type == "Private")
             {
-                var response = await client.GetAsync($"https://localhost:7195/api/Users/username/{Select.ChatName}");
+                var response = await client.GetAsync($"{API_STRING}/Users/username/{Select.ChatName}");
                 responseString = await response.Content.ReadAsStringAsync();
                 var result_user = JsonConvert.DeserializeAnonymousType(responseString, new { user = new User()});
                 //
                 var private_data = JsonConvert.SerializeObject(new { currentUserId = LoginedUser.Id, opponentId = result_user.user.Id });
                 var private_content = new StringContent(private_data, Encoding.UTF8, "application/json");
-                var private_response = await client.PostAsync("https://localhost:7195/api/Chats/openprivatechat", private_content);
+                var private_response = await client.PostAsync($"{API_STRING}/Chats/openprivatechat", private_content);
                 responseString = await private_response.Content.ReadAsStringAsync();
             }
             else
             {
                 var data = JsonConvert.SerializeObject(new { chatName = Select.ChatName, authorId = Select.AuthorId});
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:7195/api/Chats/openpublicchat", content);
+                var response = await client.PostAsync($"{API_STRING}/Chats/openpublicchat", content);
                 responseString = await response.Content.ReadAsStringAsync();
             }
             if (responseString == null)
@@ -419,7 +420,7 @@ namespace Telegram
                     var data = JsonConvert.SerializeObject(new { chatId = SelectedChat.Id, userId = LoginedUser.Id });
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                     var content = new StringContent(data, Encoding.UTF8, "application/json");
-                    await client.PostAsync("https://localhost:7195/api/Messages/readmessages", content);
+                    await client.PostAsync($"{API_STRING}/Messages/readmessages", content);
                 }
             }
             // Если ScrollViewer не находится в нижней части, проверить его позицию
@@ -471,7 +472,7 @@ namespace Telegram
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                     var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, photo });
                     var content = new StringContent(data, Encoding.UTF8, "application/json");
-                    var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
+                    var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri($"{API_STRING}/Users/patchuser"), Content = content });
                     var responseString = await response.Content.ReadAsStringAsync();
                     if (responseString == null)
                     {
@@ -534,7 +535,7 @@ namespace Telegram
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, userName });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri($"{API_STRING}/Users/patchuser"), Content = content });
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
@@ -563,7 +564,7 @@ namespace Telegram
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, email });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri($"{API_STRING}/Users/patchuser"), Content = content });
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
@@ -629,7 +630,7 @@ namespace Telegram
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                     var data = JsonConvert.SerializeObject(new { email = LoginedUser.Email, newPassword });
                     var content = new StringContent(data, Encoding.UTF8, "application/json");
-                    var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/setpassword"), Content = content });
+                    var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri($"{API_STRING}/Users/setpassword"), Content = content });
                     var responseString = await response.Content.ReadAsStringAsync();
                     if (responseString == null)
                     {
@@ -656,7 +657,7 @@ namespace Telegram
             var client = new HttpClient();
             var data = JsonConvert.SerializeObject(new { email = LoginedUser.Email });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:7195/api/Email/sendcode", content);
+            var response = await client.PostAsync($"{API_STRING}/Email/sendcode", content);
             var responseString = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeAnonymousType(responseString, new { code = "" });
             codeString = result?.code;
@@ -755,7 +756,7 @@ namespace Telegram
                 var data = JsonConvert.SerializeObject(new { chatImage = SelectedPhoto, chatName = GroupOrChannelName, shortMessage = "Group created", publishTime = DateTime.Now, Type = "Group", authorId = LoginedUser.Id });
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:7195/api/Chats/createchat", content);
+                var response = await client.PostAsync($"{API_STRING}/Chats/createchat", content);
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
@@ -791,7 +792,7 @@ namespace Telegram
                 var data = JsonConvert.SerializeObject(new { chatImage = SelectedPhoto, chatName = GroupOrChannelName, shortMessage = "Channel created", publishTime = DateTime.Now, Type = "Channel", authorId = LoginedUser.Id });
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:7195/api/Chats/createchat", content);
+                var response = await client.PostAsync($"{API_STRING}/Chats/createchat", content);
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
@@ -826,7 +827,7 @@ namespace Telegram
                 var data = JsonConvert.SerializeObject(new { id = CreatedLastChat.Id, members });
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:7195/api/Chats/editpublicchat", content);
+                var response = await client.PostAsync($"{API_STRING}/Chats/editpublicchat", content);
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
@@ -859,7 +860,7 @@ namespace Telegram
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
             var data = JsonConvert.SerializeObject(new { id = LoginedUser.Id, about });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/patchuser"), Content = content });
+            var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri($"{API_STRING}/Users/patchuser"), Content = content });
             var responseString = await response.Content.ReadAsStringAsync();
             if (responseString == null)
             {
@@ -894,7 +895,7 @@ namespace Telegram
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var data = JsonConvert.SerializeObject(new { userId = LoginedUser.Id, chatId = (Contact_ListView.SelectedItem as Chat).Id, text = thistextBox.Text });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:7195/api/Messages/sendmessage", content);
+                var response = await client.PostAsync($"{API_STRING}/Messages/sendmessage", content);
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
@@ -936,7 +937,7 @@ namespace Telegram
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                     var data = JsonConvert.SerializeObject(new { userId = LoginedUser.Id, chatId = (Contact_ListView.SelectedItem as Chat).Id, data = photo }); // Add data
                     var content = new StringContent(data, Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync("https://localhost:7195/api/Messages/sendmessage", content);
+                    var response = await client.PostAsync($"{API_STRING}/Messages/sendmessage", content);
                     var responseString = await response.Content.ReadAsStringAsync();
                     if (responseString == null)
                     {
@@ -958,7 +959,7 @@ namespace Telegram
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
             var data = JsonConvert.SerializeObject(new { userId = LoginedUser.Id, messageId });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("DELETE"), RequestUri = new Uri("https://localhost:7195/api/Messages/deletemessage"), Content = content });
+            var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("DELETE"), RequestUri = new Uri($"{API_STRING}/Messages/deletemessage"), Content = content });
             var responseString = await response.Content.ReadAsStringAsync();
             if (responseString == null)
             {
@@ -1039,13 +1040,13 @@ namespace Telegram
                 var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, chatName = SelectedChat.ChatName });
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://localhost:7195/api/Chats/leavepublicchat", content);
+                await client.PostAsync($"{API_STRING}/Chats/leavepublicchat", content);
             }
             else
             {
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-               await client.DeleteAsync($"https://localhost:7195/api/Chats/{SelectedChat.Id}");
+               await client.DeleteAsync($"{API_STRING}/Chats/{SelectedChat.Id}");
             }
             SelectedChat = null;
             RigthInfoMenu.Width = new GridLength(0);
@@ -1062,7 +1063,7 @@ namespace Telegram
                 var data = JsonConvert.SerializeObject(new { chatId = SelectedChat.Id, userId = LoginedUser.Id });
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://localhost:7195/api/Chats/mutechat", content);
+                await client.PostAsync($"{API_STRING}/Chats/mutechat", content);
             }
         }
         private async void ToogleButton_MuteInfo_Click(object sender, RoutedEventArgs e)
@@ -1074,7 +1075,7 @@ namespace Telegram
             var data = JsonConvert.SerializeObject(new { chatId = SelectedChat.Id, userId = LoginedUser.Id });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
             var content = new StringContent(data, Encoding.UTF8, "application/json");
-            await client.PostAsync("https://localhost:7195/api/Chats/mutechat", content);
+            await client.PostAsync($"{API_STRING}/Chats/mutechat", content);
         }
         private async void ToogleButton_Notification_Click(object sender, RoutedEventArgs e)
         {
@@ -1084,7 +1085,7 @@ namespace Telegram
             var data = JsonConvert.SerializeObject(new { chatId = SelectedChat.Id, userId = LoginedUser.Id });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
             var content = new StringContent(data, Encoding.UTF8, "application/json");
-            await client.PostAsync("https://localhost:7195/api/Chats/mutechat", content);
+            await client.PostAsync($"{API_STRING}/Chats/mutechat", content);
         }
         private async void ReadAllMessage_Click(object sender, RoutedEventArgs e)
         {
@@ -1092,7 +1093,7 @@ namespace Telegram
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
             var data = JsonConvert.SerializeObject(new { chatId = SelectedChat.Id, userId = LoginedUser.Id });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:7195/api/Messages/readmessages/", content);
+            var response = await client.PostAsync($"{API_STRING}/Messages/readmessages/", content);
             var responseString = await response.Content.ReadAsStringAsync();
             if (responseString == null)
             {
@@ -1108,7 +1109,7 @@ namespace Telegram
             var data = JsonConvert.SerializeObject(new { text });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
             var content = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:7195/api/Chats/findchats", content);
+            var response = await client.PostAsync($"{API_STRING}/Chats/findchats", content);
             var responseString = await response.Content.ReadAsStringAsync();
             if (responseString == null)
             {
@@ -1158,7 +1159,7 @@ namespace Telegram
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, chatName = (Contact_Search.SelectedItem as Chat).ChatName });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://localhost:7195/api/Chats/enterpublicchat", content);
+                await client.PostAsync($"{API_STRING}/Chats/enterpublicchat", content);
                 // Select new chat
                 List<Chat> myList = Contact_ListView.Items.Cast<Chat>().ToList();
                 Contact_ListView.SelectedIndex = myList.IndexOf(myList.FirstOrDefault(chat => chat.ChatName == (Contact_Search.SelectedItem as Chat).ChatName));
@@ -1174,7 +1175,7 @@ namespace Telegram
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, opponentName = (Contact_Search_Users.SelectedItem as User).UserName });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:7195/api/Chats/enterprivatechat", content);
+                var response = await client.PostAsync($"{API_STRING}/Chats/enterprivatechat", content);
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
@@ -1205,13 +1206,13 @@ namespace Telegram
                 var data = JsonConvert.SerializeObject(new { userName = LoginedUser.UserName, chatName = SelectedChat.ChatName });
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                await client.PostAsync("https://localhost:7195/api/Chats/leavepublicchat", content);
+                await client.PostAsync($"{API_STRING}/Chats/leavepublicchat", content);
             }
             else
             {
                 var client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-                await client.DeleteAsync($"https://localhost:7195/api/Chats/{SelectedChat.Id}");
+                await client.DeleteAsync($"{API_STRING}/Chats/{SelectedChat.Id}");
             }
             SelectedChat = null;
             RigthInfoMenu.Width = new GridLength(0);
@@ -1277,7 +1278,7 @@ namespace Telegram
             var data = JsonConvert.SerializeObject(new { id = SelectedChat.Id, chatImage, chatName, chatInfo });
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
             var content = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:7195/api/Chats/editpublicchat", content);
+            var response = await client.PostAsync($"{API_STRING}/Chats/editpublicchat", content);
             var responseString = await response.Content.ReadAsStringAsync();
             if (responseString == null)
             {
@@ -1311,7 +1312,7 @@ namespace Telegram
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
                 var data = JsonConvert.SerializeObject(new { currentUserLogin = LoginedUser.UserName, contactUserName = Selectedcontact.UserName });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("DELETE"), RequestUri = new Uri("https://localhost:7195/api/UserContacts/deletecontact"), Content = content });
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("DELETE"), RequestUri = new Uri($"{API_STRING}/UserContacts/deletecontact"), Content = content });
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == null)
                 {
@@ -1336,13 +1337,13 @@ namespace Telegram
             int.TryParse((sender as MenuItem).Tag.ToString(), out int id);
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", JwtToken);
-            var response = await client.GetAsync($"https://localhost:7195/api/Users/{id}");
+            var response = await client.GetAsync($"{API_STRING}/Users/{id}");
             var responseString = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeAnonymousType(responseString, new { user = new User() });
             //
             var data = JsonConvert.SerializeObject(new { currentUserLogin = LoginedUser.UserName, contactUserName = result.user.UserName });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
-            await client.PostAsync("https://localhost:7195/api/UserContacts/createcontact", content);
+            await client.PostAsync($"{API_STRING}/UserContacts/createcontact", content);
         }
         private void TextBoxCode_KeyUp(object sender, KeyEventArgs e)
         {

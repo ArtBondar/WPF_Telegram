@@ -86,7 +86,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="ListViewItem">
-                                        <Border Background="{TemplateBinding Background}" Height="62" BorderThickness="0,0.5,0,0.5" BorderBrush="#584CA3" Margin="0,-0.5,0,0">
+                                        <Border Background="{TemplateBinding Background}" Height="62" Margin="0,-0.5,0,0">
                                             <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
                                                 <Grid>
                                                     <Ellipse Width="46" Height="46">
@@ -544,25 +544,25 @@
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Border CornerRadius="8" Height="90" Width="75" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
                             <Grid>
-                                <Image Source="/Image/Pattern_1.png" Stretch="UniformToFill" StretchDirection="Both" />
+                                <Image Source="/Image/Pattern_1.png" Stretch="UniformToFill"/>
                                 <RadioButton x:Name="Pattern_1" GroupName="Pattern" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Pattern_Checked" Cursor="Hand"/>
                             </Grid>
                         </Border>
                         <Border CornerRadius="8" Height="90" Width="75" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
                             <Grid>
-                                <Image Source="/Image/Pattern_2.png" Stretch="UniformToFill" StretchDirection="Both"/>
+                                <Image Source="/Image/Pattern_2.png" Stretch="UniformToFill"/>
                                 <RadioButton x:Name="Pattern_2" GroupName="Pattern" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Pattern_Checked" Cursor="Hand"/>
                             </Grid>
                         </Border>
                         <Border CornerRadius="8" Height="90" Width="75" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
                             <Grid>
-                                <Image Source="/Image/Pattern_3.png" Stretch="UniformToFill" StretchDirection="Both" />
+                                <Image Source="/Image/Pattern_3.png" Stretch="UniformToFill"/>
                                 <RadioButton x:Name="Pattern_3" GroupName="Pattern" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Pattern_Checked" Cursor="Hand"/>
                             </Grid>
                         </Border>
                         <Border CornerRadius="8" Height="90" Width="75" Margin="8" Style="{DynamicResource BorderBrushThemeBorder}">
                             <Grid>
-                                <Image Source="/Image/Pattern_4.png" Stretch="UniformToFill" StretchDirection="Both" />
+                                <Image Source="/Image/Pattern_4.png" Stretch="UniformToFill"/>
                                 <RadioButton x:Name="Pattern_4" GroupName="Pattern" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="8" Checked="Pattern_Checked" Cursor="Hand"/>
                             </Grid>
                         </Border>

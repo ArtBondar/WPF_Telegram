@@ -20,6 +20,7 @@ namespace Telegram
     /// </summary>
     public partial class SingUp : Window
     {
+        public string API_STRING = "https://localhost:7195/api";
         private bool flag_singup = true;
         private bool flag_registration = true;
         private bool flag_newPassword = true;
@@ -105,7 +106,7 @@ namespace Telegram
                 string email = ((TextBox)EmailSendCode_TextBox.Template.FindName("MainTextBox", EmailSendCode_TextBox)).Text;
                 var data = JsonConvert.SerializeObject(new { email });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:7195/api/Email/sendcode", content);
+                var response = await client.PostAsync($"{API_STRING}/Email/sendcode", content);
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (responseString == "The specified string is not in the form required for an e-mail address.")
                 {
@@ -205,7 +206,7 @@ namespace Telegram
             var client = new HttpClient();
             var data = JsonConvert.SerializeObject(new { login, password });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:7195/api/Users/login", content);
+            var response = await client.PostAsync($"{API_STRING}/Users/login", content);
             var responseString = await response.Content.ReadAsStringAsync();
             if (responseString == null)
             {
@@ -268,7 +269,7 @@ namespace Telegram
             var client = new HttpClient();
             var data = JsonConvert.SerializeObject(new { userName, email, password });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
-            var response = await client.PostAsync("https://localhost:7195/api/Users/register", content);
+            var response = await client.PostAsync($"{API_STRING}/Users/register", content);
             var responseString = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), chats = new List<Models.Chat>(), contacts = new List<User>() });
             if (!String.IsNullOrWhiteSpace(result.jwtToken))
@@ -347,7 +348,7 @@ namespace Telegram
                 var client = new HttpClient();
                 var data = JsonConvert.SerializeObject(new { email = emailString, newPassword = PasswordBoxNewPassword.Password });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri("https://localhost:7195/api/Users/setpassword"), Content = content });
+                var response = await client.SendAsync(new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = new Uri($"{API_STRING}/Users/setpassword"), Content = content });
                 var responseString = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeAnonymousType(responseString, new { result = "" });
                 if (result?.result == "success")
@@ -389,7 +390,7 @@ namespace Telegram
                 var client = new HttpClient();
                 var data = JsonConvert.SerializeObject(new { email = emailString });
                 var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var response = await client.PostAsync("https://localhost:7195/api/Email/sendcode", content);
+                var response = await client.PostAsync($"{API_STRING}/Email/sendcode", content);
                 var responseString = await response.Content.ReadAsStringAsync();
                 var result = JsonConvert.DeserializeAnonymousType(responseString, new { code = "" });
                 codeString = result?.code;

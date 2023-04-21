@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Security.Cryptography;
@@ -17,11 +16,11 @@ namespace Telegram
     /// </summary>
     public partial class StartLoading : Window
     {
+        public string API_STRING = "https://localhost:7195/api";
         public StartLoading()
         {
             InitializeComponent();
         }
-        // Защита пароля
         private static readonly byte[] entropy = Encoding.Unicode.GetBytes("@Criptic/1028490275bbcc");
 
         // Loading from file
@@ -29,7 +28,6 @@ namespace Telegram
         {
             try
             {
-                
                 using (StreamReader reader = new StreamReader(fileName))
                 {
                     login = reader.ReadLine();
@@ -61,10 +59,10 @@ namespace Telegram
                         var client = new HttpClient();
                         var data = JsonConvert.SerializeObject(new { login = loadedLogin, password = loadedPassword });
                         var content = new StringContent(data, Encoding.UTF8, "application/json");
-                        var response = await client.PostAsync("https://localhost:7195/api/Users/login", content);
+                        var response = await client.PostAsync($"{API_STRING}/Users/login", content);
                         var responseString = await response.Content.ReadAsStringAsync();
                         if (responseString == null) return;
-                        var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User() });
+                        var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new User() });
                         if (!String.IsNullOrWhiteSpace(result.jwtToken))
                         {
                             // Open Main Form
