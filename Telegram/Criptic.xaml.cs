@@ -23,7 +23,7 @@ namespace Telegram
     /// </summary>
     public partial class Criptic : Window
     {
-        public string API_STRING = "https://localhost:7195/api";
+        public string API_STRING = "https://jumedoo-001-site1.atempurl.com/api";
         public string JwtToken { get; set; }
         public User LoginedUser { get; set; }
         // Updated values
