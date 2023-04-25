@@ -16,7 +16,7 @@ namespace Telegram
     /// </summary>
     public partial class StartLoading : Window
     {
-        public string API_STRING = "https://jumedoo-001-site1.atempurl.com/api";
+        public string API_STRING = "https://localhost:7195/api";
         public StartLoading()
         {
             InitializeComponent();

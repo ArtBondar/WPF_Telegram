@@ -20,7 +20,7 @@ namespace Telegram
     /// </summary>
     public partial class SingUp : Window
     {
-        public string API_STRING = "https://jumedoo-001-site1.atempurl.com/api";
+        public string API_STRING = "https://localhost:7195/api";
         private bool flag_singup = true;
         private bool flag_registration = true;
         private bool flag_newPassword = true;
