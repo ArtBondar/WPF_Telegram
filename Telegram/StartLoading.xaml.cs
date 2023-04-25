@@ -63,7 +63,7 @@ namespace Telegram
                         var responseString = await response.Content.ReadAsStringAsync();
                         if (responseString == null) return;
                         var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new User() });
-                        if (!String.IsNullOrWhiteSpace(result.jwtToken))
+                        if (!String.IsNullOrWhiteSpace(result?.jwtToken))
                         {
                             // Open Main Form
                             Dispatcher.Invoke(() =>
@@ -77,14 +77,26 @@ namespace Telegram
                                 this.Close();
                             });
                         }
+                        else
+                        {
+                            Dispatcher.Invoke(() =>
+                            {
+                                SingUp singUp = new SingUp();
+                                singUp.Show();
+                                this.Close();
+                            });
+                        }
                     }
                     catch { }
                 }
                 else
                 {
-                    SingUp singUp = new SingUp();
-                    singUp.Show();
-                    this.Close();
+                    Dispatcher.Invoke(() =>
+                    {
+                        SingUp singUp = new SingUp();
+                        singUp.Show();
+                        this.Close();
+                    });
                 }
             });
         }
