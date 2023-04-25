@@ -215,15 +215,15 @@ namespace Telegram
                 return;
             }
             var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), chats = new List<Models.Chat>(), contacts = new List<User>() });
-            if (!String.IsNullOrWhiteSpace(result.jwtToken))
+            if (!String.IsNullOrWhiteSpace(result?.jwtToken))
             {
                 // Open Main Form
                 SaveCredentialsToFile(login, password, "login.txt");
                 Criptic mainForm = new Criptic();
-                mainForm.JwtToken = result.jwtToken;
-                mainForm.LoginedUser = result.user;
-                mainForm.Chats = result.chats;
-                mainForm.UserContacts = result.contacts;
+                mainForm.JwtToken = result?.jwtToken;
+                mainForm.LoginedUser = result?.user;
+                mainForm.Chats = result?.chats;
+                mainForm.UserContacts = result?.contacts;
                 mainForm.RefreshUI();
                 mainForm.Show();
                 this.Close();
@@ -272,15 +272,15 @@ namespace Telegram
             var response = await client.PostAsync($"{API_STRING}/Users/register", content);
             var responseString = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeAnonymousType(responseString, new { jwtToken = "", user = new Models.User(), chats = new List<Models.Chat>(), contacts = new List<User>() });
-            if (!String.IsNullOrWhiteSpace(result.jwtToken))
+            if (!String.IsNullOrWhiteSpace(result?.jwtToken))
             {
                 // Open Main Form
                 SaveCredentialsToFile(userName, password, "login.txt");
                 Criptic mainForm = new Criptic();
-                mainForm.JwtToken = result.jwtToken;
-                mainForm.LoginedUser = result.user;
-                mainForm.Chats = result.chats;
-                mainForm.UserContacts = result.contacts;
+                mainForm.JwtToken = result?.jwtToken;
+                mainForm.LoginedUser = result?.user;
+                mainForm.Chats = result?.chats;
+                mainForm.UserContacts = result?.contacts;
                 mainForm.RefreshUI();
                 mainForm.Show();
                 this.Close();

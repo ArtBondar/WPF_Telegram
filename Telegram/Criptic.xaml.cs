@@ -147,22 +147,22 @@ namespace Telegram
                 var result = JsonConvert.DeserializeAnonymousType(responseString, new { user = new User(), chats = new List<Chat>(), savedMessages = new List<SavedMessage>(), contacts = new List<User>() });
                 if (result != null)
                 {
-                    if (JsonConvert.SerializeObject(LoginedUser) != JsonConvert.SerializeObject(result.user))
+                    if (JsonConvert.SerializeObject(LoginedUser) != JsonConvert.SerializeObject(result?.user))
                     {
-                        LoginedUser = result.user;
+                        LoginedUser = result?.user;
                         RefreshUILoginedUser();
                     }
-                    if (JsonConvert.SerializeObject(Chats) != JsonConvert.SerializeObject(result.chats) || JsonConvert.SerializeObject(SavedMessages) != JsonConvert.SerializeObject(result.savedMessages))
+                    if (JsonConvert.SerializeObject(Chats) != JsonConvert.SerializeObject(result?.chats) || JsonConvert.SerializeObject(SavedMessages) != JsonConvert.SerializeObject(result?.savedMessages))
                     {
-                        foreach (Chat chat in result.chats)
+                        foreach (Chat chat in result?.chats)
                             chat.MuteStatus = chat.WhoMuted.Contains(LoginedUser.Id);
-                        Chats = result.chats;
-                        SavedMessages = result.savedMessages;
+                        Chats = result?.chats;
+                        SavedMessages = result?.savedMessages;
                         RefreshUIChats();
                     }
-                    if (JsonConvert.SerializeObject(UserContacts) != JsonConvert.SerializeObject(result.contacts))
+                    if (JsonConvert.SerializeObject(UserContacts) != JsonConvert.SerializeObject(result?.contacts))
                     {
-                        UserContacts = result.contacts;
+                        UserContacts = result?.contacts;
                         RefreshUIContacts();
                     }
                 }
@@ -262,7 +262,7 @@ namespace Telegram
             var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", chat = new Chat(), messages = new List<Message>(), members = new List<User>() });
             //
             if (result == null) return;
-            SelectedChat = result.chat;
+            SelectedChat = result?.chat;
             if (Select.PhotoSource == null)
             {
                 SelectedEllipse.Fill = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B8ACFF"));
@@ -290,8 +290,8 @@ namespace Telegram
             //
             if (Select.Type == "Group" || Select.Type == "Channel")
             {
-                ChatPanel_SecondInfo.Content = $"{result.members.Count} members";
-                MembersList.ItemsSource = result.members;
+                ChatPanel_SecondInfo.Content = $"{result?.members.Count} members";
+                MembersList.ItemsSource = result?.members;
                 if (!String.IsNullOrWhiteSpace(Select.ChatInfo))
                 {
                     Info1_NameLable.Content = "About"; Info1_NameLable.Visibility = Visibility.Visible;
@@ -304,7 +304,7 @@ namespace Telegram
                 }
                 Info2_NameLable.Content = $"{Select.Type} name"; Info2_NameLable.Visibility = Visibility.Visible;
                 Info2_Lable.Content = Select.ChatName; Info2_Lable.Visibility = Visibility.Visible;
-                RigthInfo_Second.Content = $"{result.members.Count} members";
+                RigthInfo_Second.Content = $"{result?.members.Count} members";
                 if (Select.AuthorId == LoginedUser.Id)
                     Edit_ThreePointInfoSelectedChat.Visibility = Visibility.Visible;
                 if (Select.Type == "Channel" && Select.AuthorId != LoginedUser.Id)
@@ -329,7 +329,7 @@ namespace Telegram
                 // Favorite
             }
             // Messages
-            foreach (Message message in result.messages)
+            foreach (Message message in result?.messages)
             {
                 if (message.Author.Id == LoginedUser.Id)
                 {
@@ -340,7 +340,7 @@ namespace Telegram
                 else
                     message.VisibilityDeleteMessage = Visibility.Collapsed;
             }
-            Chat_ListView.ItemsSource = result.messages;
+            Chat_ListView.ItemsSource = result?.messages;
             // To end
             ScrollViewer scrollViewer = GetDescendantByType(Chat_ListView, typeof(ScrollViewer)) as ScrollViewer;
             scrollViewer?.ScrollToEnd();
@@ -480,14 +480,14 @@ namespace Telegram
                         return;
                     }
                     var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
-                    if (result.error != null)
+                    if (result?.error != null)
                     {
-                        MessageBox.Show($"{result.error}");
+                        MessageBox.Show($"{result?.error}");
                         return;
                     }
-                    if (result.user != null)
+                    if (result?.user != null)
                     {
-                        LoginedUser = result.user;
+                        LoginedUser = result?.user;
                         Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
                     }
                 }
@@ -543,14 +543,14 @@ namespace Telegram
                     return;
                 }
                 var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
-                if (result.error != null)
+                if (result?.error != null)
                 {
-                    MessageBox.Show($"{result.error}");
+                    MessageBox.Show($"{result?.error}");
                     return;
                 }
-                if (result.user != null)
+                if (result?.user != null)
                 {
-                    LoginedUser = result.user;
+                    LoginedUser = result?.user;
                     Menu_EditUserName_Grid.Visibility = Visibility.Hidden;
                 }
             }
@@ -572,14 +572,14 @@ namespace Telegram
                     return;
                 }
                 var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
-                if (result.error != null)
+                if (result?.error != null)
                 {
-                    MessageBox.Show($"{result.error}");
+                    MessageBox.Show($"{result?.error}");
                     return;
                 }
-                if (result.user != null)
+                if (result?.user != null)
                 {
-                    LoginedUser = result.user;
+                    LoginedUser = result?.user;
                     Menu_EditEmail_Grid.Visibility = Visibility.Hidden;
                 }
             }
@@ -638,9 +638,9 @@ namespace Telegram
                         return;
                     }
                     var result = JsonConvert.DeserializeAnonymousType(responseString, new { result = "", user = new User() });
-                    if (result.result == "success")
+                    if (result?.result == "success")
                     {
-                        LoginedUser = result.user;
+                        LoginedUser = result?.user;
                         Menu_EditPassword_Grid.Visibility = Visibility.Hidden;
                     }
                 }
@@ -766,14 +766,14 @@ namespace Telegram
                 var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", result = "", chat = new Chat() });
                 if (result == null)
                 {
-                    MessageBox.Show($"{result.error}");
+                    MessageBox.Show($"{result?.error}");
                     return;
                 }
-                if (result.result != null)
+                if (result?.result != null)
                 {
                     Menu_CreateGroup_Grid.Visibility = Visibility.Hidden;
                     Contacts_Create_Grid.Visibility = Visibility.Visible;
-                    CreatedLastChat = result.chat;
+                    CreatedLastChat = result?.chat;
                     SelectedPhoto = null;
                     GroupOrChannelName = null;
                 }
@@ -802,14 +802,14 @@ namespace Telegram
                 var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", result = "", chat = new Chat() });
                 if (result == null)
                 {
-                    MessageBox.Show($"{result.error}");
+                    MessageBox.Show($"{result?.error}");
                     return;
                 }
-                if (result.result != null)
+                if (result?.result != null)
                 {
                     Menu_CreateChanel_Grid.Visibility = Visibility.Hidden;
                     Contacts_Create_Grid.Visibility = Visibility.Visible;
-                    CreatedLastChat = result.chat;
+                    CreatedLastChat = result?.chat;
                     SelectedPhoto = null;
                     GroupOrChannelName = null;
                 }
@@ -868,14 +868,14 @@ namespace Telegram
                 return;
             }
             var result = JsonConvert.DeserializeAnonymousType(responseString, new { error = "", user = new User() });
-            if (result.error != null)
+            if (result?.error != null)
             {
-                MessageBox.Show($"{result.error}");
+                MessageBox.Show($"{result?.error}");
                 return;
             }
-            if (result.user != null)
+            if (result?.user != null)
             {
-                LoginedUser = result.user;
+                LoginedUser = result?.user;
                 Menu_EditDescription_Grid.Visibility = Visibility.Hidden;
             }
         }
@@ -903,7 +903,7 @@ namespace Telegram
                     return;
                 }
                 var result = JsonConvert.DeserializeAnonymousType(responseString, new { deliveryStatus = false });
-                if (result.deliveryStatus)
+                if (result?.deliveryStatus)
                 {
                     thistextBox.Text = "";
                 }
@@ -1125,10 +1125,10 @@ namespace Telegram
             bool flag = false;
             if (result?.users != null)
             {
-                if (result.users.Count > 0)
+                if (result?.users.Count > 0)
                 {
                     flag = true;
-                    foreach (var user in result.users)
+                    foreach (var user in result?.users)
                     {
                         if (UserContacts.FirstOrDefault(cont => cont.UserName == user.UserName) != null)
                         {
@@ -1140,10 +1140,10 @@ namespace Telegram
             }
             if (result?.chats != null)
             {
-                if (result.chats.Count > 0)
+                if (result?.chats.Count > 0)
                 {
                     flag = true;
-                    foreach (var chat in result.chats)
+                    foreach (var chat in result?.chats)
                     {
                         Contact_Search.Items.Add(chat);
                     }
@@ -1341,7 +1341,7 @@ namespace Telegram
             var responseString = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeAnonymousType(responseString, new { user = new User() });
             //
-            var data = JsonConvert.SerializeObject(new { currentUserLogin = LoginedUser.UserName, contactUserName = result.user.UserName });
+            var data = JsonConvert.SerializeObject(new { currentUserLogin = LoginedUser.UserName, contactUserName = result?.user.UserName });
             var content = new StringContent(data, Encoding.UTF8, "application/json");
             await client.PostAsync($"{API_STRING}/UserContacts/createcontact", content);
         }
