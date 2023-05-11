@@ -3,15 +3,18 @@ I worked on this project as part of a team of three people. Specifically, I was 
 
 # The Application
 ## Login
-{Login screen}
+![Login screen](https://github.com/ArtBondar/WPF_Telegram/blob/master/image/login.jpg)
+
 When you first launch our application, you are greeted with a login window where you need to enter the login and password for your account. There are also a couple of additional buttons such as "Registration" and "Forgot password?" If you click on the registration button, you will be given the opportunity to enter your details, and then a confirmation code will be sent to your email. If you click on the "Forgot password?" button, you will be given the opportunity to enter your email address to reset your password, and a confirmation code will be sent to your email as well. There is also an option to automatically save the user's login and password on their computer. If the login is successful, the data is saved on their computer. The password in this case is stored in encrypted form, and user data is deleted when they log out.
 
 ## Main Window
-{Main screen}
+![Main screen](https://github.com/ArtBondar/WPF_Telegram/blob/master/image/main_window.jpg)
+
 If we successfully log in, we are greeted with chats. You can open the interaction window by clicking on the button on the left. Here, there are various buttons such as create a group or channel, go to saved messages, go to settings, and change the theme (to dark or light).
 
 ## Settings
-{Settings screen}
+![Settings screen](https://github.com/ArtBondar/WPF_Telegram/blob/master/image/settings.jpg)
+
 Here, you can configure your account by changing your password, login, or account description. You can also change the theme and the background.
 
 ## Chats
@@ -20,19 +23,25 @@ There are three types of chats:
 2. Group (where users can write to each other)
 3. Channel (where only the user who created it can write)
 
-## Contacts
-{Contacts screen}
-
 ## Search
 There is a search for channels, groups, and people in the application.
 
 ## Creating a Channel or Group
-{Creating a Channel or Group screen}
-We need to select a photo, name, and description. After that, we need to select the contacts we want to invite to the group or channel
+We need to select a photo, name, and description. After that, we need to select the contacts we want to invite to the group or channel.
+
+![Creating a Channel or Group screen](https://github.com/ArtBondar/WPF_Telegram/blob/master/image/create_channel.jpg)
+
+![Info about group or channel](https://github.com/ArtBondar/WPF_Telegram/blob/master/image/info_about_group.jpg) 
 
 ## Message Management
-{Message Management screen}
 You can also delete your messages or copy the text inside them. You can send photos as well.
+
+![Message Management screen](https://github.com/ArtBondar/WPF_Telegram/blob/master/image/message_menu.jpg)
+
+![Send photos](https://github.com/ArtBondar/WPF_Telegram/blob/master/image/add_image_to_chat.jpg)
+
+# Photos
+[More photos](https://github.com/ArtBondar/WPF_Telegram/tree/master/image)
 
 # Links
 - [WpfAnimatedGif](https://github.com/XamlAnimatedGif/WpfAnimatedGif)
