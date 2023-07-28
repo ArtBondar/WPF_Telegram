@@ -46,4 +46,3 @@ You can also delete your messages or copy the text inside them. You can send pho
 # Links
 - [WpfAnimatedGif](https://github.com/XamlAnimatedGif/WpfAnimatedGif)
 - [emoji.wpf](https://github.com/samhocevar/emoji.wpf)
-- [Server](https://github.com/Jumedoo/server)
